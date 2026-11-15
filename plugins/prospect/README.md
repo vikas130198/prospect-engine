@@ -39,10 +39,198 @@ Turn an Instagram business profile into a qualified lead with a **working, perso
 ```
 Then, from the folder you want as your workspace: `/prospect:setup`. Full guide: [SETUP.md](SETUP.md).
 
+## How to use
+
+### Quick start (first time)
+```
+mkdir My-Prospects
+cd My-Prospects
+claude
+```
+Then inside Claude Code:
+```
+/plugin marketplace add vikas130198/prospect-engine
+/plugin install prospect@nexdev
+/prospect:setup
+```
+The setup wizard asks for your agency details, connects free hosting (Cloudflare Pages or Netlify) and your email
+drafts (Gmail or IMAP), and installs the website builder. It takes about 15–30 minutes, once. Check everything is
+working with `/prospect:doctor`.
+
+### Your daily routine
+1. Find a business on Instagram that you think needs a website.
+2. `/prospect:new <their profile URL>` (paste 1–2 screenshots of the profile for better research).
+3. Read the short research summary, then reply **proceed**.
+4. Wait while it audits, designs, builds, tests and publishes the prototype (usually a few minutes).
+5. Review the email it wrote, reply **save it**, then open your Drafts and send it yourself.
+
+### Example: from Instagram profile to email draft
+
+> The business and all output below are a made-up example to show the flow.
+
+**1. Start a prospect**
+```
+You:    /prospect:new https://instagram.com/harbour.lane.bakery Brighton bakery, takes cake orders by DM
+        [pastes a screenshot of the profile]
+
+Claude: ✅ Research complete — Harbour Lane Bakery (bakery, Brighton, UK)
+        • Sourdough, croissants and celebration cakes; posts 3–4× a week
+        • No website linked — orders are taken through Instagram DMs
+        • Opportunity: online menu + pre-order enquiry page
+        • Unknown: opening hours, phone number, exact address
+        Report: leads/harbour-lane-bakery/research.md
+
+        Review it and reply "proceed" to continue, tell me what to correct, or reject it.
+```
+
+**2. Approve — everything after this runs automatically**
+```
+You:    proceed
+
+Claude: 🔎 Website investigation — Status: A (No Website)
+        📊 Opportunity score: 78 / 100 — Medium priority
+           Business activity 8/10 · Audience 6/10 · Website opportunity 24/25
+           Growth potential 15/20 · Contact availability 8/15 · Business fit 17/20
+        🎨 Design: "restaurant" layout, warm-bistro theme — Hero · About · Menu · Why us · FAQ · Contact
+        🛠️ Prototype built (code ZKAUN7D5, v1) — 3 placeholders for you to confirm (phone, address, story)
+        🧪 QA passed on 5 screen sizes — 0 critical problems
+           Lighthouse: performance 85 · accessibility 100 · best practices 100
+        🚀 Live: https://prototype.youragency.com/client/ZKAUN7D5/  (until 15 Dec)
+        📇 Contacts: hello@harbourlanebakery.co.uk (verified — their Google Business Profile)
+```
+
+**3. Review the email**
+```
+Claude: To:      hello@harbourlanebakery.co.uk
+        Subject: A website concept for Harbour Lane Bakery
+
+        Hi Harbour Lane team,
+
+        I'm Alex from Your Agency, a small web studio. I've been enjoying your sourdough posts — and
+        noticed that cake orders currently all go through Instagram messages, with no place to see
+        the menu or send a pre-order outside the app.
+
+        I put together a free concept of what a simple site for the bakery could look like:
+        https://prototype.youragency.com/client/ZKAUN7D5/
+
+        It has your menu, a pre-order enquiry form and works well on phones. Happy to walk you
+        through it in 10 minutes, or just reply with your thoughts.
+
+        If this isn't useful, just let me know and I won't follow up.
+
+        Alex — Your Agency
+
+        Save this to your Drafts? You can also tell me what to change.
+
+You:    make it a bit shorter and mention their celebration cakes, then save it
+
+Claude: ✅ EMAIL READY IN DRAFTS
+        Business:   Harbour Lane Bakery
+        Recipient:  hello@harbourlanebakery.co.uk
+        Subject:    A website concept for Harbour Lane Bakery
+        Prototype:  https://prototype.youragency.com/client/ZKAUN7D5/ (live until 15 Dec)
+        Draft:      saved in Gmail → Open Gmail Drafts
+```
+Open your Drafts, read it once more, and press Send yourself.
+
+### More examples
+
+**See and filter your leads**
+```
+/prospect:list                 all leads with status and next step
+/prospect:list high            only high-priority leads
+/prospect:list awaiting        leads waiting for your approval
+/prospect:list failed          anything that needs attention
+/prospect:list bakery          search by name, industry, location or notes
+```
+
+**Open one lead, update its status after you send the email**
+```
+/prospect:open harbour-lane-bakery
+/prospect:open harbour-lane-bakery audit         show the website audit report
+/prospect:open harbour-lane-bakery qa            show the QA report and screenshots
+
+You: mark harbour-lane-bakery as contacted
+You: they replied — set it to Meeting Scheduled and add a note "call on Friday 3pm"
+```
+Manual statuses: Contacted · Responded · Meeting Scheduled · Converted · Lost.
+
+**Change the prototype (every change becomes a new version — you can always go back)**
+```
+/prospect:regenerate harbour-lane-bakery use a darker, more premium theme
+/prospect:regenerate harbour-lane-bakery rewrite only the hero and about sections
+/prospect:regenerate harbour-lane-bakery their phone is 01273 555 0100 and they open 8am–4pm Tue–Sun
+/prospect:regenerate harbour-lane-bakery add a gallery using the photos in D:\photos\bakery
+/prospect:regenerate harbour-lane-bakery go back to version 1
+```
+After a change it is re-tested automatically, and it asks before updating the live link.
+
+**Manage live prototypes**
+```
+/prospect:prototypes                                   list all, with expiry dates
+/prospect:prototypes extend harbour-lane-bakery 30     keep it live 30 more days
+/prospect:prototypes protect harbour-lane-bakery on    require a password to view
+/prospect:prototypes disable harbour-lane-bakery       switch it off now
+/prospect:prototypes delete harbour-lane-bakery        remove it permanently
+```
+
+**When something stops or fails**
+```
+/prospect:resume harbour-lane-bakery           continue where it stopped (e.g. after a usage limit)
+/prospect:retry harbour-lane-bakery qa         redo one stage
+/prospect:retry harbour-lane-bakery research   start again from research (needs approval again)
+/prospect:doctor                                check hosting login, email, browser and tools
+```
+
+**Teach it your taste with design references**
+```
+/prospect:references add https://some-cafe-site-you-like.com — love the big photos and simple menu
+/prospect:references list restaurants
+/prospect:references scan        after dropping screenshots into references/<category>/<name>/
+```
+
+**Say no to a business**
+```
+/prospect:reject harbour-lane-bakery not a good fit
+```
+It can also add the business to your do-not-contact list so it is never emailed.
+
+**See everything at a glance**
+```
+/prospect:dashboard
+```
+Opens a page in your browser with totals (researched, high priority, prototypes live, emails in Drafts, converted),
+every lead's 12-stage progress, prototype expiry dates and anything that failed.
+
+You can also just talk normally — for example *"what's waiting for me?"* or *"show me leads with no website in
+Brighton"* — and Claude uses the same tools.
+
+### Tips for better results
+- **Paste screenshots** of the Instagram profile and a few posts — Instagram often hides data from tools.
+- **Tell it facts you know** (phone, hours, address): it only puts verified details on the prototype, and fills
+  the rest with clearly marked `[[placeholders]]`.
+- **Add a free PageSpeed API key** in `/prospect:setup` so website audits include speed and Core Web Vitals data.
+- **Use your own subdomain** (e.g. `prototype.youragency.com`) — links look far more trustworthy in emails.
+- **On Claude Pro**, use Lite mode and do 1–3 prospects per 5-hour window; check `/usage`.
+
 ## Commands
-`/prospect:setup` · `/prospect:doctor` · `/prospect:new` · `/prospect:approve` · `/prospect:reject` · `/prospect:resume`
-· `/prospect:retry` · `/prospect:list` · `/prospect:open` · `/prospect:regenerate` · `/prospect:prototypes`
-· `/prospect:references` · `/prospect:dashboard` · `/prospect:help`
+
+| Command | What it does |
+|---|---|
+| `/prospect:setup [step]` | First-time setup wizard; re-run any time (e.g. `/prospect:setup email`) |
+| `/prospect:doctor` | Health check of every component, with fixes |
+| `/prospect:new <url> [notes]` | Start a prospect from an Instagram profile and research it |
+| `/prospect:approve <id>` | Approve the research and run the rest of the workflow |
+| `/prospect:reject <id> [reason]` | Reject a lead (optionally add to do-not-contact) |
+| `/prospect:resume <id>` | Continue from the next unfinished stage |
+| `/prospect:retry <id> <stage>` | Redo one stage and continue |
+| `/prospect:list [filter]` | Leads table: `high`, `medium`, `low`, `awaiting`, `ready`, `failed` or search text |
+| `/prospect:open <id> [tab]` | Lead details, reports, history; update status and notes |
+| `/prospect:regenerate <id> <change>` | Change, regenerate or restore a prototype |
+| `/prospect:prototypes [action]` | List, disable, enable, protect, extend, delete, logs, sync |
+| `/prospect:references [action]` | Manage your design reference library |
+| `/prospect:dashboard` | Visual dashboard in your browser |
+| `/prospect:help` | How it works and all commands |
 
 ## Usage on Claude Pro
 Heavy steps run in subagents pinned to Haiku (research, audit, contacts, design) and Sonnet (prototype, QA repair,
