@@ -1,0 +1,34 @@
+{
+  "name": "retail-ecommerce",
+  "label": "Shops, boutiques, online stores, product brands",
+  "default_theme": "bright-retail",
+  "nav_cta": "Shop now",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "faq"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

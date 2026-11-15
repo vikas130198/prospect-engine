@@ -1,0 +1,34 @@
+{
+  "name": "interior-design",
+  "label": "Interior designers, architects, furniture, decor",
+  "default_theme": "earth-living",
+  "nav_cta": "Book a consultation",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "process"
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

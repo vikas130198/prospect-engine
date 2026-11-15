@@ -1,0 +1,18 @@
+{
+  "name": "prospect",
+  "version": "1.0.0",
+  "description": "Prospect Engine: turn an Instagram business profile into research, a website opportunity score, a tested and deployed website prototype, and a personalised email saved in your Drafts. Never sends anything for you.",
+  "author": {
+    "name": "NexDev Studios"
+  },
+  "homepage": "https://nexdevstudios.com",
+  "keywords": [
+    "prospecting",
+    "web design",
+    "agency",
+    "prototype",
+    "outreach",
+    "lead generation"
+  ],
+  "license": "MIT"
+}

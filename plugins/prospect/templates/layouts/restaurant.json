@@ -1,0 +1,38 @@
+{
+  "name": "restaurant",
+  "label": "Restaurant, café, bakery, cloud kitchen, catering",
+  "default_theme": "warm-bistro",
+  "nav_cta": "Reserve a table",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "fullbleed"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "menu"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "faq",
+      "optional": true
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

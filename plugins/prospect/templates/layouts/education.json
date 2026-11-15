@@ -1,0 +1,37 @@
+{
+  "name": "education",
+  "label": "Schools, coaching centres, tutors, online courses",
+  "default_theme": "academy-blue",
+  "nav_cta": "Enquire about admission",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "process"
+    },
+    {
+      "type": "team",
+      "optional": true
+    },
+    {
+      "type": "faq"
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

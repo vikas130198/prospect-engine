@@ -1,0 +1,37 @@
+{
+  "name": "real-estate",
+  "label": "Real estate agents, builders, property developers",
+  "default_theme": "earth-living",
+  "nav_cta": "Schedule a visit",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "fullbleed"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "process"
+    },
+    {
+      "type": "faq",
+      "optional": true
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

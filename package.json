@@ -1,0 +1,18 @@
+{
+  "name": "prospect-engine-dev",
+  "private": true,
+  "type": "module",
+  "description": "Development tooling for the NexDev Prospect Engine Claude Code plugin. Not shipped.",
+  "scripts": {
+    "build": "node scripts/bundle.mjs",
+    "test": "node --test tests/lib.test.mjs tests/guard.test.mjs"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "esbuild": "^0.28.2",
+    "imapflow": "^1.3.0",
+    "node-html-parser": "^9.0.7",
+    "zod": "^3.25.0"
+  },
+  "license": "MIT"
+}

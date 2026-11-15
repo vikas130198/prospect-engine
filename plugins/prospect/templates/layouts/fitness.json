@@ -1,0 +1,38 @@
+{
+  "name": "fitness",
+  "label": "Gyms, yoga studios, trainers, sports academies",
+  "default_theme": "energy-dark",
+  "nav_cta": "Book a free trial",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "fullbleed"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "pricing",
+      "optional": true
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "faq"
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "description": "Prospect Engine safety rules: drafts only (no sending), private secrets file, deploy only through the QA-checked CLI.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__.*|Bash|PowerShell|Read|Edit|Write|MultiEdit|Grep|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/guard.mjs\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

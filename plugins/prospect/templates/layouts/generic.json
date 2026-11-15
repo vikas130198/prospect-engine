@@ -1,0 +1,31 @@
+{
+  "name": "generic",
+  "label": "Any other local business",
+  "default_theme": "modern-slate",
+  "nav_cta": "Get in touch",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "faq",
+      "optional": true
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

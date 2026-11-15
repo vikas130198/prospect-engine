@@ -1,0 +1,37 @@
+{
+  "name": "manufacturing",
+  "label": "Manufacturers, construction, logistics, industrial suppliers",
+  "default_theme": "industrial-steel",
+  "nav_cta": "Request a quote",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "process"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "faq",
+      "optional": true
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

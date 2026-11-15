@@ -1,0 +1,33 @@
+{
+  "name": "organic",
+  "label": "Organic food, farms, eco products, ayurveda, natural wellness",
+  "default_theme": "green-organic",
+  "nav_cta": "Order now",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "faq"
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

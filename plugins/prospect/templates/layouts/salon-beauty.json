@@ -1,0 +1,35 @@
+{
+  "name": "salon-beauty",
+  "label": "Salons, spas, makeup artists, nail studios, bridal",
+  "default_theme": "blush-studio",
+  "nav_cta": "Book an appointment",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "faq",
+      "optional": true
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

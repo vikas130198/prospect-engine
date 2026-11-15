@@ -1,0 +1,37 @@
+{
+  "name": "corporate-services",
+  "label": "Consultants, agencies, IT, legal, accounting, B2B",
+  "default_theme": "modern-slate",
+  "nav_cta": "Get a quote",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "process"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "faq"
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

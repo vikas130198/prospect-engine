@@ -1,0 +1,34 @@
+{
+  "name": "fine-dining",
+  "label": "Fine dining, bars, lounges, premium hospitality",
+  "default_theme": "midnight-gold",
+  "nav_cta": "Book a table",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "fullbleed"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "menu"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "cta"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

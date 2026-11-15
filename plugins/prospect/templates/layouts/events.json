@@ -1,0 +1,34 @@
+{
+  "name": "events",
+  "label": "Event planners, wedding services, photographers, decorators, DJs",
+  "default_theme": "event-celebration",
+  "nav_cta": "Check availability",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "fullbleed"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "gallery"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "process"
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "faq"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}

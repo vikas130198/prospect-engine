@@ -1,0 +1,38 @@
+{
+  "name": "healthcare",
+  "label": "Clinics, dental, physiotherapy, diagnostics, wellness",
+  "default_theme": "fresh-clinic",
+  "nav_cta": "Book an appointment",
+  "sections": [
+    {
+      "type": "hero",
+      "variant": "split"
+    },
+    {
+      "type": "services"
+    },
+    {
+      "type": "about"
+    },
+    {
+      "type": "features"
+    },
+    {
+      "type": "process"
+    },
+    {
+      "type": "team",
+      "optional": true
+    },
+    {
+      "type": "testimonials",
+      "optional": true
+    },
+    {
+      "type": "faq"
+    },
+    {
+      "type": "contact"
+    }
+  ]
+}
