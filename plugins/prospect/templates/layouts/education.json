@@ -2,6 +2,7 @@
   "name": "education",
   "label": "Schools, coaching centres, tutors, online courses",
   "default_theme": "academy-blue",
+  "default_motion": "playful",
   "nav_cta": "Enquire about admission",
   "sections": [
     {

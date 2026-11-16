@@ -2,6 +2,7 @@
   "name": "fine-dining",
   "label": "Fine dining, bars, lounges, premium hospitality",
   "default_theme": "midnight-gold",
+  "default_motion": "cinematic",
   "nav_cta": "Book a table",
   "sections": [
     {

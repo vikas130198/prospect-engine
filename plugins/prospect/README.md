@@ -13,9 +13,13 @@ Turn an Instagram business profile into a qualified lead with a **working, perso
 3. **Website investigation**: finds and verifies the official site, audits it (HTTPS, mobile, metadata, CTAs,
    PageSpeed / Core Web Vitals, broken links), researches competitors, classifies the site (No / Poor / Average /
    Good / No opportunity) and calculates a transparent 100-point opportunity score.
-4. **Design selection** from 14 industry layouts, 12 themes and your own reference library.
-5. **Prototype**: a responsive React + Tailwind landing page written for that business, with working navigation, a
-   demo enquiry form and SEO metadata. Unknown details become clearly marked placeholders — the build **refuses**
+4. **Design selection** from your **design library** (website design videos and screenshots you drop into
+   `design-library/inbox` — matched by design fit, not industry), 14 layouts, 12 themes and 6 motion presets.
+5. **Prototype**: a responsive, **fully animated** React + Tailwind landing page written for that business —
+   word-by-word headline reveals, scroll reveals, parallax / Ken Burns / aurora heroes, smooth scrolling, magnetic
+   buttons, tilting cards, scroll-driven galleries, stacking cards, marquee bands, counters, an optional opening
+   curtain — plus working navigation, a demo enquiry form and SEO metadata. Animations switch off for visitors who
+   prefer reduced motion. Unknown details become clearly marked placeholders — the build **refuses**
    invented phone numbers, emails, reviews, prices or statistics.
 6. **Automated QA** with a real browser at 375 / 390 / 768 / 1366 / 1440 px: layout overflow, JavaScript errors,
    broken links/files, mobile menu, form validation, headings, alt text, noindex, asset sizes, Lighthouse. Failures
@@ -182,6 +186,20 @@ After a change it is re-tested automatically, and it asks before updating the li
 /prospect:doctor                                check hosting login, email, browser and tools
 ```
 
+**Teach it your taste with design videos (design library)**
+
+Drop screen recordings of websites you love (MP4/WebM, 20 s – 3 min, scroll slowly) or screenshots into
+`design-library/inbox/` in your workspace. Before every prototype Claude checks the folder, studies anything new
+once (it turns each video into frame sheets with Chrome — nothing is uploaded), and picks the design, animations and
+transitions that best suit *this* business — by look and feel, not by the industry of the site in the video.
+```
+/prospect:library                 what's in the library, what's new, anything unsupported
+/prospect:library scan            study new videos now
+/prospect:library list            analysed designs and what each suits
+/prospect:regenerate harbour-lane-bakery use the design from dark-editorial-scroll
+/prospect:regenerate harbour-lane-bakery make it more cinematic, add parallax to the hero
+```
+
 **Teach it your taste with design references**
 ```
 /prospect:references add https://some-cafe-site-you-like.com — love the big photos and simple menu
@@ -206,6 +224,7 @@ You can also just talk normally — for example *"what's waiting for me?"* or *"
 Brighton"* — and Claude uses the same tools.
 
 ### Tips for better results
+- **Fill your design library**: 5–10 recordings of sites you love gives every prototype your taste.
 - **Paste screenshots** of the Instagram profile and a few posts — Instagram often hides data from tools.
 - **Tell it facts you know** (phone, hours, address): it only puts verified details on the prototype, and fills
   the rest with clearly marked `[[placeholders]]`.
@@ -228,7 +247,8 @@ Brighton"* — and Claude uses the same tools.
 | `/prospect:open <id> [tab]` | Lead details, reports, history; update status and notes |
 | `/prospect:regenerate <id> <change>` | Change, regenerate or restore a prototype |
 | `/prospect:prototypes [action]` | List, disable, enable, protect, extend, delete, logs, sync |
-| `/prospect:references [action]` | Manage your design reference library |
+| `/prospect:library [action]` | Design library: videos/screenshots in `design-library/inbox` — status, scan, list, remove |
+| `/prospect:references [action]` | Manage your design reference library (websites + notes) |
 | `/prospect:dashboard` | Visual dashboard in your browser |
 | `/prospect:help` | How it works and all commands |
 

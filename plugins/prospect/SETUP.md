@@ -178,7 +178,7 @@ The wizard walks you through each step:
 | 7 | **Hosting test** | Nothing — uploads the site, checks the address works and is marked `noindex` |
 | 8 | **Email** | Gmail: connect it in claude.ai → Connectors. IMAP: type your password into the private file that opens |
 | 9 | **Usage mode** | **Lite** (recommended for Pro) or **Full** (for Max) |
-| 10 | **Design references** *(optional)* | Add favourite reference websites per industry — can be done later |
+| 10 | **Design library & references** *(optional)* | Drop website design videos/screenshots into `design-library/inbox` (any time) and optionally add favourite websites |
 
 At the end you see a ✅ / ⚠️ / ❌ health table.
 

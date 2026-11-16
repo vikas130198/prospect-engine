@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { auditWebsite, checkLinks, pageSpeed } from './lib/audit.mjs';
 import { configProblems, initWorkspace, loadConfig, secretStatus, updateConfig } from './lib/config.mjs';
 import { extractContacts } from './lib/contacts.mjs';
-import { listLayouts, loadThemes, SECTION_TYPES } from './lib/content-check.mjs';
+import { listLayouts, loadMotion, loadThemes, motionProblems, SECTION_TYPES, VARIANTS } from './lib/content-check.mjs';
 import { prototypeOverview } from './lib/deploy.mjs';
 import { recordDraft, saveEmail } from './lib/email.mjs';
 import { instagramLookup } from './lib/instagram.mjs';
@@ -19,6 +19,7 @@ import {
 import { CLI_PATH, findWorkspace, PLUGIN_ROOT, requireWorkspace } from './lib/paths.mjs';
 import { checkContent, createPrototype, newVersion, restoreVersion } from './lib/prototype.mjs';
 import { addReference, listReferences, REFERENCE_CATEGORIES, removeReference, scanReferences, updateReference, ensureReferenceFolders } from './lib/references.mjs';
+import { ensureDesignLibrary, getLibraryEntry, libraryExists, libraryStatus, listLibrary, markUsed, saveAnalysis, syncInbox, updateEntry } from './lib/design-library.mjs';
 import { formatError, exists, truncate } from './lib/util.mjs';
 
 const server = new McpServer({ name: 'prospect', version: '1.0.0' });
@@ -47,7 +48,8 @@ tool('workspace_info', 'Locations of the plugin, CLI and workspace, plus configu
   if (!root) return { ...base, initialized: false, next: 'Run /prospect:setup to create a workspace in this folder.' };
   const w = requireWorkspace();
   const cfg = loadConfig(w);
-  return { ...base, initialized: true, config: cfg, problems: configProblems(cfg), secrets_set: secretStatus(w), builder_installed: exists(path.join(w.builder, 'node_modules', 'vite')) };
+  ensureDesignLibrary(w);
+  return { ...base, initialized: true, design_library_inbox: path.join(w.root, 'design-library', 'inbox'), config: cfg, problems: configProblems(cfg), secrets_set: secretStatus(w), builder_installed: exists(path.join(w.builder, 'node_modules', 'vite')) };
 });
 
 tool('init_workspace', 'Create a Prospect Engine workspace in the given folder (default: current folder). Safe to run again.', {
@@ -57,6 +59,7 @@ tool('init_workspace', 'Create a Prospect Engine workspace in the given folder (
   const r = initWorkspace(folder || process.cwd(), { agency });
   process.env.PROSPECT_WORKSPACE = r.workspace;
   ensureReferenceFolders(requireWorkspace());
+  ensureDesignLibrary(requireWorkspace());
   return r;
 });
 
@@ -326,13 +329,23 @@ tool('save_score', 'Save the transparent opportunity score. Each factor needs sc
 
 // ---------------- Engine 3: references & design ----------------
 
-tool('design_catalog', 'Available industry layouts, theme presets, section types and the user\'s design references.', {
+tool('design_catalog', 'Available industry layouts, theme presets, motion presets, section types/variants, the analysed design-library videos and the user\'s design references.', {
   category: z.enum(REFERENCE_CATEGORIES).optional(),
 }, async ({ category }) => {
   const w = requireWorkspace();
   const themes = loadThemes();
+  const motion = loadMotion();
+  const lib = libraryStatus(w);
   return {
-    layouts: listLayouts().map((l) => ({ name: l.name, label: l.label, default_theme: l.default_theme, sections: l.sections.map((s) => s.type + (s.optional ? '?' : '')).join(' → ') })),
+    design_library: {
+      analysed: listLibrary(w),
+      waiting_for_analysis: lib.needs_analysis.length + lib.needs_frames.length,
+      note: lib.needs_analysis.length + lib.needs_frames.length ? 'New files in design-library/inbox are not analysed yet — run the library scan + analysis first (see the design-library skill).' : undefined,
+    },
+    motion_presets: Object.fromEntries(Object.entries(motion.presets).map(([k, v]) => [k, v.label])),
+    motion_options: motion.options,
+    section_variants: VARIANTS,
+    layouts: listLayouts().map((l) => ({ name: l.name, label: l.label, default_theme: l.default_theme, default_motion: l.default_motion, sections: l.sections.map((s) => s.type + (s.optional ? '?' : '')).join(' → ') })),
     themes: Object.fromEntries(Object.entries(themes.themes).map(([k, v]) => [k, `${v.label} (${v.fonts.heading} / ${v.fonts.body}${v.dark ? ', dark' : ''})`])),
     fonts: Object.keys(themes.fonts),
     section_types: Object.keys(SECTION_TYPES),
@@ -368,6 +381,8 @@ tool('save_design', 'Save the design selection (Engine 3): layout, theme, refere
   theme_colors: z.record(z.string()).optional().describe('Optional brand colour overrides, e.g. {"primary":"#aa3355"} (hex). Keep contrast readable.'),
   sections: z.array(z.union([z.string(), z.object({ type: z.string(), variant: z.string().optional(), id: z.string().optional() })])).optional().describe('Section order; defaults to the layout'),
   reference_ids: z.array(z.string()).optional(),
+  library_ids: z.array(z.string()).optional().describe('Design-library entries (analysed videos/screenshots) this design draws its look and motion from'),
+  motion: z.record(z.any()).optional().describe('Motion settings for the prototype, e.g. {"preset":"cinematic","hero_effect":"parallax"} — see design_catalog motion_presets/motion_options'),
   reason: z.string(),
   plan_markdown: md,
 }, async (a) => {
@@ -378,12 +393,69 @@ tool('save_design', 'Save the design selection (Engine 3): layout, theme, refere
   if (!themes[a.theme]) throw new Error(`Unknown theme "${a.theme}". Options: ${Object.keys(themes).join(', ')}`);
   if (!listLayouts().some((x) => x.name === a.layout)) throw new Error(`Unknown layout "${a.layout}".`);
   for (const [k, v] of Object.entries(a.theme_colors || {})) if (!/^#[0-9a-f]{6}$/i.test(v)) throw new Error(`Colour ${k} must be a 6-digit hex value.`);
-  l.design = { layout: a.layout, theme: a.theme, theme_colors: a.theme_colors || null, sections: a.sections || null, reference_ids: a.reference_ids || [], reason: a.reason, saved_at: new Date().toISOString() };
+  const layout = listLayouts().find((x) => x.name === a.layout);
+  const motion = a.motion || { preset: layout.default_motion || 'elegant' };
+  const mp = motionProblems(motion);
+  if (mp.errors.length) throw new Error(mp.errors.join(' '));
+  const unknownLib = libraryExists(w, a.library_ids || []);
+  if (unknownLib.length) throw new Error(`Unknown design-library ids: ${unknownLib.join(', ')}`);
+  for (const sec of a.sections || []) {
+    if (typeof sec === 'object' && sec.variant && VARIANTS[sec.type] && !VARIANTS[sec.type].includes(sec.variant)) throw new Error(`${sec.type} variant must be one of: ${VARIANTS[sec.type].join(', ')}`);
+  }
+  l.design = { layout: a.layout, theme: a.theme, theme_colors: a.theme_colors || null, sections: a.sections || null, motion, library_ids: a.library_ids || [], reference_ids: a.reference_ids || [], reason: a.reason, saved_at: new Date().toISOString() };
+  markUsed(w, a.library_ids || []);
   saveLead(w, l);
   saveReport(w, a.lead_id, 'design-plan.md', a.plan_markdown);
   setStage(w, l, 'design', 'COMPLETED');
   logActivity(w, a.lead_id, 'design', `Design: ${a.layout} / ${a.theme}`);
-  return { saved: true, layout: a.layout, theme: a.theme };
+  return { saved: true, layout: a.layout, theme: a.theme, motion, library_ids: a.library_ids || [] };
+});
+
+tool('design_library', 'The user\'s design library (videos/screenshots dropped in design-library/inbox). status: what is new / needs analysis (with contact-sheet image paths to look at). list: analysed entries. get: one entry with its full analysis and sheets. favourite / remove manage entries. Frame extraction for new videos is a CLI job: library-scan.', {
+  action: z.enum(['status', 'list', 'get', 'favourite', 'unfavourite', 'remove']),
+  id: z.string().optional(),
+  delete_file: z.boolean().optional().describe('With remove: also delete the video from the inbox'),
+}, async ({ action, id, delete_file }) => {
+  const w = requireWorkspace();
+  if (action === 'status') {
+    syncInbox(w);
+    const st = libraryStatus(w);
+    return { ...st, next: st.needs_frames.length ? 'Run the CLI: library-scan (extracts frames from new videos), then analyse.' : st.needs_analysis.length ? 'Look at each entry\'s sheets with Read and save_design_analysis.' : 'Library is up to date.' };
+  }
+  if (action === 'list') return listLibrary(w);
+  if (!id) throw new Error('id is required');
+  if (action === 'get') return getLibraryEntry(w, id);
+  if (action === 'favourite' || action === 'unfavourite') return updateEntry(w, id, { favourite: action === 'favourite' });
+  return updateEntry(w, id, { remove: true, deleteFiles: delete_file });
+});
+
+const motionKeys = z.enum(['page_load', 'scroll', 'hover', 'transitions', 'navigation', 'signature_moments']);
+tool('save_design_analysis', 'Save what you observed in a design-library video/screenshot (after looking at its contact sheets). Written once per file and reused for every prototype.', {
+  id: z.string(),
+  title: z.string().describe('Short memorable name, e.g. "Dark editorial with masked headline reveals"'),
+  summary: z.string().describe('2–4 sentences: overall look, feel and what makes it engaging'),
+  style_keywords: z.array(z.string()).describe('e.g. dark, editorial, oversized serif, generous whitespace, glassmorphism'),
+  mood: z.array(z.string()).describe('e.g. premium, calm, energetic, playful, trustworthy'),
+  layout_patterns: z.array(z.string()).describe('e.g. full-bleed video hero, split hero, bento grid, sticky stacking cards, horizontal scroll gallery'),
+  motion: z.record(motionKeys, z.union([z.string(), z.array(z.string())])).describe('What moves and how: page_load, scroll, hover, transitions, navigation, signature_moments'),
+  palette_notes: z.string().optional(),
+  typography_notes: z.string().optional(),
+  suits: z.array(z.string()).describe('Business personalities/content this design suits (NOT an industry list): e.g. "photo-rich brands", "premium/luxury positioning", "few words, strong visuals", "service businesses needing trust"'),
+  avoid_for: z.array(z.string()).optional().describe('Where it would be wrong, e.g. "text-heavy services", "budget positioning"'),
+  template_mapping: z.object({
+    motion: z.record(z.any()).describe('Closest motion settings, e.g. {"preset":"cinematic","hero_effect":"parallax","reveal":"clip-up"}'),
+    hero_variant: z.enum(['split', 'centered', 'fullbleed', 'editorial']).optional(),
+    section_variants: z.record(z.string()).optional().describe('e.g. {"gallery":"scroll","process":"stack","services":"list"}'),
+    use_marquee: z.boolean().optional(),
+    theme_hint: z.string().optional().describe('Closest theme preset or colour direction'),
+    not_supported: z.array(z.string()).optional().describe('Effects in the video the template cannot do (a custom section could)'),
+  }),
+}, async (a) => {
+  const w = requireWorkspace();
+  const mp = motionProblems(a.template_mapping.motion);
+  if (mp.errors.length) throw new Error(`template_mapping.motion: ${mp.errors.join(' ')}`);
+  const { id, ...analysis } = a;
+  return saveAnalysis(w, id, analysis);
 });
 
 // ---------------- Engine 4: prototype ----------------

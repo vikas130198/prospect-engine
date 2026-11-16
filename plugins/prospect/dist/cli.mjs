@@ -300,8 +300,8 @@ var require_req = __commonJS({
       if (req.originalUrl) {
         _req.url = req.originalUrl;
       } else {
-        const path12 = req.path;
-        _req.url = typeof path12 === "string" ? path12 : req.url ? req.url.path || req.url : void 0;
+        const path13 = req.path;
+        _req.url = typeof path13 === "string" ? path13 : req.url ? req.url.path || req.url : void 0;
       }
       if (req.query) {
         _req.query = req.query;
@@ -466,14 +466,14 @@ var require_redact = __commonJS({
       }
       return obj;
     }
-    function parsePath(path12) {
+    function parsePath(path13) {
       const parts = [];
       let current = "";
       let inBrackets = false;
       let inQuotes = false;
       let quoteChar = "";
-      for (let i = 0; i < path12.length; i++) {
-        const char = path12[i];
+      for (let i = 0; i < path13.length; i++) {
+        const char = path13[i];
         if (!inBrackets && char === ".") {
           if (current) {
             parts.push(current);
@@ -604,10 +604,10 @@ var require_redact = __commonJS({
       return current;
     }
     function redactPaths(obj, paths, censor, remove = false) {
-      for (const path12 of paths) {
-        const parts = parsePath(path12);
+      for (const path13 of paths) {
+        const parts = parsePath(path13);
         if (parts.includes("*")) {
-          redactWildcardPath(obj, parts, censor, path12, remove);
+          redactWildcardPath(obj, parts, censor, path13, remove);
         } else {
           if (remove) {
             removeKey(obj, parts);
@@ -692,8 +692,8 @@ var require_redact = __commonJS({
           }
         } else {
           if (afterWildcard.includes("*")) {
-            const wrappedCensor = typeof censor === "function" ? (value, path12) => {
-              const fullPath = [...pathArray.slice(0, pathLength), ...path12];
+            const wrappedCensor = typeof censor === "function" ? (value, path13) => {
+              const fullPath = [...pathArray.slice(0, pathLength), ...path13];
               return censor(value, fullPath);
             } : censor;
             redactWildcardPath(current, afterWildcard, wrappedCensor, originalPath, remove);
@@ -728,8 +728,8 @@ var require_redact = __commonJS({
         return null;
       }
       const pathStructure = /* @__PURE__ */ new Map();
-      for (const path12 of pathsToClone) {
-        const parts = parsePath(path12);
+      for (const path13 of pathsToClone) {
+        const parts = parsePath(path13);
         let current = pathStructure;
         for (let i = 0; i < parts.length; i++) {
           const part = parts[i];
@@ -781,24 +781,24 @@ var require_redact = __commonJS({
       }
       return cloneSelectively(obj, pathStructure);
     }
-    function validatePath(path12) {
-      if (typeof path12 !== "string") {
+    function validatePath(path13) {
+      if (typeof path13 !== "string") {
         throw new Error("Paths must be (non-empty) strings");
       }
-      if (path12 === "") {
+      if (path13 === "") {
         throw new Error("Invalid redaction path ()");
       }
-      if (path12.includes("..")) {
-        throw new Error(`Invalid redaction path (${path12})`);
+      if (path13.includes("..")) {
+        throw new Error(`Invalid redaction path (${path13})`);
       }
-      if (path12.includes(",")) {
-        throw new Error(`Invalid redaction path (${path12})`);
+      if (path13.includes(",")) {
+        throw new Error(`Invalid redaction path (${path13})`);
       }
       let bracketCount = 0;
       let inQuotes = false;
       let quoteChar = "";
-      for (let i = 0; i < path12.length; i++) {
-        const char = path12[i];
+      for (let i = 0; i < path13.length; i++) {
+        const char = path13[i];
         if ((char === '"' || char === "'") && bracketCount > 0) {
           if (!inQuotes) {
             inQuotes = true;
@@ -812,20 +812,20 @@ var require_redact = __commonJS({
         } else if (char === "]" && !inQuotes) {
           bracketCount--;
           if (bracketCount < 0) {
-            throw new Error(`Invalid redaction path (${path12})`);
+            throw new Error(`Invalid redaction path (${path13})`);
           }
         }
       }
       if (bracketCount !== 0) {
-        throw new Error(`Invalid redaction path (${path12})`);
+        throw new Error(`Invalid redaction path (${path13})`);
       }
     }
     function validatePaths(paths) {
       if (!Array.isArray(paths)) {
         throw new TypeError("paths must be an array");
       }
-      for (const path12 of paths) {
-        validatePath(path12);
+      for (const path13 of paths) {
+        validatePath(path13);
       }
     }
     function slowRedact(options = {}) {
@@ -993,8 +993,8 @@ var require_redaction = __commonJS({
         if (shape[k] === null) {
           o[k] = (value) => topCensor(value, [k]);
         } else {
-          const wrappedCensor = typeof censor === "function" ? (value, path12) => {
-            return censor(value, [k, ...path12]);
+          const wrappedCensor = typeof censor === "function" ? (value, path13) => {
+            return censor(value, [k, ...path13]);
           } : censor;
           o[k] = Redact({
             paths: shape[k],
@@ -1212,10 +1212,10 @@ var require_atomic_sleep = __commonJS({
 var require_sonic_boom = __commonJS({
   "node_modules/sonic-boom/index.js"(exports, module) {
     "use strict";
-    var fs8 = __require("fs");
+    var fs9 = __require("fs");
     var EventEmitter = __require("events");
     var inherits = __require("util").inherits;
-    var path12 = __require("path");
+    var path13 = __require("path");
     var sleep = require_atomic_sleep();
     var assert = __require("assert");
     var BUSY_WRITE_TIMEOUT = 100;
@@ -1269,20 +1269,20 @@ var require_sonic_boom = __commonJS({
       const mode = sonic.mode;
       if (sonic.sync) {
         try {
-          if (sonic.mkdir) fs8.mkdirSync(path12.dirname(file), { recursive: true });
-          const fd = fs8.openSync(file, flags2, mode);
+          if (sonic.mkdir) fs9.mkdirSync(path13.dirname(file), { recursive: true });
+          const fd = fs9.openSync(file, flags2, mode);
           fileOpened(null, fd);
         } catch (err) {
           fileOpened(err);
           throw err;
         }
       } else if (sonic.mkdir) {
-        fs8.mkdir(path12.dirname(file), { recursive: true }, (err) => {
+        fs9.mkdir(path13.dirname(file), { recursive: true }, (err) => {
           if (err) return fileOpened(err);
-          fs8.open(file, flags2, mode, fileOpened);
+          fs9.open(file, flags2, mode, fileOpened);
         });
       } else {
-        fs8.open(file, flags2, mode, fileOpened);
+        fs9.open(file, flags2, mode, fileOpened);
       }
     }
     function SonicBoom(opts) {
@@ -1323,8 +1323,8 @@ var require_sonic_boom = __commonJS({
         this.flush = flushBuffer;
         this.flushSync = flushBufferSync;
         this._actualWrite = actualWriteBuffer;
-        fsWriteSync = () => fs8.writeSync(this.fd, this._writingBuf);
-        fsWrite = () => fs8.write(this.fd, this._writingBuf, this.release);
+        fsWriteSync = () => fs9.writeSync(this.fd, this._writingBuf);
+        fsWrite = () => fs9.write(this.fd, this._writingBuf, this.release);
       } else if (contentMode === void 0 || contentMode === kContentModeUtf8) {
         this._writingBuf = "";
         this.write = write;
@@ -1333,15 +1333,15 @@ var require_sonic_boom = __commonJS({
         this._actualWrite = actualWrite;
         fsWriteSync = () => {
           if (Buffer.isBuffer(this._writingBuf)) {
-            return fs8.writeSync(this.fd, this._writingBuf);
+            return fs9.writeSync(this.fd, this._writingBuf);
           }
-          return fs8.writeSync(this.fd, this._writingBuf, "utf8");
+          return fs9.writeSync(this.fd, this._writingBuf, "utf8");
         };
         fsWrite = () => {
           if (Buffer.isBuffer(this._writingBuf)) {
-            return fs8.write(this.fd, this._writingBuf, this.release);
+            return fs9.write(this.fd, this._writingBuf, this.release);
           }
-          return fs8.write(this.fd, this._writingBuf, "utf8", this.release);
+          return fs9.write(this.fd, this._writingBuf, "utf8", this.release);
         };
       } else {
         throw new Error(`SonicBoom supports "${kContentModeUtf8}" and "${kContentModeBuffer}", but passed ${contentMode}`);
@@ -1398,7 +1398,7 @@ var require_sonic_boom = __commonJS({
           }
         }
         if (this._fsync) {
-          fs8.fsyncSync(this.fd);
+          fs9.fsyncSync(this.fd);
         }
         const len = this._len;
         if (this._reopening) {
@@ -1512,7 +1512,7 @@ var require_sonic_boom = __commonJS({
       const onDrain = () => {
         if (!this._fsync) {
           try {
-            fs8.fsync(this.fd, (err) => {
+            fs9.fsync(this.fd, (err) => {
               this._flushPending = false;
               cb(err);
             });
@@ -1614,7 +1614,7 @@ var require_sonic_boom = __commonJS({
       const fd = this.fd;
       this.once("ready", () => {
         if (fd !== this.fd) {
-          fs8.close(fd, (err) => {
+          fs9.close(fd, (err) => {
             if (err) {
               return this.emit("error", err);
             }
@@ -1663,7 +1663,7 @@ var require_sonic_boom = __commonJS({
           buf = this._bufs[0];
         }
         try {
-          const n = Buffer.isBuffer(buf) ? fs8.writeSync(this.fd, buf) : fs8.writeSync(this.fd, buf, "utf8");
+          const n = Buffer.isBuffer(buf) ? fs9.writeSync(this.fd, buf) : fs9.writeSync(this.fd, buf, "utf8");
           const releasedBufObj = releaseWritingBuf(buf, this._len, n);
           buf = releasedBufObj.writingBuf;
           this._len = releasedBufObj.len;
@@ -1679,7 +1679,7 @@ var require_sonic_boom = __commonJS({
         }
       }
       try {
-        fs8.fsyncSync(this.fd);
+        fs9.fsyncSync(this.fd);
       } catch {
       }
     }
@@ -1700,7 +1700,7 @@ var require_sonic_boom = __commonJS({
           buf = mergeBuf(this._bufs[0], this._lens[0]);
         }
         try {
-          const n = fs8.writeSync(this.fd, buf);
+          const n = fs9.writeSync(this.fd, buf);
           buf = buf.subarray(n);
           this._len = Math.max(this._len - n, 0);
           if (buf.length <= 0) {
@@ -1728,13 +1728,13 @@ var require_sonic_boom = __commonJS({
       this._writingBuf = this._writingBuf.length ? this._writingBuf : this._bufs.shift() || "";
       if (this.sync) {
         try {
-          const written = Buffer.isBuffer(this._writingBuf) ? fs8.writeSync(this.fd, this._writingBuf) : fs8.writeSync(this.fd, this._writingBuf, "utf8");
+          const written = Buffer.isBuffer(this._writingBuf) ? fs9.writeSync(this.fd, this._writingBuf) : fs9.writeSync(this.fd, this._writingBuf, "utf8");
           release(null, written);
         } catch (err) {
           release(err);
         }
       } else {
-        fs8.write(this.fd, this._writingBuf, release);
+        fs9.write(this.fd, this._writingBuf, release);
       }
     }
     function actualWriteBuffer() {
@@ -1743,7 +1743,7 @@ var require_sonic_boom = __commonJS({
       this._writingBuf = this._writingBuf.length ? this._writingBuf : mergeBuf(this._bufs.shift(), this._lens.shift());
       if (this.sync) {
         try {
-          const written = fs8.writeSync(this.fd, this._writingBuf);
+          const written = fs9.writeSync(this.fd, this._writingBuf);
           release(null, written);
         } catch (err) {
           release(err);
@@ -1752,7 +1752,7 @@ var require_sonic_boom = __commonJS({
         if (kCopyBuffer) {
           this._writingBuf = Buffer.from(this._writingBuf);
         }
-        fs8.write(this.fd, this._writingBuf, release);
+        fs9.write(this.fd, this._writingBuf, release);
       }
     }
     function actualClose(sonic) {
@@ -1768,12 +1768,12 @@ var require_sonic_boom = __commonJS({
       sonic._lens = [];
       assert(typeof sonic.fd === "number", `sonic.fd must be a number, got ${typeof sonic.fd}`);
       try {
-        fs8.fsync(sonic.fd, closeWrapped);
+        fs9.fsync(sonic.fd, closeWrapped);
       } catch {
       }
       function closeWrapped() {
         if (sonic.fd !== 1 && sonic.fd !== 2) {
-          fs8.close(sonic.fd, done);
+          fs9.close(sonic.fd, done);
         } else {
           done();
         }
@@ -2671,15 +2671,15 @@ var require_transport = __commonJS({
       if (!unquoted) {
         return false;
       }
-      let path12 = unquoted;
-      if (path12.startsWith("file://")) {
+      let path13 = unquoted;
+      if (path13.startsWith("file://")) {
         try {
-          path12 = fileURLToPath2(path12);
+          path13 = fileURLToPath2(path13);
         } catch {
           return false;
         }
       }
-      return isAbsolute(path12) && !existsSync(path12);
+      return isAbsolute(path13) && !existsSync(path13);
     }
     function stripQuotes(value) {
       const first = value[0];
@@ -37292,15 +37292,15 @@ var require_tools2 = __commonJS({
        * @param {String} path - Mailbox path to encode
        * @returns {String} Encoded mailbox path
        */
-      encodePath(connection, path12) {
-        path12 = (path12 || "").toString();
-        if (!connection.enabled.has("UTF8=ACCEPT") && !tools.isRev2Active(connection) && /[&\x00-\x08\x0b-\x0c\x0e-\x1f\u0080-\uffff]/.test(path12)) {
+      encodePath(connection, path13) {
+        path13 = (path13 || "").toString();
+        if (!connection.enabled.has("UTF8=ACCEPT") && !tools.isRev2Active(connection) && /[&\x00-\x08\x0b-\x0c\x0e-\x1f\u0080-\uffff]/.test(path13)) {
           try {
-            path12 = iconv.encode(path12, "utf-7-imap").toString();
+            path13 = iconv.encode(path13, "utf-7-imap").toString();
           } catch {
           }
         }
-        return path12;
+        return path13;
       },
       /**
        * Decodes a mailbox path from modified UTF-7 if the server does not support UTF8=ACCEPT.
@@ -37309,15 +37309,15 @@ var require_tools2 = __commonJS({
        * @param {String} path - Mailbox path to decode
        * @returns {String} Decoded mailbox path
        */
-      decodePath(connection, path12) {
-        path12 = (path12 || "").toString();
-        if (!connection.enabled.has("UTF8=ACCEPT") && !tools.isRev2Active(connection) && /[&]/.test(path12)) {
+      decodePath(connection, path13) {
+        path13 = (path13 || "").toString();
+        if (!connection.enabled.has("UTF8=ACCEPT") && !tools.isRev2Active(connection) && /[&]/.test(path13)) {
           try {
-            path12 = iconv.decode(Buffer.from(path12), "utf-7-imap").toString();
+            path13 = iconv.decode(Buffer.from(path13), "utf-7-imap").toString();
           } catch {
           }
         }
-        return path12;
+        return path13;
       },
       /**
        * Normalizes a mailbox path by joining array segments with the namespace delimiter,
@@ -37328,17 +37328,17 @@ var require_tools2 = __commonJS({
        * @param {Boolean} [skipNamespace] - If true, skips prepending the namespace prefix
        * @returns {String} Normalized mailbox path
        */
-      normalizePath(connection, path12, skipNamespace) {
-        if (Array.isArray(path12)) {
-          path12 = path12.join(connection.namespace && connection.namespace.delimiter || "");
+      normalizePath(connection, path13, skipNamespace) {
+        if (Array.isArray(path13)) {
+          path13 = path13.join(connection.namespace && connection.namespace.delimiter || "");
         }
-        if (path12.toUpperCase() === "INBOX") {
+        if (path13.toUpperCase() === "INBOX") {
           return "INBOX";
         }
-        if (!skipNamespace && connection.namespace && connection.namespace.prefix && !path12.startsWith(connection.namespace.prefix)) {
-          path12 = connection.namespace.prefix + path12;
+        if (!skipNamespace && connection.namespace && connection.namespace.prefix && !path13.startsWith(connection.namespace.prefix)) {
+          path13 = connection.namespace.prefix + path13;
         }
-        return path12;
+        return path13;
       },
       /**
        * Compares two mailbox paths for equality after normalization.
@@ -37669,14 +37669,14 @@ var require_tools2 = __commonJS({
           }
         }
         if (map.emailId || map.uid) {
-          let path12 = mailbox.path;
-          if (/[\u0080-\uffff]/.test(path12)) {
+          let path13 = mailbox.path;
+          if (/[\u0080-\uffff]/.test(path13)) {
             try {
-              path12 = iconv.encode(path12, "utf-7-imap").toString();
+              path13 = iconv.encode(path13, "utf-7-imap").toString();
             } catch {
             }
           }
-          map.id = map.emailId || createHash("md5").update([path12, mailbox.uidValidity?.toString() || "", map.uid.toString()].join(":")).digest("hex");
+          map.id = map.emailId || createHash("md5").update([path13, mailbox.uidValidity?.toString() || "", map.uid.toString()].join(":")).digest("hex");
         }
         if (map.flags) {
           let flagColor = tools.getFlagColor(map.flags);
@@ -37860,16 +37860,16 @@ var require_tools2 = __commonJS({
        * @returns {Object} Parsed body structure tree with part numbers, types, parameters, and child nodes
        */
       parseBodystructure(entry) {
-        let walk = (node, path12) => {
-          path12 = path12 || [];
+        let walk = (node, path13) => {
+          path13 = path13 || [];
           let curNode = {}, i = 0, part = 0;
-          if (path12.length) {
-            curNode.part = path12.join(".");
+          if (path13.length) {
+            curNode.part = path13.join(".");
           }
           if (Array.isArray(node[0])) {
             curNode.childNodes = [];
             while (Array.isArray(node[i])) {
-              curNode.childNodes.push(walk(node[i], path12.concat(++part)));
+              curNode.childNodes.push(walk(node[i], path13.concat(++part)));
               i++;
             }
             curNode.type = "multipart/" + ((node[i++] || {}).value || "").toString().toLowerCase();
@@ -37912,7 +37912,7 @@ var require_tools2 = __commonJS({
                   // the encapsulated message shares the part number with its wrapper.
                   // Distinction is via suffixes: path.MIME = wrapper headers,
                   // path.HEADER = encapsulated message headers.
-                  walk(node[i], path12)
+                  walk(node[i], path13)
                 ];
               }
               i++;
@@ -39874,14 +39874,14 @@ var require_select = __commonJS({
       // update into a silent no-op for the rest of the session.
       permanentflags: { key: "permanentFlags", parse: (value) => Array.isArray(value) && new Set(value) }
     });
-    module.exports = async (connection, path12, options) => {
+    module.exports = async (connection, path13, options) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
       options = options || {};
-      path12 = normalizePath(connection, path12);
-      if (!connection.folders.has(path12)) {
-        let folders = await connection.run("LIST", "", path12);
+      path13 = normalizePath(connection, path13);
+      if (!connection.folders.has(path13)) {
+        let folders = await connection.run("LIST", "", path13);
         if (!folders) {
           throw new Error("Failed to fetch folders");
         }
@@ -39889,10 +39889,10 @@ var require_select = __commonJS({
           connection.folders.set(folder.path, folder);
         });
       }
-      let folderListData = connection.folders.has(path12) ? connection.folders.get(path12) : false;
+      let folderListData = connection.folders.has(path13) ? connection.folders.get(path13) : false;
       let response;
       try {
-        let map = { path: path12 };
+        let map = { path: path13 };
         if (folderListData) {
           ["delimiter", "specialUse", "subscribed", "listed"].forEach((key) => {
             if (folderListData[key]) {
@@ -39911,7 +39911,7 @@ var require_select = __commonJS({
           ]);
           map.qresync = true;
         }
-        let encodedPath = encodePath(connection, path12);
+        let encodedPath = encodePath(connection, path13);
         let selectCommand = {
           command: !options.readOnly ? "SELECT" : "EXAMINE",
           /* c8 ignore next */
@@ -39971,12 +39971,12 @@ var require_select = __commonJS({
             // since the client's last known state. Only received when QRESYNC was requested.
             // A dummy mailbox object is passed because the mailbox isn't officially open yet.
             VANISHED: async (untagged) => {
-              await connection.untaggedVanished(untagged, { path: path12, uidNext: false, uidValidity: false });
+              await connection.untaggedVanished(untagged, { path: path13, uidNext: false, uidValidity: false });
             },
             // Untagged FETCH during SELECT/EXAMINE: only occurs with QRESYNC, delivering
             // updated flags for messages that changed since the client's last modseq.
             FETCH: async (untagged) => {
-              await connection.untaggedFetch(untagged, { path: path12, uidNext: false, uidValidity: false });
+              await connection.untaggedFetch(untagged, { path: path13, uidNext: false, uidValidity: false });
             }
           }
         });
@@ -39990,13 +39990,13 @@ var require_select = __commonJS({
         }
         let currentMailbox = connection.mailbox;
         connection.mailbox = false;
-        if (currentMailbox && currentMailbox.path !== path12) {
+        if (currentMailbox && currentMailbox.path !== path13) {
           connection.emit("mailboxClose", currentMailbox);
         }
         connection.mailbox = map;
         connection.currentSelectCommand = selectCommand;
         connection.state = connection.states.SELECTED;
-        if (!currentMailbox || currentMailbox.path !== path12) {
+        if (!currentMailbox || currentMailbox.path !== path13) {
           connection.emit("mailboxOpen", connection.mailbox);
         }
         response.next();
@@ -40211,17 +40211,17 @@ var require_create = __commonJS({
   "node_modules/imapflow/lib/commands/create.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, getStatusCode, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path12) => {
+    module.exports = async (connection, path13) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path12 = normalizePath(connection, path12);
+      path13 = normalizePath(connection, path13);
       let response;
       try {
         let map = {
-          path: path12
+          path: path13
         };
-        response = await connection.exec("CREATE", [{ type: "ATOM", value: encodePath(connection, path12) }]);
+        response = await connection.exec("CREATE", [{ type: "ATOM", value: encodePath(connection, path13) }]);
         let section = response.response.attributes && response.response.attributes[0] && response.response.attributes[0].section && response.response.attributes[0].section.length ? response.response.attributes[0].section : false;
         if (section) {
           let key;
@@ -40247,13 +40247,13 @@ var require_create = __commonJS({
         }
         map.created = true;
         response.next();
-        await connection.run("SUBSCRIBE", path12);
+        await connection.run("SUBSCRIBE", path13);
         return map;
       } catch (err) {
         let errorCode = getStatusCode(err.response);
         if (errorCode === "ALREADYEXISTS") {
           return {
-            path: path12,
+            path: path13,
             created: false
           };
         }
@@ -40270,20 +40270,20 @@ var require_delete = __commonJS({
   "node_modules/imapflow/lib/commands/delete.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path12) => {
+    module.exports = async (connection, path13) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path12 = normalizePath(connection, path12);
-      if (connection.state === connection.states.SELECTED && connection.mailbox.path === path12) {
+      path13 = normalizePath(connection, path13);
+      if (connection.state === connection.states.SELECTED && connection.mailbox.path === path13) {
         await connection.run("CLOSE");
       }
       let response;
       try {
         let map = {
-          path: path12
+          path: path13
         };
-        response = await connection.exec("DELETE", [{ type: "ATOM", value: encodePath(connection, path12) }]);
+        response = await connection.exec("DELETE", [{ type: "ATOM", value: encodePath(connection, path13) }]);
         response.next();
         return map;
       } catch (err) {
@@ -40300,23 +40300,23 @@ var require_rename = __commonJS({
   "node_modules/imapflow/lib/commands/rename.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path12, newPath) => {
+    module.exports = async (connection, path13, newPath) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path12 = normalizePath(connection, path12);
+      path13 = normalizePath(connection, path13);
       newPath = normalizePath(connection, newPath);
-      if (connection.state === connection.states.SELECTED && connection.mailbox.path === path12) {
+      if (connection.state === connection.states.SELECTED && connection.mailbox.path === path13) {
         await connection.run("CLOSE");
       }
       let response;
       try {
         let map = {
-          path: path12,
+          path: path13,
           newPath
         };
         response = await connection.exec("RENAME", [
-          { type: "ATOM", value: encodePath(connection, path12) },
+          { type: "ATOM", value: encodePath(connection, path13) },
           { type: "ATOM", value: encodePath(connection, newPath) }
         ]);
         response.next();
@@ -40363,14 +40363,14 @@ var require_subscribe = __commonJS({
   "node_modules/imapflow/lib/commands/subscribe.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path12) => {
+    module.exports = async (connection, path13) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path12 = normalizePath(connection, path12);
+      path13 = normalizePath(connection, path13);
       let response;
       try {
-        response = await connection.exec("SUBSCRIBE", [{ type: "ATOM", value: encodePath(connection, path12) }]);
+        response = await connection.exec("SUBSCRIBE", [{ type: "ATOM", value: encodePath(connection, path13) }]);
         response.next();
         return true;
       } catch (err) {
@@ -40387,14 +40387,14 @@ var require_unsubscribe = __commonJS({
   "node_modules/imapflow/lib/commands/unsubscribe.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path12) => {
+    module.exports = async (connection, path13) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path12 = normalizePath(connection, path12);
+      path13 = normalizePath(connection, path13);
       let response;
       try {
-        response = await connection.exec("UNSUBSCRIBE", [{ type: "ATOM", value: encodePath(connection, path12) }]);
+        response = await connection.exec("UNSUBSCRIBE", [{ type: "ATOM", value: encodePath(connection, path13) }]);
         response.next();
         return true;
       } catch (err) {
@@ -41208,11 +41208,11 @@ var require_status = __commonJS({
     var { encodePath, normalizePath, buildStatusQueryAttributes, isRev2Active } = require_tools2();
     var { parseStatusList } = require_status_fields();
     var MAILBOX_UPDATERS = {
-      messages: (value, connection, path12) => {
+      messages: (value, connection, path13) => {
         let prevCount = connection.mailbox.exists;
         if (prevCount !== value) {
           connection.mailbox.exists = value;
-          connection.emit("exists", { path: path12, count: value, prevCount });
+          connection.emit("exists", { path: path13, count: value, prevCount });
         }
       },
       uidNext: (value, connection) => {
@@ -41222,28 +41222,28 @@ var require_status = __commonJS({
         connection.mailbox.highestModseq = value;
       }
     };
-    module.exports = async (connection, path12, query) => {
-      if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state) || !path12) {
+    module.exports = async (connection, path13, query) => {
+      if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state) || !path13) {
         return false;
       }
-      path12 = normalizePath(connection, path12);
-      let encodedPath = encodePath(connection, path12);
+      path13 = normalizePath(connection, path13);
+      let encodedPath = encodePath(connection, path13);
       let attributes = [{ type: encodedPath.indexOf("&") >= 0 ? "STRING" : "ATOM", value: encodedPath }];
       let queryAttributes = buildStatusQueryAttributes(connection, query);
       let syntheticRecent = query && query.recent && isRev2Active(connection);
       if (!queryAttributes.length) {
-        return syntheticRecent ? { path: path12, recent: 0 } : false;
+        return syntheticRecent ? { path: path13, recent: 0 } : false;
       }
       attributes.push(queryAttributes);
       let response;
       try {
-        let map = { path: path12 };
+        let map = { path: path13 };
         response = await connection.exec("STATUS", attributes, {
           untagged: {
             // STATUS response: * STATUS <mailbox> (<key> <value> <key> <value> ...)
             // Parsed as alternating key-value pairs (i % 2 pattern).
             STATUS: async (untagged) => {
-              let updateCurrent = connection.state === connection.states.SELECTED && path12 === connection.mailbox.path;
+              let updateCurrent = connection.state === connection.states.SELECTED && path13 === connection.mailbox.path;
               let list = untagged.attributes && Array.isArray(untagged.attributes[1]) ? untagged.attributes[1] : false;
               if (!list) {
                 return;
@@ -41251,7 +41251,7 @@ var require_status = __commonJS({
               parseStatusList(list, (key, value) => {
                 map[key] = value;
                 if (updateCurrent && MAILBOX_UPDATERS[key]) {
-                  MAILBOX_UPDATERS[key](value, connection, path12);
+                  MAILBOX_UPDATERS[key](value, connection, path13);
                 }
               });
             }
@@ -41264,9 +41264,9 @@ var require_status = __commonJS({
         return map;
       } catch (err) {
         if (err.responseStatus === "NO") {
-          let folders = await connection.run("LIST", "", path12, { listOnly: true });
+          let folders = await connection.run("LIST", "", path13, { listOnly: true });
           if (folders && !folders.length) {
-            let error = new Error(`Mailbox doesn't exist: ${path12}`);
+            let error = new Error(`Mailbox doesn't exist: ${path13}`);
             error.code = "NotFound";
             error.response = err;
             throw error;
@@ -41413,15 +41413,15 @@ var require_quota = __commonJS({
   "node_modules/imapflow/lib/commands/quota.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError, parseUintValue, isUnsafeKey } = require_tools2();
-    module.exports = async (connection, path12) => {
-      if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state) || !path12) {
+    module.exports = async (connection, path13) => {
+      if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state) || !path13) {
         return;
       }
       if (!connection.capabilities.has("QUOTA")) {
         return false;
       }
-      path12 = normalizePath(connection, path12);
-      let map = { path: path12 };
+      path13 = normalizePath(connection, path13);
+      let map = { path: path13 };
       let processQuotaResponse = (untagged) => {
         let attributes = untagged.attributes && untagged.attributes[1];
         if (!attributes || !attributes.length) {
@@ -41461,7 +41461,7 @@ var require_quota = __commonJS({
       let quotaFound = false;
       let response;
       try {
-        response = await connection.exec("GETQUOTAROOT", [{ type: "ATOM", value: encodePath(connection, path12) }], {
+        response = await connection.exec("GETQUOTAROOT", [{ type: "ATOM", value: encodePath(connection, path13) }], {
           untagged: {
             // QUOTAROOT response tells us which quota root applies to this mailbox.
             // A mailbox may have zero or one quota root.
@@ -41614,15 +41614,15 @@ var require_idle = __commonJS({
       }
     }
     async function pollOnce(connection, session) {
-      let path12 = connection.mailbox && connection.mailbox.path;
+      let path13 = connection.mailbox && connection.mailbox.path;
       switch (connection.missingIdleCommand) {
         case "SELECT":
           connection.log.debug({ msg: `Running SELECT to detect changes in folder`, cid: connection.id });
-          await connection.runInternal("SELECT", path12, { readOnly: session.selectCommand.command === "EXAMINE" });
+          await connection.runInternal("SELECT", path13, { readOnly: session.selectCommand.command === "EXAMINE" });
           break;
         case "STATUS": {
           connection.log.debug({ msg: `Running STATUS to detect changes in folder`, cid: connection.id });
-          let status = await connection.runInternal("STATUS", path12, {
+          let status = await connection.runInternal("STATUS", path13, {
             messages: true,
             uidNext: true,
             uidValidity: true,
@@ -41934,7 +41934,7 @@ var require_imap_flow = __commonJS({
     "use strict";
     var tls = __require("tls");
     var net = __require("net");
-    var crypto5 = __require("crypto");
+    var crypto6 = __require("crypto");
     var { EventEmitter } = __require("events");
     var logger = require_logger();
     var libmime = require_libmime();
@@ -42312,7 +42312,7 @@ var require_imap_flow = __commonJS({
         this.emit("error", err);
       }
       getRandomId() {
-        let rid = BigInt("0x" + crypto5.randomBytes(13).toString("hex")).toString(36);
+        let rid = BigInt("0x" + crypto6.randomBytes(13).toString("hex")).toString(36);
         if (rid.length < 20) {
           rid = "0".repeat(20 - rid.length) + rid;
         }
@@ -43392,12 +43392,12 @@ var require_imap_flow = __commonJS({
           this.emit("flags", updateEvent);
         }
       }
-      async ensureSelectedMailbox(path12) {
-        if (!path12) {
+      async ensureSelectedMailbox(path13) {
+        if (!path13) {
           return false;
         }
-        if (!this.mailbox || !comparePaths(this, this.mailbox.path, path12)) {
-          return await this.mailboxOpen(path12);
+        if (!this.mailbox || !comparePaths(this, this.mailbox.path, path13)) {
+          return await this.mailboxOpen(path13);
         }
         return true;
       }
@@ -43825,9 +43825,9 @@ var require_imap_flow = __commonJS({
        * let quota = await client.getQuota();
        * console.log(quota.storage.used, quota.storage.limit)
        */
-      async getQuota(path12) {
-        path12 = path12 || "INBOX";
-        return await this.run("QUOTA", path12);
+      async getQuota(path13) {
+        path13 = path13 || "INBOX";
+        return await this.run("QUOTA", path13);
       }
       /**
        * @typedef {Object} ListResponse
@@ -43937,8 +43937,8 @@ var require_imap_flow = __commonJS({
        * console.log(info.path);
        * // "INBOX.parent.child" // assumes "INBOX." as namespace prefix and "." as delimiter
        */
-      async mailboxCreate(path12) {
-        return await this.run("CREATE", path12);
+      async mailboxCreate(path13) {
+        return await this.run("CREATE", path13);
       }
       /**
        * @typedef {Object} MailboxRenameResponse
@@ -43959,8 +43959,8 @@ var require_imap_flow = __commonJS({
        * console.log(info.newPath);
        * // "INBOX.Important stuff ❗️" // assumes "INBOX." as namespace prefix
        */
-      async mailboxRename(path12, newPath) {
-        return await this.run("RENAME", path12, newPath);
+      async mailboxRename(path13, newPath) {
+        return await this.run("RENAME", path13, newPath);
       }
       /**
        * @typedef {Object} MailboxDeleteResponse
@@ -43979,8 +43979,8 @@ var require_imap_flow = __commonJS({
        * console.log(info.path);
        * // "INBOX.Important stuff ❗️" // assumes "INBOX." as namespace prefix
        */
-      async mailboxDelete(path12) {
-        return await this.run("DELETE", path12);
+      async mailboxDelete(path13) {
+        return await this.run("DELETE", path13);
       }
       /**
        * Subscribes to a mailbox
@@ -43991,8 +43991,8 @@ var require_imap_flow = __commonJS({
        * @example
        * await client.mailboxSubscribe('Important stuff ❗️');
        */
-      async mailboxSubscribe(path12) {
-        return await this.run("SUBSCRIBE", path12);
+      async mailboxSubscribe(path13) {
+        return await this.run("SUBSCRIBE", path13);
       }
       /**
        * Unsubscribes from a mailbox
@@ -44003,8 +44003,8 @@ var require_imap_flow = __commonJS({
        * @example
        * await client.mailboxUnsubscribe('Important stuff ❗️');
        */
-      async mailboxUnsubscribe(path12) {
-        return await this.run("UNSUBSCRIBE", path12);
+      async mailboxUnsubscribe(path13) {
+        return await this.run("UNSUBSCRIBE", path13);
       }
       /**
        * Opens a mailbox to access messages. You can perform message operations only against an opened mailbox.
@@ -44022,8 +44022,8 @@ var require_imap_flow = __commonJS({
        * console.log(mailbox.exists);
        * // 125
        */
-      async mailboxOpen(path12, options) {
-        return await this.run("SELECT", path12, options);
+      async mailboxOpen(path13, options) {
+        return await this.run("SELECT", path13, options);
       }
       /**
        * Closes a previously opened mailbox
@@ -44070,8 +44070,8 @@ var require_imap_flow = __commonJS({
        * console.log(status.unseen);
        * // 123
        */
-      async status(path12, query) {
-        return await this.run("STATUS", path12, query);
+      async status(path13, query) {
+        return await this.run("STATUS", path13, query);
       }
       /**
        * Starts listening for new or deleted messages from the currently opened mailbox. Only required if {@link ImapFlow#disableAutoIdle} is set to `true`
@@ -44325,8 +44325,8 @@ var require_imap_flow = __commonJS({
        * @example
        * await client.append('INBOX', rawMessageBuffer, ['\\Seen'], new Date(2000, 1, 1));
        */
-      async append(path12, content, flags2, idate) {
-        return await this.run("APPEND", path12, content, flags2, idate) || false;
+      async append(path13, content, flags2, idate) {
+        return await this.run("APPEND", path13, content, flags2, idate) || false;
       }
       /**
        * @typedef {Object} CopyResponseObject
@@ -45180,7 +45180,7 @@ var require_imap_flow = __commonJS({
               await new Promise((resolve2) => setImmediate(resolve2));
             }
             const lock = this.locks.shift();
-            const { resolve, reject, path: path12, options, lockId } = lock;
+            const { resolve, reject, path: path13, options, lockId } = lock;
             if (lock.acquireTimer) {
               clearTimeout(lock.acquireTimer);
               lock.acquireTimer = null;
@@ -45196,7 +45196,7 @@ var require_imap_flow = __commonJS({
                 this.log.warn({
                   msg: "Mailbox lock held for a long time",
                   lockId: lock.lockId,
-                  path: path12,
+                  path: path13,
                   heldFor: Date.now() - lock.heldAt,
                   /* c8 ignore next */
                   // the held-lock-warning diagnostic with a description set is a timing-dependent log detail
@@ -45233,20 +45233,20 @@ var require_imap_flow = __commonJS({
               }
             };
             if (!this.usable || !this.socket || this.socket.destroyed) {
-              this.log.trace({ msg: "Failed to acquire mailbox lock", path: path12, lockId, idling: this.idling });
-              reject(this.createNoConnectionError(false, { rejectedFrom: "mailboxLock", path: path12 }));
+              this.log.trace({ msg: "Failed to acquire mailbox lock", path: path13, lockId, idling: this.idling });
+              reject(this.createNoConnectionError(false, { rejectedFrom: "mailboxLock", path: path13 }));
               continue;
             }
             const grantLock = () => {
               this.currentLock = lock;
               armHeldTimer();
               this.autoidle();
-              resolve({ path: path12, release });
+              resolve({ path: path13, release });
             };
-            if (this.mailbox && this.mailbox.path === path12 && !!this.mailbox.readOnly === !!options.readOnly) {
+            if (this.mailbox && this.mailbox.path === path13 && !!this.mailbox.readOnly === !!options.readOnly) {
               this.log.trace({
                 msg: "Mailbox lock acquired [existing]",
-                path: path12,
+                path: path13,
                 lockId,
                 idling: this.idling,
                 ...options.description && { description: options.description }
@@ -45255,10 +45255,10 @@ var require_imap_flow = __commonJS({
               break;
             }
             try {
-              await this.mailboxOpen(path12, options);
+              await this.mailboxOpen(path13, options);
               this.log.trace({
                 msg: "Mailbox lock acquired [selected]",
-                path: path12,
+                path: path13,
                 lockId,
                 idling: this.idling,
                 ...options.description && { description: options.description }
@@ -45268,17 +45268,17 @@ var require_imap_flow = __commonJS({
             } catch (err) {
               if (err.responseStatus === "NO") {
                 try {
-                  let folders = await this.run("LIST", "", path12, { listOnly: true });
+                  let folders = await this.run("LIST", "", path13, { listOnly: true });
                   if (!folders || !folders.length) {
                     err.mailboxMissing = true;
                   }
                 } catch (E) {
-                  this.log.trace({ msg: "Failed to verify failed mailbox", path: path12, err: E });
+                  this.log.trace({ msg: "Failed to verify failed mailbox", path: path13, err: E });
                 }
               }
               this.log.trace({
                 msg: "Failed to acquire mailbox lock",
-                path: path12,
+                path: path13,
                 lockId,
                 idling: this.idling,
                 ...options.description && { description: options.description },
@@ -45317,13 +45317,13 @@ var require_imap_flow = __commonJS({
        *   lock.release();
        * }
        */
-      getMailboxLock(path12, options) {
+      getMailboxLock(path13, options) {
         options = options || {};
-        path12 = normalizePath(this, path12);
+        path13 = normalizePath(this, path13);
         let lockId = ++this.lockCounter;
         this.log.trace({
           msg: "Requesting lock",
-          path: path12,
+          path: path13,
           lockId,
           ...options.description && { description: options.description },
           activeLock: this.currentLock ? {
@@ -45332,7 +45332,7 @@ var require_imap_flow = __commonJS({
           } : null
         });
         let lockPromise = guardedPromise((resolve, reject) => {
-          let lockEntry = { resolve, reject, path: path12, options, lockId };
+          let lockEntry = { resolve, reject, path: path13, options, lockId };
           this.locks.push(lockEntry);
           if (Number(options.acquireTimeout) > 0) {
             lockEntry.acquireTimer = setTimeout(() => {
@@ -45425,11 +45425,11 @@ var require_imap_flow = __commonJS({
 });
 
 // plugins/prospect/src/cli.mjs
-import path11 from "node:path";
+import path12 from "node:path";
 
 // plugins/prospect/src/lib/config.mjs
-import fs2 from "node:fs";
-import path3 from "node:path";
+import fs3 from "node:fs";
+import path4 from "node:path";
 
 // plugins/prospect/src/lib/paths.mjs
 import path2 from "node:path";
@@ -45516,6 +45516,9 @@ function deepMerge(target, patch) {
     out2[k] = v && typeof v === "object" && !Array.isArray(v) ? deepMerge(out2[k], v) : v;
   }
   return out2;
+}
+function slugify(s, max = 40) {
+  return String(s || "").toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, max) || "item";
 }
 function hashDir(dir) {
   const h = crypto.createHash("sha256");
@@ -45703,6 +45706,262 @@ function prototypeDir(w, code) {
   return path2.join(w.prototypes, code);
 }
 
+// plugins/prospect/src/lib/design-library.mjs
+import crypto2 from "node:crypto";
+import fs2 from "node:fs";
+import http from "node:http";
+import path3 from "node:path";
+var VIDEO = /\.(mp4|webm|mov|m4v|ogv)$/i;
+var IMAGE = /\.(png|jpe?g|webp|gif|avif)$/i;
+var MIME = { ".mp4": "video/mp4", ".m4v": "video/mp4", ".mov": "video/quicktime", ".webm": "video/webm", ".ogv": "video/ogg" };
+var MAX_BYTES = 15e8;
+function libraryPaths(w) {
+  const root = path3.join(w.root, "design-library");
+  return { root, inbox: path3.join(root, "inbox"), frames: path3.join(root, "frames"), index: path3.join(root, "library.json") };
+}
+function ensureDesignLibrary(w) {
+  const p = libraryPaths(w);
+  ensureDir(p.inbox);
+  ensureDir(p.frames);
+  if (!exists(p.index)) writeJSON(p.index, { entries: [] });
+  const readme = path3.join(p.root, "README.md");
+  if (!exists(readme)) {
+    fs2.writeFileSync(readme, `# Design library
+
+Drop website design **videos** (screen recordings of sites you love: MP4/WebM/MOV) or **screenshots** into
+\`inbox/\`. Before every prototype, Claude checks this folder, studies anything new once, and picks the designs,
+animations and transitions that suit the business best \u2014 by design fit, not by industry.
+
+- Best results: 20 seconds \u2013 3 minutes per video, recorded at desktop size, scrolling slowly through the whole page.
+- Name files so you recognise them, e.g. \`dark-luxury-scroll.mp4\`.
+- iPhone .mov (HEVC) may not play in Chrome \u2014 export as MP4 (H.264) if a video shows as "unsupported".
+- Files are never uploaded anywhere. Frames are saved in \`frames/\`, the analysis in \`library.json\`.
+- Inspiration only: prototypes never copy another site's text, images, logos or code.
+
+Commands: \`/prospect:library\` (status), \`/prospect:library scan\` (study new files now), \`/prospect:library remove <id>\`.
+`);
+  }
+  return p;
+}
+function loadIndex(w) {
+  return readJSON(libraryPaths(w).index, { entries: [] });
+}
+function saveIndex(w, idx) {
+  writeJSON(libraryPaths(w).index, idx);
+}
+function fingerprint(file) {
+  const st = fs2.statSync(file);
+  const h = crypto2.createHash("sha1").update(`${st.size}:${Math.round(st.mtimeMs)}`);
+  const fd = fs2.openSync(file, "r");
+  try {
+    const n = Math.min(65536, st.size);
+    const buf = Buffer.alloc(n);
+    fs2.readSync(fd, buf, 0, n, 0);
+    h.update(buf);
+    if (st.size > n) {
+      fs2.readSync(fd, buf, 0, n, Math.max(0, st.size - n));
+      h.update(buf);
+    }
+  } finally {
+    fs2.closeSync(fd);
+  }
+  return h.digest("hex").slice(0, 16);
+}
+function walkInbox(dir, base = dir, out2 = []) {
+  if (!exists(dir)) return out2;
+  for (const name of fs2.readdirSync(dir)) {
+    if (name.startsWith(".")) continue;
+    const full = path3.join(dir, name);
+    const st = fs2.statSync(full);
+    if (st.isDirectory()) walkInbox(full, base, out2);
+    else if (VIDEO.test(name) || IMAGE.test(name)) out2.push({ full, rel: path3.relative(base, full).replace(/\\/g, "/"), size: st.size });
+  }
+  return out2;
+}
+function syncInbox(w) {
+  const p = ensureDesignLibrary(w);
+  const idx = loadIndex(w);
+  const files = walkInbox(p.inbox);
+  const seen = /* @__PURE__ */ new Set();
+  for (const f of files) {
+    const fp = fingerprint(f.full);
+    seen.add(f.rel);
+    if (idx.entries.some((x) => x.removed && x.fingerprint === fp)) continue;
+    let e = idx.entries.find((x) => x.file === f.rel && !x.removed);
+    if (e && e.fingerprint === fp) {
+      if (e.status === "missing") e.status = e.analysis ? "analysed" : "new";
+      continue;
+    }
+    if (!e) {
+      let id = slugify(path3.basename(f.rel).replace(/\.[^.]+$/, "")) || "design";
+      let n = 2;
+      while (idx.entries.some((x) => x.id === id)) id = `${slugify(path3.basename(f.rel).replace(/\.[^.]+$/, ""))}-${n++}`;
+      e = { id, file: f.rel, added_at: now() };
+      idx.entries.push(e);
+    }
+    Object.assign(e, { kind: VIDEO.test(f.rel) ? "video" : "image", fingerprint: fp, size_mb: Math.round(f.size / 1048576 * 10) / 10, status: "new", sheets: [], analysis: e.analysis ? { ...e.analysis, outdated: true } : null, error: null });
+    if (e.kind === "image") {
+      e.sheets = [path3.relative(w.root, f.full).replace(/\\/g, "/")];
+      e.status = "frames_ready";
+    }
+    if (f.size > MAX_BYTES) Object.assign(e, { status: "unsupported", error: "File is larger than 1.5 GB \u2014 trim or compress it." });
+  }
+  for (const e of idx.entries) if (!seen.has(e.file) && !e.removed) e.status = "missing";
+  saveIndex(w, idx);
+  return idx;
+}
+function serveFile(file) {
+  const type = MIME[path3.extname(file).toLowerCase()] || "application/octet-stream";
+  const server = http.createServer((req, res) => {
+    if (req.url === "/") {
+      res.writeHead(200, { "content-type": "text/html" });
+      return res.end('<!doctype html><html><body style="margin:0;background:#000"></body></html>');
+    }
+    if (!req.url.startsWith("/video")) {
+      res.writeHead(404);
+      return res.end();
+    }
+    const size = fs2.statSync(file).size;
+    const m = /bytes=(\d*)-(\d*)/.exec(req.headers.range || "");
+    if (m) {
+      const start = m[1] ? Number(m[1]) : 0;
+      const end = m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
+      res.writeHead(206, { "content-type": type, "accept-ranges": "bytes", "content-range": `bytes ${start}-${end}/${size}`, "content-length": end - start + 1 });
+      fs2.createReadStream(file, { start, end }).pipe(res);
+    } else {
+      res.writeHead(200, { "content-type": type, "accept-ranges": "bytes", "content-length": size });
+      fs2.createReadStream(file).pipe(res);
+    }
+  });
+  return new Promise((resolve) => server.listen(0, "127.0.0.1", () => resolve({ server, base: `http://127.0.0.1:${server.address().port}` })));
+}
+async function grabSheets({ src, plans }) {
+  const v = document.createElement("video");
+  v.muted = true;
+  v.preload = "auto";
+  v.crossOrigin = "anonymous";
+  v.src = src;
+  document.body.appendChild(v);
+  await new Promise((ok, fail) => {
+    v.onloadedmetadata = ok;
+    v.onerror = () => fail(new Error(`cannot decode (${v.error?.code || "?"})`));
+    setTimeout(() => fail(new Error("timed out loading video")), 3e4);
+  });
+  const dur = v.duration;
+  if (!isFinite(dur) || dur <= 0 || !v.videoWidth) throw new Error("video has no readable frames");
+  const seek = (t) => new Promise((ok) => {
+    const done = () => (v.removeEventListener("seeked", done), ok());
+    v.addEventListener("seeked", done);
+    v.currentTime = Math.min(Math.max(0, t), Math.max(0, dur - 0.05));
+    setTimeout(done, 8e3);
+  });
+  const fmt = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}.${Math.floor(t % 1 * 10)}`;
+  const landscape = v.videoWidth >= v.videoHeight;
+  const sheets = [];
+  for (const plan of plans) {
+    const times = plan.kind === "intro" ? Array.from({ length: plan.count }, (_, i) => Math.min(dur * 0.98, i * plan.step)) : plan.kind === "single" ? [dur * plan.at] : Array.from({ length: plan.count }, (_, i) => dur * (plan.from + (plan.to - plan.from) * (i + 0.5) / plan.count));
+    const cols = plan.kind === "single" ? 1 : landscape ? 3 : 6;
+    const rows = Math.ceil(times.length / cols);
+    const cellW = plan.kind === "single" ? Math.min(1600, v.videoWidth) : landscape ? 640 : 320;
+    const cellH = Math.round(cellW * v.videoHeight / v.videoWidth);
+    const c = document.createElement("canvas");
+    c.width = cols * cellW;
+    c.height = rows * cellH;
+    const g = c.getContext("2d");
+    g.fillStyle = "#111";
+    g.fillRect(0, 0, c.width, c.height);
+    for (const [i, t] of times.entries()) {
+      await seek(t);
+      const x = i % cols * cellW;
+      const y = Math.floor(i / cols) * cellH;
+      g.drawImage(v, x, y, cellW, cellH);
+      if (plan.kind !== "single") {
+        g.strokeStyle = "#000";
+        g.strokeRect(x + 0.5, y + 0.5, cellW - 1, cellH - 1);
+        g.fillStyle = "rgba(0,0,0,.72)";
+        g.fillRect(x + 6, y + 6, 74, 24);
+        g.fillStyle = "#fff";
+        g.font = "bold 15px sans-serif";
+        g.fillText(fmt(t), x + 12, y + 23);
+      }
+    }
+    sheets.push({ name: plan.name, data: c.toDataURL("image/jpeg", 0.82), times: times.map((t) => Math.round(t * 10) / 10) });
+  }
+  return { duration: Math.round(dur * 10) / 10, width: v.videoWidth, height: v.videoHeight, sheets };
+}
+function plansFor() {
+  return [
+    { name: "intro", kind: "intro", count: 12, step: 0.5 },
+    { name: "overview-1", kind: "spread", count: 12, from: 0.02, to: 0.5 },
+    { name: "overview-2", kind: "spread", count: 12, from: 0.5, to: 0.98 },
+    { name: "detail", kind: "single", at: 0.12 }
+  ];
+}
+async function scanLibrary(w, { force = false, log = () => {
+}, findChrome: findChrome2, loadPlaywright: loadPlaywright2 } = {}) {
+  const idx = syncInbox(w);
+  const p = libraryPaths(w);
+  const todo = idx.entries.filter((e) => !e.removed && e.kind === "video" && (force ? e.status !== "missing" : e.status === "new"));
+  const result = { processed: [], failed: [], skipped: idx.entries.filter((e) => e.status === "missing").map((e) => e.id) };
+  if (todo.length) {
+    const pw = loadPlaywright2(w);
+    const chrome = findChrome2();
+    if (!chrome) throw new UserError("Google Chrome or Microsoft Edge is needed to read design videos.", "Install Google Chrome, then run /prospect:library scan again.");
+    const browser = await pw.chromium.launch({ executablePath: chrome, headless: true, args: ["--autoplay-policy=no-user-gesture-required"] });
+    try {
+      for (const e of todo) {
+        log(`Reading ${e.file}\u2026
+`);
+        const file = path3.join(p.inbox, e.file);
+        const { server, base } = await serveFile(file);
+        const ctx = await browser.newContext({ viewport: { width: 800, height: 600 } });
+        const page = await ctx.newPage();
+        try {
+          await page.goto(base + "/", { waitUntil: "load" });
+          const r = await page.evaluate(grabSheets, { src: `${base}/video${path3.extname(file)}`, plans: plansFor() });
+          const dir = path3.join(p.frames, e.id);
+          removeDir(dir);
+          ensureDir(dir);
+          e.sheets = r.sheets.map((s) => {
+            const f = path3.join(dir, `${s.name}.jpg`);
+            fs2.writeFileSync(f, Buffer.from(s.data.split(",")[1], "base64"));
+            return path3.relative(w.root, f).replace(/\\/g, "/");
+          });
+          Object.assign(e, { status: "frames_ready", duration_s: r.duration, resolution: `${r.width}\xD7${r.height}`, sheet_times: Object.fromEntries(r.sheets.map((s) => [s.name, s.times])), frames_at: now(), error: null });
+          result.processed.push(e.id);
+        } catch (err) {
+          const msg = String(err.message || err).split("\n")[0];
+          Object.assign(e, { status: "unsupported", error: /decode|no readable|timed out/.test(msg) ? `Chrome cannot play this video (${msg}). Export it as MP4 (H.264) or WebM and drop it in again.` : msg });
+          result.failed.push({ id: e.id, file: e.file, error: e.error });
+        } finally {
+          await ctx.close().catch(() => {
+          });
+          server.close();
+        }
+      }
+    } finally {
+      await browser.close().catch(() => {
+      });
+    }
+    saveIndex(w, idx);
+  }
+  return { ...result, ...libraryStatus(w) };
+}
+function libraryStatus(w) {
+  const idx = loadIndex(w);
+  const live = idx.entries.filter((e) => !e.removed);
+  const needsAnalysis = live.filter((e) => e.status === "frames_ready").map((e) => ({ id: e.id, file: e.file, kind: e.kind, duration_s: e.duration_s || null, sheets: e.sheets.map((s) => path3.join(w.root, s)), previous_analysis: e.analysis ? "outdated \u2014 file changed" : null }));
+  return {
+    inbox: libraryPaths(w).inbox,
+    total: live.length,
+    analysed: live.filter((e) => e.status === "analysed").length,
+    needs_frames: live.filter((e) => e.status === "new").map((e) => e.id),
+    needs_analysis: needsAnalysis,
+    unsupported: live.filter((e) => e.status === "unsupported").map((e) => ({ id: e.id, file: e.file, error: e.error })),
+    missing: live.filter((e) => e.status === "missing").map((e) => e.id)
+  };
+}
+
 // plugins/prospect/src/lib/config.mjs
 var DEFAULT_CONFIG = {
   schema: 1,
@@ -45788,7 +46047,7 @@ META_IG_USER_ID=
 # PROTOTYPE_PASSWORD_AB7K29X2=choose-a-password
 `;
 function initWorkspace(root, { agency } = {}) {
-  root = path3.resolve(root);
+  root = path4.resolve(root);
   const w = workspacePaths(root);
   const created = !exists(w.config);
   if (created) {
@@ -45798,16 +46057,17 @@ function initWorkspace(root, { agency } = {}) {
   }
   for (const d of [w.internal, w.locks, w.references, w.leads, w.prototypes]) ensureDir(d);
   if (!exists(w.secrets)) writeText(w.secrets, SECRET_TEMPLATE);
-  const gi = path3.join(root, ".gitignore");
+  const gi = path4.join(root, ".gitignore");
   if (!exists(gi)) writeText(gi, ".prospect/secrets.env\n.prospect/builder/node_modules/\n.prospect/locks/\nsite/\n");
   if (!exists(w.referencesIndex)) writeJSON(w.referencesIndex, { references: [] });
   if (!exists(w.suppression)) writeJSON(w.suppression, { entries: [] });
-  return { workspace: root, created, config_file: path3.join(root, CONFIG_FILE), secrets_file: w.secrets };
+  ensureDesignLibrary(w);
+  return { workspace: root, created, config_file: path4.join(root, CONFIG_FILE), secrets_file: w.secrets };
 }
 function readSecrets(w) {
   if (!exists(w.secrets)) return {};
   const out2 = {};
-  for (const line of fs2.readFileSync(w.secrets, "utf8").split(/\r?\n/)) {
+  for (const line of fs3.readFileSync(w.secrets, "utf8").split(/\r?\n/)) {
     const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
     if (!m) continue;
     let v = m[2];
@@ -45839,8 +46099,8 @@ function configProblems(cfg) {
 }
 
 // plugins/prospect/src/lib/leads.mjs
-import fs3 from "node:fs";
-import path4 from "node:path";
+import fs4 from "node:fs";
+import path5 from "node:path";
 var STAGES = [
   "research",
   // Engine 1: Instagram & business understanding
@@ -45882,8 +46142,8 @@ var STAGE_LABELS = {
   draft: "Saved to Drafts"
 };
 var STAGE_STATES = ["NOT_STARTED", "QUEUED", "RUNNING", "WAITING_FOR_APPROVAL", "COMPLETED", "FAILED", "CANCELLED", "REQUIRES_MANUAL_REVIEW", "SKIPPED"];
-var leadFile = (w, id) => path4.join(leadDir(w, id), "lead.json");
-var activityFile = (w, id) => path4.join(leadDir(w, id), "activity.jsonl");
+var leadFile = (w, id) => path5.join(leadDir(w, id), "lead.json");
+var activityFile = (w, id) => path5.join(leadDir(w, id), "activity.jsonl");
 function logActivity(w, leadId, event_type, description, metadata) {
   appendLine(activityFile(w, leadId), { at: now(), event_type, description, ...metadata ? { metadata } : {} });
 }
@@ -45900,12 +46160,12 @@ function saveLead(w, lead) {
 }
 function listLeadIds(w) {
   if (!exists(w.leads)) return [];
-  return fs3.readdirSync(w.leads).filter((d) => exists(path4.join(w.leads, d, "lead.json")));
+  return fs4.readdirSync(w.leads).filter((d) => exists(path5.join(w.leads, d, "lead.json")));
 }
 function allLeads(w) {
   return listLeadIds(w).map((id) => {
     try {
-      return readJSON(path4.join(w.leads, id, "lead.json"));
+      return readJSON(path5.join(w.leads, id, "lead.json"));
     } catch {
       return null;
     }
@@ -46002,8 +46262,8 @@ function compactLead(lead) {
 }
 
 // plugins/prospect/src/lib/deploy.mjs
-import crypto3 from "node:crypto";
-import path8 from "node:path";
+import crypto4 from "node:crypto";
+import path9 from "node:path";
 
 // plugins/prospect/src/lib/codes.mjs
 function markCodeDeleted(w, code) {
@@ -46015,8 +46275,8 @@ function markCodeDeleted(w, code) {
 }
 
 // plugins/prospect/src/lib/hosting.mjs
-import crypto2 from "node:crypto";
-import path5 from "node:path";
+import crypto3 from "node:crypto";
+import path6 from "node:path";
 var PROVIDERS = {
   cloudflare: { label: "Cloudflare Pages", package: "wrangler", version: "^4", bin: ["wrangler", "bin", "wrangler.js"], domain: "pages.dev" },
   netlify: { label: "Netlify", package: "netlify-cli", version: "^27", bin: ["netlify-cli", "bin", "run.js"], domain: "netlify.app" }
@@ -46027,7 +46287,7 @@ function providerInfo(provider) {
   return p;
 }
 function cliPath(w, provider) {
-  return path5.join(w.builder, "node_modules", ...providerInfo(provider).bin);
+  return path6.join(w.builder, "node_modules", ...providerInfo(provider).bin);
 }
 function cliInstalled(w, provider) {
   return exists(cliPath(w, provider));
@@ -46088,7 +46348,7 @@ async function createProject(w, cfg, name) {
     return { project: name, site_id: null, default_url: `https://${domain}` };
   }
   for (let i = 0; i < 3; i++) {
-    const tryName = i === 0 ? name : `${name}-${crypto2.randomBytes(2).toString("hex")}`;
+    const tryName = i === 0 ? name : `${name}-${crypto3.randomBytes(2).toString("hex")}`;
     const r = await cli(w, cfg, ["api", "createSite", "--data", JSON.stringify({ body: { name: tryName } })]);
     let data = null;
     try {
@@ -46149,12 +46409,12 @@ async function deploySite(w, cfg) {
 }
 
 // plugins/prospect/src/lib/prototype.mjs
-import fs5 from "node:fs";
-import path7 from "node:path";
+import fs6 from "node:fs";
+import path8 from "node:path";
 
 // plugins/prospect/src/lib/content-check.mjs
-import fs4 from "node:fs";
-import path6 from "node:path";
+import fs5 from "node:fs";
+import path7 from "node:path";
 var SECTION_TYPES = {
   hero: { required: ["heading"], skeleton: { variant: "split", eyebrow: "", heading: "[[Main headline]]", subheading: "[[One-sentence value proposition]]", primary_cta: { label: "[[Primary action]]", href: "#contact" }, secondary_cta: { label: "", href: "#about" }, image: null, image_alt: "", icon: "sparkles", visual_label: "", badges: [] } },
   about: { required: ["heading", "body"], skeleton: { eyebrow: "About", heading: "[[About heading]]", body: ["[[Short story of the business, from verified research]]"], highlights: [], image: null, image_alt: "", icon: "heart", visual_label: "" } },
@@ -46170,10 +46430,31 @@ var SECTION_TYPES = {
   faq: { required: ["items"], skeleton: { eyebrow: "FAQ", heading: "Frequently asked questions", items: [{ q: "[[Question]]", a: "[[Answer \u2014 only from verified information]]" }] } },
   cta: { required: ["heading"], skeleton: { heading: "[[Call-to-action heading]]", text: "", cta: { label: "[[Action]]", href: "#contact" } } },
   contact: { required: [], skeleton: { eyebrow: "Contact", heading: "[[Contact heading]]", intro: "", info: { phone: "[[Add phone number]]", email: "", whatsapp: "", address: "[[Add address]]", hours: [] }, map_query: "", show_form: true, form: { submit_label: "Send enquiry" }, social: [] } },
+  marquee: { required: ["items"], skeleton: { items: ["[[Short phrase]]", "[[Short phrase]]", "[[Short phrase]]", "[[Short phrase]]"], icon: "sparkles", style: "solid", speed: "normal" } },
   custom: { required: ["component"], skeleton: { component: "MySection" } }
 };
+var VARIANTS = { hero: ["split", "centered", "fullbleed", "editorial"], services: ["cards", "list"], gallery: ["grid", "scroll"], process: ["cards", "stack"] };
+function loadMotion() {
+  return readJSON(path7.join(TEMPLATES, "builder", "src", "lib", "motion.json"));
+}
+function motionProblems(m) {
+  const errors = [];
+  const warnings = [];
+  if (m === void 0 || m === null) return { errors, warnings: ['No "motion" settings \u2014 the default "elegant" preset is used. Choose the preset that fits this business.'] };
+  if (typeof m !== "object" || Array.isArray(m)) return { errors: ['"motion" must be an object like {"preset": "cinematic"}.'], warnings };
+  const { presets, options } = loadMotion();
+  if (!m.preset) warnings.push('motion.preset is not set \u2014 "elegant" is used.');
+  else if (!presets[m.preset]) errors.push(`Unknown motion preset "${m.preset}". Options: ${Object.keys(presets).join(", ")}.`);
+  for (const [k, v] of Object.entries(m)) {
+    if (k === "preset" || k === "notes") continue;
+    const allowed = options[k];
+    if (!allowed) warnings.push(`motion.${k} is not a supported setting (ignored). Supported: ${Object.keys(options).join(", ")}.`);
+    else if (allowed === "boolean" ? typeof v !== "boolean" : !allowed.includes(v)) errors.push(`motion.${k} must be ${allowed === "boolean" ? "true or false" : "one of: " + allowed.join(", ")}.`);
+  }
+  return { errors, warnings };
+}
 function loadThemes() {
-  return readJSON(path6.join(TEMPLATES, "builder", "src", "lib", "themes.json"));
+  return readJSON(path7.join(TEMPLATES, "builder", "src", "lib", "themes.json"));
 }
 var EMAIL_RE = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,24}/gi;
 var PHONE_RE = /(?:\+|\b)\d[\d\s().-]{6,16}\d\b/g;
@@ -46199,6 +46480,9 @@ function validateContent(content, lead, { customDir } = {}) {
   }
   if (!content.business?.name || /\[\[/.test(content.business.name)) errors.push("business.name must be the real business name.");
   if (content.theme?.preset && !themes[content.theme.preset]) errors.push(`Unknown theme preset "${content.theme.preset}". Options: ${Object.keys(themes).join(", ")}.`);
+  const mp = motionProblems(content.motion);
+  errors.push(...mp.errors);
+  warnings.push(...mp.warnings);
   for (const [k, v] of Object.entries(content.theme?.colors || {})) {
     if (!/^#[0-9a-f]{6}$/i.test(v)) errors.push(`theme.colors.${k} must be a 6-digit hex colour like #1a2b3c.`);
   }
@@ -46221,6 +46505,14 @@ function validateContent(content, lead, { customDir } = {}) {
       const v = s[r];
       if (v === void 0 || v === null || v === "" || Array.isArray(v) && !v.length) errors.push(`${where}: "${r}" is required.`);
     }
+    if (s.variant !== void 0 && VARIANTS[s.type] && !VARIANTS[s.type].includes(s.variant)) errors.push(`${where}: variant must be one of: ${VARIANTS[s.type].join(", ")}.`);
+    if (s.type === "marquee") {
+      const items = Array.isArray(s.items) ? s.items : [];
+      if (items.some((t) => typeof t !== "string")) errors.push(`${where}: items must be short text strings.`);
+      else if (items.some((t) => strip(t).length > 40)) warnings.push(`${where}: keep marquee phrases short (\u2264 40 characters).`);
+      if (items.length && items.length < 3) warnings.push(`${where}: use at least 3 phrases so the band loops smoothly.`);
+    }
+    if (s.type === "gallery" && s.variant === "scroll" && (s.images || []).length < 4) warnings.push(`${where}: the "scroll" gallery needs 4+ images to look good (falls back to grid below 3).`);
     if (s.type === "testimonials") {
       for (const [j, t] of (s.items || []).entries()) {
         if (!/^https?:\/\//.test(t.source_url || "")) errors.push(`${where}.items[${j}]: testimonials must be real reviews with a public source_url. Never write fake reviews \u2014 remove the section instead.`);
@@ -46244,7 +46536,7 @@ function validateContent(content, lead, { customDir } = {}) {
     if (s.type === "gallery" && !(s.images || []).length) warnings.push(`${where}: gallery has no images and will be hidden. Remove it or add images.`);
     if (s.type === "custom") {
       if (!/^[A-Z][A-Za-z0-9]*$/.test(s.component || "")) errors.push(`${where}: component must be a PascalCase name.`);
-      else if (customDir && !fs4.existsSync(path6.join(customDir, `${s.component}.tsx`))) errors.push(`${where}: custom/${s.component}.tsx does not exist.`);
+      else if (customDir && !fs5.existsSync(path7.join(customDir, `${s.component}.tsx`))) errors.push(`${where}: custom/${s.component}.tsx does not exist.`);
     }
     for (const key of ["image"]) {
       if (s[key] && !/^https:\/\//.test(s[key]) && !/^assets\//.test(s[key])) errors.push(`${where}: image must be "assets/<file>" or an https URL.`);
@@ -46299,10 +46591,10 @@ function validateContent(content, lead, { customDir } = {}) {
 
 // plugins/prospect/src/lib/prototype.mjs
 function versionDir(w, code, v) {
-  return path7.join(prototypeDir(w, code), `v${v}`);
+  return path8.join(prototypeDir(w, code), `v${v}`);
 }
 function distDir(w, code, v) {
-  return path7.join(prototypeDir(w, code), "dist", `v${v}`);
+  return path8.join(prototypeDir(w, code), "dist", `v${v}`);
 }
 function currentVersion(lead) {
   const p = lead.prototype;
@@ -46310,31 +46602,35 @@ function currentVersion(lead) {
   return { code: p.code, v: p.current_version, meta: p.versions[p.current_version] };
 }
 var BUILDER_FILES = ["package.json", "vite.config.js", "index.html", "tsconfig.json", "src"];
+function builderDepsPresent(w) {
+  const pkg = readJSON(path8.join(TEMPLATES, "builder", "package.json"));
+  return Object.keys({ ...pkg.dependencies, ...pkg.devDependencies }).every((d) => exists(path8.join(w.builder, "node_modules", ...d.split("/"), "package.json")));
+}
 function builderInstalled(w) {
-  return exists(path7.join(w.builder, "node_modules", "vite", "bin", "vite.js"));
+  return exists(path8.join(w.builder, "node_modules", "vite", "bin", "vite.js"));
 }
 function syncBuilder(w) {
   ensureDir(w.builder);
-  const srcRoot = path7.join(TEMPLATES, "builder");
-  const before = exists(path7.join(w.builder, "package.json")) ? readJSON(path7.join(w.builder, "package.json")) : null;
+  const srcRoot = path8.join(TEMPLATES, "builder");
+  const before = exists(path8.join(w.builder, "package.json")) ? readJSON(path8.join(w.builder, "package.json")) : null;
   for (const f of BUILDER_FILES) {
-    const from = path7.join(srcRoot, f);
+    const from = path8.join(srcRoot, f);
     if (f === "src") {
-      removeDir(path7.join(w.builder, "src"));
-      copyDir(from, path7.join(w.builder, "src"), { filter: (p) => !p.includes(`${path7.sep}site${path7.sep}`) || p.endsWith(`${path7.sep}site`) });
-      ensureDir(path7.join(w.builder, "src", "site"));
+      removeDir(path8.join(w.builder, "src"));
+      copyDir(from, path8.join(w.builder, "src"), { filter: (p) => !p.includes(`${path8.sep}site${path8.sep}`) || p.endsWith(`${path8.sep}site`) });
+      ensureDir(path8.join(w.builder, "src", "site"));
     } else if (f === "package.json") {
       const pkg = readJSON(from);
       if (before) {
         pkg.devDependencies = { ...before.devDependencies, ...pkg.devDependencies };
         pkg.dependencies = { ...before.dependencies, ...pkg.dependencies };
       }
-      writeJSON(path7.join(w.builder, "package.json"), pkg);
+      writeJSON(path8.join(w.builder, "package.json"), pkg);
     } else {
-      fs5.copyFileSync(from, path7.join(w.builder, f));
+      fs6.copyFileSync(from, path8.join(w.builder, f));
     }
   }
-  const after = readJSON(path7.join(w.builder, "package.json"));
+  const after = readJSON(path8.join(w.builder, "package.json"));
   return JSON.stringify(before?.dependencies) !== JSON.stringify(after.dependencies) || JSON.stringify(before?.devDependencies) !== JSON.stringify(after.devDependencies);
 }
 function summarizeBuildErrors(out2) {
@@ -46343,13 +46639,13 @@ function summarizeBuildErrors(out2) {
   return (important.length ? important.join("\n") : lastLines(out2, 30)).replace(/\x1b\[[0-9;]*m/g, "");
 }
 async function buildPrototype(w, leadId) {
-  return withLock(path7.join(w.locks, "builder.lock"), async () => {
+  return withLock(path8.join(w.locks, "builder.lock"), async () => {
     const lead = getLead(w, leadId);
     requireApproved(lead);
     const { code, v } = currentVersion(lead);
     const vdir = versionDir(w, code, v);
-    const content = readJSON(path7.join(vdir, "content.json"));
-    const check = validateContent(content, lead, { customDir: path7.join(vdir, "custom") });
+    const content = readJSON(path8.join(vdir, "content.json"));
+    const check = validateContent(content, lead, { customDir: path8.join(vdir, "custom") });
     const record = (build) => {
       const l2 = getLead(w, leadId);
       l2.prototype.versions[v].build = build;
@@ -46363,35 +46659,37 @@ async function buildPrototype(w, leadId) {
       return { ok: false, step: "content_check", version: v, errors: check.errors, warnings: check.warnings, placeholders: check.placeholders.length };
     }
     if (!builderInstalled(w)) throw new UserError("The website builder is not installed yet.", 'Run /prospect:setup (step "Install components").');
-    const depsChanged = syncBuilder(w);
-    if (depsChanged) throw new UserError("The plugin was updated and the builder needs new components.", 'Run /prospect:setup and choose "Install components" again.');
-    const siteDir = path7.join(w.builder, "src", "site");
+    if (syncBuilder(w) || !builderDepsPresent(w)) {
+      const res2 = await runNpm(["install", "--no-audit", "--no-fund", "--loglevel=error", "--no-update-notifier"], { cwd: w.builder, timeoutMs: 10 * 6e4 });
+      if (res2.code !== 0 || !builderDepsPresent(w)) throw new UserError("The plugin was updated and the builder could not download its new components.", 'Check your internet connection, then run /prospect:setup and choose "Install components".');
+    }
+    const siteDir = path8.join(w.builder, "src", "site");
     removeDir(siteDir);
     copyDir(vdir, siteDir);
     const cfg = loadConfig(w);
     const built = structuredClone(content);
     built.preview = { agency_name: cfg.agency.name || built.preview?.agency_name || "Our studio", agency_url: /^https:\/\//.test(cfg.agency.website || "") ? cfg.agency.website : built.preview?.agency_url || "" };
-    writeJSON(path7.join(siteDir, "content.json"), built);
+    writeJSON(path8.join(siteDir, "content.json"), built);
     const out2 = distDir(w, code, v);
     removeDir(out2);
     const started = Date.now();
-    const res = await run(process.execPath, [path7.join(w.builder, "node_modules", "vite", "bin", "vite.js"), "build", "--base", `/client/${code}/`, "--outDir", out2, "--emptyOutDir"], {
+    const res = await run(process.execPath, [path8.join(w.builder, "node_modules", "vite", "bin", "vite.js"), "build", "--base", `/client/${code}/`, "--outDir", out2, "--emptyOutDir"], {
       cwd: w.builder,
       env: { PROSPECT_CODE: code, NODE_ENV: "production", FORCE_COLOR: "0" },
       timeoutMs: 5 * 6e4
     });
     const log = (res.stdout + "\n" + res.stderr).trim();
-    fs5.writeFileSync(path7.join(prototypeDir(w, code), `build-v${v}.log`), log);
+    fs6.writeFileSync(path8.join(prototypeDir(w, code), `build-v${v}.log`), log);
     const missing = [];
     if (res.code === 0) {
-      if (!exists(path7.join(out2, "index.html"))) missing.push("index.html");
-      if (!exists(path7.join(out2, "assets")) || !fs5.readdirSync(path7.join(out2, "assets")).some((f) => f.endsWith(".js"))) missing.push("JavaScript bundle");
+      if (!exists(path8.join(out2, "index.html"))) missing.push("index.html");
+      if (!exists(path8.join(out2, "assets")) || !fs6.readdirSync(path8.join(out2, "assets")).some((f) => f.endsWith(".js"))) missing.push("JavaScript bundle");
     }
     if (res.code !== 0 || missing.length) {
       const errors = res.code !== 0 ? summarizeBuildErrors(log) : `Build finished but these are missing: ${missing.join(", ")}`;
       record({ status: "failed", step: "compile", at: now(), errors: [errors] });
       logActivity(w, leadId, "build_failed", "Production build failed");
-      return { ok: false, step: "compile", version: v, errors: [errors], log_file: path7.join(prototypeDir(w, code), `build-v${v}.log`) };
+      return { ok: false, step: "compile", version: v, errors: [errors], log_file: path8.join(prototypeDir(w, code), `build-v${v}.log`) };
     }
     const size = dirSize(out2);
     const hash = hashDir(out2);
@@ -46446,11 +46744,11 @@ export const config = { path: '/client/*' };
 var isExpired = (d) => d?.expires_at && new Date(d.expires_at) < /* @__PURE__ */ new Date();
 function assembleSite(w, cfg, { include } = {}) {
   removeDir(w.site);
-  ensureDir(path8.join(w.site, "client"));
-  writeText(path8.join(w.site, "index.html"), ROOT_HTML);
-  writeText(path8.join(w.site, "404.html"), NOT_FOUND);
-  writeText(path8.join(w.site, "robots.txt"), "User-agent: *\nDisallow: /\n");
-  writeText(path8.join(w.site, "_headers"), HEADERS);
+  ensureDir(path9.join(w.site, "client"));
+  writeText(path9.join(w.site, "index.html"), ROOT_HTML);
+  writeText(path9.join(w.site, "404.html"), NOT_FOUND);
+  writeText(path9.join(w.site, "robots.txt"), "User-agent: *\nDisallow: /\n");
+  writeText(path9.join(w.site, "_headers"), HEADERS);
   const secrets = readSecrets(w);
   const protectedMap = {};
   const live = [];
@@ -46464,22 +46762,22 @@ function assembleSite(w, cfg, { include } = {}) {
       continue;
     }
     const src = distDir(w, d.code, d.version);
-    if (!exists(path8.join(src, "index.html"))) continue;
-    copyDir(src, path8.join(w.site, "client", d.code));
+    if (!exists(path9.join(src, "index.html"))) continue;
+    copyDir(src, path9.join(w.site, "client", d.code));
     live.push(d.code);
     if (d.protected) {
       const pass = secrets[`PROTOTYPE_PASSWORD_${d.code}`];
       if (!pass) throw new UserError(`Prototype ${d.code} is marked password-protected but has no password.`, `Add PROTOTYPE_PASSWORD_${d.code}=... to .prospect/secrets.env, then try again.`);
-      protectedMap[d.code] = crypto3.createHash("sha256").update(`${d.code}:${pass}`).digest("hex");
+      protectedMap[d.code] = crypto4.createHash("sha256").update(`${d.code}:${pass}`).digest("hex");
     }
   }
-  const cfFn = path8.join(w.root, "functions");
-  const nfFn = path8.join(w.root, "netlify", "edge-functions");
+  const cfFn = path9.join(w.root, "functions");
+  const nfFn = path9.join(w.root, "netlify", "edge-functions");
   removeDir(cfFn);
-  removeDir(path8.join(nfFn, "prototype-gate.js"));
+  removeDir(path9.join(nfFn, "prototype-gate.js"));
   if (Object.keys(protectedMap).length) {
-    if (cfg.hosting.provider === "cloudflare") writeText(path8.join(cfFn, "_middleware.js"), gateSource(protectedMap, "cloudflare"));
-    else writeText(path8.join(nfFn, "prototype-gate.js"), gateSource(protectedMap, "netlify"));
+    if (cfg.hosting.provider === "cloudflare") writeText(path9.join(cfFn, "_middleware.js"), gateSource(protectedMap, "cloudflare"));
+    else writeText(path9.join(nfFn, "prototype-gate.js"), gateSource(protectedMap, "netlify"));
   }
   return { live, expired, protected: Object.keys(protectedMap) };
 }
@@ -46512,7 +46810,7 @@ function previewUrl(cfg, code) {
   return `${cfg.hosting.base_url}/client/${code}/`;
 }
 async function deployLead(w, leadId, { protect = false } = {}) {
-  return withLock(path8.join(w.locks, "deploy.lock"), async () => {
+  return withLock(path9.join(w.locks, "deploy.lock"), async () => {
     const cfg = loadConfig(w);
     const lead = getLead(w, leadId);
     requireApproved(lead);
@@ -46567,7 +46865,7 @@ async function deployLead(w, leadId, { protect = false } = {}) {
   });
 }
 async function syncHosting(w) {
-  return withLock(path8.join(w.locks, "deploy.lock"), async () => {
+  return withLock(path9.join(w.locks, "deploy.lock"), async () => {
     const cfg = loadConfig(w);
     const site = assembleSite(w, cfg);
     for (const id of site.expired) {
@@ -46634,7 +46932,7 @@ async function deletePrototype(w, leadId, { purgeSource = false } = {}) {
   lead.prototype.deleted_at = now();
   saveLead(w, lead);
   markCodeDeleted(w, code);
-  if (purgeSource) removeDir(path8.join(w.prototypes, code));
+  if (purgeSource) removeDir(path9.join(w.prototypes, code));
   logActivity(w, leadId, "deleted", `Prototype ${code} deleted${purgeSource ? " (source removed)" : " (source kept)"}`);
   let sync = null;
   try {
@@ -46771,13 +47069,13 @@ q.oninput=f;p.onchange=f;
 
 // plugins/prospect/src/lib/email.mjs
 var import_imapflow = __toESM(require_imap_flow(), 1);
-import crypto4 from "node:crypto";
+import crypto5 from "node:crypto";
 function encodeHeader(s) {
   return /^[\x20-\x7e]*$/.test(s) ? s : `=?UTF-8?B?${Buffer.from(s, "utf8").toString("base64")}?=`;
 }
 function buildMime({ fromName, fromAddress, to, subject, body }) {
   const domain = (fromAddress.split("@")[1] || "localhost").replace(/[^a-z0-9.-]/gi, "");
-  const id = `<${crypto4.randomUUID()}@${domain}>`;
+  const id = `<${crypto5.randomUUID()}@${domain}>`;
   const b64 = Buffer.from(body.replace(/\r?\n/g, "\r\n"), "utf8").toString("base64").replace(/.{76}/g, "$&\r\n");
   const raw = [
     `From: ${fromName ? `${encodeHeader(fromName)} ` : ""}<${fromAddress}>`,
@@ -46869,9 +47167,9 @@ async function testImap(w) {
 }
 
 // plugins/prospect/src/lib/qa.mjs
-import fs6 from "node:fs";
-import http from "node:http";
-import path9 from "node:path";
+import fs7 from "node:fs";
+import http2 from "node:http";
+import path10 from "node:path";
 import { createRequire } from "node:module";
 var VIEWPORTS = [
   { name: "mobile-375", width: 375, height: 812, mobile: true },
@@ -46883,7 +47181,7 @@ var VIEWPORTS = [
 var TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".avif": "image/avif", ".gif": "image/gif", ".ico": "image/x-icon", ".json": "application/json", ".woff2": "font/woff2", ".txt": "text/plain" };
 function serve(dir, code) {
   const prefix = `/client/${code}/`;
-  const server = http.createServer((req, res) => {
+  const server = http2.createServer((req, res) => {
     let p = decodeURIComponent((req.url || "/").split("?")[0]);
     if (p === `/client/${code}`) {
       res.writeHead(301, { location: prefix });
@@ -46895,17 +47193,17 @@ function serve(dir, code) {
     }
     let rel = p.slice(prefix.length) || "index.html";
     if (rel.endsWith("/")) rel += "index.html";
-    const file = path9.resolve(dir, rel);
-    if (!file.startsWith(path9.resolve(dir) + path9.sep) && file !== path9.resolve(dir)) {
+    const file = path10.resolve(dir, rel);
+    if (!file.startsWith(path10.resolve(dir) + path10.sep) && file !== path10.resolve(dir)) {
       res.writeHead(403);
       return res.end();
     }
-    fs6.readFile(file, (err, data) => {
+    fs7.readFile(file, (err, data) => {
       if (err) {
         res.writeHead(404);
         return res.end("Not found");
       }
-      res.writeHead(200, { "content-type": TYPES[path9.extname(file).toLowerCase()] || "application/octet-stream", "x-robots-tag": "noindex, nofollow" });
+      res.writeHead(200, { "content-type": TYPES[path10.extname(file).toLowerCase()] || "application/octet-stream", "x-robots-tag": "noindex, nofollow" });
       res.end(data);
     });
   });
@@ -46916,8 +47214,8 @@ function chromeCandidates() {
   if (process.env.CHROME_PATH) c.push(process.env.CHROME_PATH);
   if (process.platform === "win32") {
     for (const base of [process.env["PROGRAMFILES"], process.env["PROGRAMFILES(X86)"], process.env.LOCALAPPDATA].filter(Boolean)) {
-      c.push(path9.join(base, "Google", "Chrome", "Application", "chrome.exe"));
-      c.push(path9.join(base, "Microsoft", "Edge", "Application", "msedge.exe"));
+      c.push(path10.join(base, "Google", "Chrome", "Application", "chrome.exe"));
+      c.push(path10.join(base, "Microsoft", "Edge", "Application", "msedge.exe"));
     }
   } else if (process.platform === "darwin") {
     c.push("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge", "/Applications/Chromium.app/Contents/MacOS/Chromium");
@@ -46931,7 +47229,7 @@ function findChrome() {
 }
 function loadPlaywright(w) {
   try {
-    const req = createRequire(path9.join(w.builder, "package.json"));
+    const req = createRequire(path10.join(w.builder, "package.json"));
     return req("playwright-core");
   } catch {
     throw new UserError("The testing browser components are not installed.", 'Run /prospect:setup and choose "Install components".');
@@ -47104,7 +47402,7 @@ async function testViewport(browser, url, vp, shotDir, origin) {
     }
   }
   ensureDir(shotDir);
-  const shot = path9.join(shotDir, `${vp.name}.jpg`);
+  const shot = path10.join(shotDir, `${vp.name}.jpg`);
   try {
     await page.reload({ waitUntil: "load" });
     await page.waitForTimeout(300);
@@ -47114,6 +47412,60 @@ async function testViewport(browser, url, vp, shotDir, origin) {
   }
   await ctx.close();
   return { viewport: vp.name, critical, warnings, passed, probe: p, screenshot: shot };
+}
+async function testMotion(browser, url, vp, shotDir) {
+  const name = `motion-${vp.name}`;
+  const critical = [];
+  const warnings = [];
+  const passed = [];
+  const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.mobile, hasTouch: vp.mobile, deviceScaleFactor: 1, reducedMotion: "no-preference" });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(String(e.message || e).slice(0, 300)));
+  page.on("console", (m) => {
+    if (m.type() === "error" && !/fonts\.(googleapis|gstatic)|favicon|maps\.google|google\.com\/maps|status of 404/i.test(m.text())) errors.push(m.text().slice(0, 300));
+  });
+  try {
+    await page.goto(url, { waitUntil: "load", timeout: 45e3 });
+    await page.waitForTimeout(2600);
+    ensureDir(shotDir);
+    await page.screenshot({ path: path10.join(shotDir, `${name}-hero.jpg`), type: "jpeg", quality: 70 });
+    const info = await page.evaluate(() => ({ motion: document.documentElement.classList.contains("motion"), preset: document.querySelector("[data-motion-preset]")?.getAttribute("data-motion-preset") || null, curtain: Boolean(document.querySelector(".intro-curtain")) }));
+    if (info.curtain) critical.push("The opening curtain is still covering the page after 2.6 seconds.");
+    if (!info.motion) warnings.push("Animations did not switch on (motion class missing).");
+    else passed.push(`Animations run (${info.preset || "default"} preset)`);
+    const step = Math.round(vp.height * 0.55);
+    let y = 0;
+    for (let i = 0; i < 80; i++) {
+      const h = await page.evaluate(() => document.documentElement.scrollHeight);
+      if (y >= h) break;
+      y += step;
+      await page.mouse.wheel(0, step).catch(() => {
+      });
+      await page.evaluate((to) => window.scrollTo(0, to), y);
+      await page.waitForTimeout(160);
+    }
+    await page.waitForTimeout(1600);
+    const r = await page.evaluate(() => {
+      const label = (e) => `${e.tagName.toLowerCase()}${e.id ? "#" + e.id : ""} "${(e.textContent || e.getAttribute("aria-label") || "").trim().slice(0, 40)}"`;
+      const stuck = [...document.querySelectorAll("[data-reveal]")].filter((e) => {
+        const r2 = e.getBoundingClientRect();
+        return r2.width > 0 && r2.height > 0 && (!e.classList.contains("is-in") || Number(getComputedStyle(e).opacity) < 0.5);
+      });
+      return { stuck: stuck.slice(0, 6).map(label), stuckCount: stuck.length, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth };
+    });
+    if (r.stuckCount) critical.push(`${r.stuckCount} animated elements never became visible after scrolling: ${r.stuck.join("; ")}`);
+    else passed.push("All scroll animations reveal their content");
+    if (r.sw > r.cw + 1) critical.push(`With animations on, the page scrolls sideways (${r.sw}px wide on a ${r.cw}px screen).`);
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight * 0.4));
+    await page.waitForTimeout(1400);
+    await page.screenshot({ path: path10.join(shotDir, `${name}-scrolled.jpg`), type: "jpeg", quality: 70 });
+  } catch (e) {
+    warnings.push(`Animation test could not finish: ${e.message.split("\n")[0]}`);
+  }
+  if (errors.length) critical.push(`JavaScript errors with animations on: ${[...new Set(errors)].slice(0, 3).join(" | ")}`);
+  await ctx.close();
+  return { viewport: name, critical, warnings, passed, screenshot: path10.join(shotDir, `${name}-hero.jpg`) };
 }
 function seoChecks(p) {
   const critical = [];
@@ -47151,18 +47503,18 @@ function seoChecks(p) {
 async function lighthouse(w, url, chrome) {
   let cli2;
   try {
-    cli2 = createRequire(path9.join(w.builder, "package.json")).resolve("lighthouse/cli/index.js");
+    cli2 = createRequire(path10.join(w.builder, "package.json")).resolve("lighthouse/cli/index.js");
   } catch {
     return { available: false, reason: "Lighthouse is not installed (optional). Install it with /prospect:setup \u2192 Install components." };
   }
-  const out2 = path9.join(w.internal, "lighthouse-tmp.json");
+  const out2 = path10.join(w.internal, "lighthouse-tmp.json");
   const res = await run(process.execPath, [cli2, url, "--quiet", "--output=json", `--output-path=${out2}`, "--only-categories=performance,accessibility,best-practices,seo", "--form-factor=mobile", "--screenEmulation.mobile", `--chrome-flags=--headless=new --no-first-run`], {
     env: { CHROME_PATH: chrome },
     timeoutMs: 18e4
   }).catch((e) => ({ code: 1, stderr: e.message }));
   if (res.code !== 0 || !exists(out2)) return { available: false, reason: `Lighthouse could not run: ${(res.stderr || "").split("\n").slice(-3).join(" ").slice(0, 300)}` };
-  const data = JSON.parse(fs6.readFileSync(out2, "utf8"));
-  fs6.rmSync(out2, { force: true });
+  const data = JSON.parse(fs7.readFileSync(out2, "utf8"));
+  fs7.rmSync(out2, { force: true });
   const s = (k) => data.categories?.[k]?.score == null ? null : Math.round(data.categories[k].score * 100);
   return {
     available: true,
@@ -47179,7 +47531,7 @@ async function runQA(w, leadId, { skipLighthouse = false } = {}) {
   const { code, v, meta } = currentVersion(lead);
   if (meta?.build?.status !== "passed") throw new UserError(`Version v${v} has not been built successfully yet.`, `Run the build first (node cli.mjs build ${leadId}).`);
   const dir = distDir(w, code, v);
-  if (!exists(path9.join(dir, "index.html"))) throw new UserError("The built files are missing.", "Rebuild the prototype.");
+  if (!exists(path10.join(dir, "index.html"))) throw new UserError("The built files are missing.", "Rebuild the prototype.");
   const cfg = loadConfig(w);
   const maxRuns = 1 + (cfg.limits[cfg.mode]?.fix_attempts ?? 2);
   setStage(w, lead, "qa", "RUNNING");
@@ -47196,12 +47548,13 @@ async function runQA(w, leadId, { skipLighthouse = false } = {}) {
   }
   const { server, url } = await serve(dir, code);
   const origin = new URL(url).origin;
-  const reportDir = path9.join(leadDir(w, leadId), "qa", `v${v}`);
+  const reportDir = path10.join(leadDir(w, leadId), "qa", `v${v}`);
   removeDir(reportDir);
   ensureDir(reportDir);
   const results = [];
   try {
-    for (const vp of VIEWPORTS) results.push(await testViewport(browser, url, vp, path9.join(reportDir, "screenshots"), origin));
+    for (const vp of VIEWPORTS) results.push(await testViewport(browser, url, vp, path10.join(reportDir, "screenshots"), origin));
+    for (const vp of VIEWPORTS.filter((x) => ["mobile-390", "desktop-1440"].includes(x.name))) results.push(await testMotion(browser, url, vp, path10.join(reportDir, "screenshots")));
   } finally {
     await browser.close().catch(() => {
     });
@@ -47241,8 +47594,8 @@ async function runQA(w, leadId, { skipLighthouse = false } = {}) {
     version: v,
     build_hash: meta.build.hash,
     tested_at: now(),
-    browser: chrome ? path9.basename(chrome) : "bundled chromium",
-    viewports: VIEWPORTS.map((x) => `${x.width}px`),
+    browser: chrome ? path10.basename(chrome) : "bundled chromium",
+    viewports: [...VIEWPORTS.map((x) => `${x.width}px`), "animations on: 390px + 1440px"],
     attempt,
     status,
     critical,
@@ -47252,8 +47605,8 @@ async function runQA(w, leadId, { skipLighthouse = false } = {}) {
     total_kb: Math.round(size.total / 1024),
     screenshots: results.map((r) => r.screenshot).filter(Boolean)
   };
-  writeJSON(path9.join(reportDir, "report.json"), report);
-  writeText(path9.join(reportDir, "report.md"), [
+  writeJSON(path10.join(reportDir, "report.json"), report);
+  writeText(path10.join(reportDir, "report.md"), [
     `# QA report \u2014 ${lead.business_name || leadId} (${code} v${v})`,
     "",
     `- Tested: ${report.tested_at} with ${report.browser}`,
@@ -47274,10 +47627,10 @@ async function runQA(w, leadId, { skipLighthouse = false } = {}) {
     lh.available ? `Performance ${lh.scores.performance} \xB7 Accessibility ${lh.scores.accessibility} \xB7 Best practices ${lh.scores.best_practices} \xB7 SEO ${lh.scores.seo} (noindex lowers SEO on purpose)` : `Not run: ${lh.reason}`,
     "",
     "## Screenshots",
-    ...report.screenshots.map((s) => `- ${path9.relative(leadDir(w, leadId), s).replace(/\\/g, "/")}`)
+    ...report.screenshots.map((s) => `- ${path10.relative(leadDir(w, leadId), s).replace(/\\/g, "/")}`)
   ].join("\n") + "\n");
   const l = getLead(w, leadId);
-  l.prototype.versions[v].qa = { status, at: report.tested_at, build_hash: meta.build.hash, critical: critical.length, warnings: report.warnings.length, report: path9.join(reportDir, "report.md") };
+  l.prototype.versions[v].qa = { status, at: report.tested_at, build_hash: meta.build.hash, critical: critical.length, warnings: report.warnings.length, report: path10.join(reportDir, "report.md") };
   saveLead(w, l);
   if (status === "passed") setStage(w, l, "qa", "COMPLETED", { note: `Passed on attempt ${attempt}` });
   else if (attempt >= maxRuns) setStage(w, l, "qa", "REQUIRES_MANUAL_REVIEW", { error: `${critical.length} critical problems after ${attempt} attempts` });
@@ -47293,21 +47646,21 @@ async function runQA(w, leadId, { skipLighthouse = false } = {}) {
     warnings: report.warnings.slice(0, 15),
     passed_count: report.passed.length,
     lighthouse: lh.available ? lh.scores : lh.reason,
-    report: path9.join(reportDir, "report.md"),
-    screenshots_folder: path9.join(reportDir, "screenshots")
+    report: path10.join(reportDir, "report.md"),
+    screenshots_folder: path10.join(reportDir, "screenshots")
   };
 }
 
 // plugins/prospect/src/lib/setup.mjs
-import fs7 from "node:fs";
-import path10 from "node:path";
+import fs8 from "node:fs";
+import path11 from "node:path";
 async function installComponents(w, { host, lighthouse: lighthouse2 = true, log = () => {
 } } = {}) {
-  return withLock(path10.join(w.locks, "builder.lock"), async () => {
+  return withLock(path11.join(w.locks, "builder.lock"), async () => {
     const cfg = loadConfig(w);
     const provider = host || cfg.hosting.provider;
     syncBuilder(w);
-    const pkgFile = path10.join(w.builder, "package.json");
+    const pkgFile = path11.join(w.builder, "package.json");
     const pkg = readJSON(pkgFile);
     pkg.devDependencies = pkg.devDependencies || {};
     if (provider) {
@@ -47326,13 +47679,13 @@ ${tail}`, "Check your internet connection and try again. Behind a company proxy?
     }
     if (!builderInstalled(w)) throw new UserError("Install finished but the builder is still missing.", "Run the install again.");
     log("Running a test build\u2026\n");
-    const site = path10.join(w.builder, "src", "site");
+    const site = path11.join(w.builder, "src", "site");
     removeDir(site);
-    copyDir(path10.join(TEMPLATES, "builder", "src", "site"), site);
-    const out2 = path10.join(w.internal, "builder-test");
+    copyDir(path11.join(TEMPLATES, "builder", "src", "site"), site);
+    const out2 = path11.join(w.internal, "builder-test");
     removeDir(out2);
-    const b = await run(process.execPath, [path10.join(w.builder, "node_modules", "vite", "bin", "vite.js"), "build", "--base", "/client/TEST0000/", "--outDir", out2, "--emptyOutDir"], { cwd: w.builder, env: { PROSPECT_CODE: "TEST0000", FORCE_COLOR: "0" }, timeoutMs: 5 * 6e4 });
-    const ok = b.code === 0 && exists(path10.join(out2, "index.html"));
+    const b = await run(process.execPath, [path11.join(w.builder, "node_modules", "vite", "bin", "vite.js"), "build", "--base", "/client/TEST0000/", "--outDir", out2, "--emptyOutDir"], { cwd: w.builder, env: { PROSPECT_CODE: "TEST0000", FORCE_COLOR: "0" }, timeoutMs: 5 * 6e4 });
+    const ok = b.code === 0 && exists(path11.join(out2, "index.html"));
     removeDir(out2);
     if (!ok) throw new UserError(`The test build failed:
 ${(b.stderr || b.stdout).split("\n").slice(-10).join("\n")}`);
@@ -47357,12 +47710,12 @@ async function doctor(w, { quick = false } = {}) {
   add("Website builder", builderInstalled(w), builderInstalled(w) ? "installed" : "not installed", builderInstalled(w) ? null : "Run /prospect:setup \u2192 Install components");
   let pw = false;
   try {
-    pw = exists(path10.join(w.builder, "node_modules", "playwright-core", "package.json"));
+    pw = exists(path11.join(w.builder, "node_modules", "playwright-core", "package.json"));
   } catch {
   }
   const chrome = findChrome();
-  add("Testing browser", Boolean(pw && chrome), chrome ? `${path10.basename(chrome)}${pw ? "" : " (driver missing)"}` : "Chrome/Edge not found", chrome ? pw ? null : "Run /prospect:setup \u2192 Install components" : "Install Google Chrome from google.com/chrome");
-  add("Lighthouse (optional)", exists(path10.join(w.builder, "node_modules", "lighthouse", "package.json")) ? true : null, exists(path10.join(w.builder, "node_modules", "lighthouse")) ? "installed" : "not installed \u2014 QA still runs without it");
+  add("Testing browser", Boolean(pw && chrome), chrome ? `${path11.basename(chrome)}${pw ? "" : " (driver missing)"}` : "Chrome/Edge not found", chrome ? pw ? null : "Run /prospect:setup \u2192 Install components" : "Install Google Chrome from google.com/chrome");
+  add("Lighthouse (optional)", exists(path11.join(w.builder, "node_modules", "lighthouse", "package.json")) ? true : null, exists(path11.join(w.builder, "node_modules", "lighthouse")) ? "installed" : "not installed \u2014 QA still runs without it");
   if (!cfg.hosting.provider) add("Hosting", false, "not chosen", "Run /prospect:setup \u2192 Hosting");
   else {
     const label = PROVIDERS[cfg.hosting.provider].label;
@@ -47394,8 +47747,8 @@ async function doctor(w, { quick = false } = {}) {
   add("Private settings file", exists(w.secrets), exists(w.secrets) ? ".prospect/secrets.env present (contents never shown)" : "missing", exists(w.secrets) ? null : "Run /prospect:setup to recreate it");
   add("Instagram API (optional)", sec.META_ACCESS_TOKEN && sec.META_IG_USER_ID ? true : null, sec.META_ACCESS_TOKEN && sec.META_IG_USER_ID ? "configured" : "not configured \u2014 research uses public sources and screenshots");
   add("PageSpeed key (optional)", sec.PAGESPEED_API_KEY ? true : null, sec.PAGESPEED_API_KEY ? "configured" : "not set \u2014 works with lower daily limits");
-  const gi = path10.join(w.root, ".gitignore");
-  if (exists(path10.join(w.root, ".git"))) add("Secrets kept out of git", exists(gi) && fs7.readFileSync(gi, "utf8").includes("secrets.env"), ".gitignore", "Add .prospect/secrets.env to .gitignore");
+  const gi = path11.join(w.root, ".gitignore");
+  if (exists(path11.join(w.root, ".git"))) add("Secrets kept out of git", exists(gi) && fs8.readFileSync(gi, "utf8").includes("secrets.env"), ".gitignore", "Add .prospect/secrets.env to .gitignore");
   const protos = prototypeOverview(w);
   const soon = protos.filter((p) => p.expiring_soon);
   if (soon.length) add("Prototypes expiring soon", null, soon.map((p) => `${p.business || p.lead_id} (${p.code}) on ${p.expires}`).join("; "), "Extend with /prospect:prototypes extend <lead> 30");
@@ -47435,6 +47788,7 @@ var HELP = `Prospect Engine CLI
   deployments <lead>            deployment history
   draft-imap <lead> [--force]   save the prepared email to your IMAP Drafts folder
   imap-test                     test the mailbox connection
+  library-scan [--force]        read new videos in design-library/inbox into frame sheets
   dashboard [--no-open]         generate and open the HTML dashboard
   status <lead>                 compact lead summary
 `;
@@ -47448,12 +47802,14 @@ async function main() {
     return out({ plugin_root: PLUGIN_ROOT, cli: CLI_PATH, node: process.execPath, workspace: root, cwd: process.cwd() });
   }
   if (cmd === "init") {
-    return out(initWorkspace(pos[0] ? path11.resolve(pos[0]) : process.cwd()));
+    return out(initWorkspace(pos[0] ? path12.resolve(pos[0]) : process.cwd()));
   }
   const w = requireWorkspace();
   switch (cmd) {
     case "install":
       return out(await installComponents(w, { host: flagValue("--host"), lighthouse: !flags.has("--no-lighthouse"), log: progress }));
+    case "library-scan":
+      return out(await scanLibrary(w, { force: flags.has("--force"), log: progress, findChrome, loadPlaywright }));
     case "doctor":
       return out(await doctor(w, { quick: flags.has("--quick") }));
     case "host-status":

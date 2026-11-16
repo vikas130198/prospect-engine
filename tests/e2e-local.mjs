@@ -115,7 +115,11 @@ assert.equal(score.priority, 'Medium');
 
 const catalog = await call('design_catalog');
 assert.ok(catalog.layouts.length >= 10 && Object.keys(catalog.themes).length >= 10);
-await call('save_design', { lead_id: lead.id, layout: 'restaurant', theme: 'warm-bistro', sections: ['hero', 'about', 'menu', 'features', 'faq', 'contact'], reason: 'Warm artisan bakery feel', plan_markdown: '# Design plan' });
+assert.ok(catalog.motion_presets.cinematic && catalog.design_library);
+const badMotion = await call('save_design', { lead_id: lead.id, layout: 'restaurant', theme: 'warm-bistro', motion: { preset: 'disco' }, reason: 'x', plan_markdown: 'x' }, { expectError: true });
+assert.match(String(badMotion), /Unknown motion preset/);
+const design = await call('save_design', { lead_id: lead.id, layout: 'restaurant', theme: 'warm-bistro', motion: { preset: 'cinematic', hero_effect: 'aurora' }, sections: ['hero', 'about', 'marquee', 'menu', 'features', { type: 'process', variant: 'stack' }, 'faq', 'contact'], reason: 'Warm artisan bakery feel', plan_markdown: '# Design plan' });
+assert.equal(design.motion.preset, 'cinematic');
 const proto = await call('create_prototype', { lead_id: lead.id });
 assert.match(proto.code, /^[A-HJ-NP-Z2-9]{8}$/);
 
@@ -132,6 +136,9 @@ Object.assign(S.hero, { variant: 'split', eyebrow: 'Brighton bakery', heading: '
 Object.assign(S.about, { heading: 'A small bakery with big flavour', body: ['Harbour Lane Bakery bakes sourdough, croissants and celebration cakes.', '[[Add the bakery story once confirmed with the owner]]'], highlights: [{ icon: 'leaf', title: 'Slow-fermented sourdough', text: 'Baked in small batches.' }] });
 Object.assign(S.menu, { heading: 'From the oven', categories: [{ name: 'Bread', items: [{ name: 'Country sourdough', description: 'Crisp crust, open crumb.' }] }, { name: 'Pastries', items: [{ name: 'Butter croissant', description: 'Flaky and golden.' }] }], note: 'Prices to be confirmed with the bakery.' });
 Object.assign(S.features, { heading: 'Why locals love it', items: [{ icon: 'clock', title: 'Fresh every morning', text: 'Bakes come out early.' }, { icon: 'gift', title: 'Celebration cakes', text: 'Made to order.' }, { icon: 'heart', title: 'Made by hand', text: 'Small-batch baking.' }] });
+Object.assign(S.marquee, { items: ['Sourdough', 'Croissants', 'Celebration cakes', 'Baked daily'], icon: 'chef-hat' });
+Object.assign(S.process, { heading: 'How pre-orders work', steps: [{ title: 'Send an enquiry', text: 'Tell the bakery what you need.' }, { title: 'Confirm', text: 'They confirm the details.' }, { title: 'Collect', text: 'Pick it up fresh.' }] });
+assert.equal(content.motion.preset, 'cinematic');
 Object.assign(S.faq, { items: [{ q: 'Can I pre-order a cake?', a: 'Send an enquiry with the date and the bakery will confirm.' }] });
 Object.assign(S.contact, { heading: 'Order or say hello', intro: 'Send a pre-order enquiry.', info: { phone: '01273 555 0199', address: '[[Add address]]', email: '', whatsapp: '', hours: [] } });
 fs.writeFileSync(proto.content_file, JSON.stringify(content, null, 2));
@@ -164,6 +171,7 @@ for (const c of qa.critical) console.log(`     ❌ ${c}`);
 for (const wrn of qa.warnings.slice(0, 8)) console.log(`     ⚠️  ${wrn}`);
 assert.equal(qa.status, 'passed');
 assert.ok(fs.existsSync(path.join(qa.screenshots_folder, 'mobile-375.jpg')));
+assert.ok(fs.existsSync(path.join(qa.screenshots_folder, 'motion-desktop-1440-hero.jpg')), 'animation pass screenshot');
 
 await call('save_email', { lead_id: lead.id, to: 'owner@example.com', subject: 'Hello', body: 'x'.repeat(250) }, { expectError: true });
 

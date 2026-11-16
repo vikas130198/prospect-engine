@@ -2,6 +2,7 @@
   "name": "healthcare",
   "label": "Clinics, dental, physiotherapy, diagnostics, wellness",
   "default_theme": "fresh-clinic",
+  "default_motion": "elegant",
   "nav_cta": "Book an appointment",
   "sections": [
     {

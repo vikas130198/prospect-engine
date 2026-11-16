@@ -73,8 +73,10 @@ Ask: **Lite (Recommended for Pro plans)** — one landing page, 3 competitors, 2
 — 5 competitors, 3 auto-repairs. Save `update_settings` → `{mode:"lite"|"full"}`. Mention `/usage` shows remaining usage
 and that `/prospect:resume` continues after a limit reset with nothing lost.
 
-## Step 10 — Design references (optional)
-Explain the `references/<category>/` folders (README inside). Offer: skip for now, or add a few websites they admire
+## Step 10 — Design library & references (optional)
+Tell them about `design-library/inbox/` (created automatically): drop screen recordings (MP4/WebM, 20 s – 3 min,
+desktop size, scrolling slowly) or screenshots of websites they love; every prototype is matched against them by
+design fit, and `/prospect:library` shows what was learned. Then explain the `references/<category>/` folders (README inside). Offer: skip for now, or add a few websites they admire
 (name, URL, category, what they like) with `manage_reference` action `add`. Screenshots can be dropped into the folders
 later and picked up with `/prospect:references scan`.
 

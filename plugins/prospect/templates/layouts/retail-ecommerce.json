@@ -2,6 +2,7 @@
   "name": "retail-ecommerce",
   "label": "Shops, boutiques, online stores, product brands",
   "default_theme": "bright-retail",
+  "default_motion": "bold",
   "nav_cta": "Shop now",
   "sections": [
     {

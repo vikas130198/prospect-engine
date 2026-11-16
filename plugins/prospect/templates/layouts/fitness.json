@@ -2,6 +2,7 @@
   "name": "fitness",
   "label": "Gyms, yoga studios, trainers, sports academies",
   "default_theme": "energy-dark",
+  "default_motion": "bold",
   "nav_cta": "Book a free trial",
   "sections": [
     {

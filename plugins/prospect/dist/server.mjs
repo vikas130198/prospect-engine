@@ -3269,8 +3269,8 @@ var require_utils = __commonJS({
       }
       return ind;
     }
-    function removeDotSegments(path9) {
-      let input = path9;
+    function removeDotSegments(path10) {
+      let input = path10;
       const output = [];
       let nextSlash = -1;
       let len = 0;
@@ -3344,11 +3344,11 @@ var require_utils = __commonJS({
       }
       return output.join("");
     }
-    function removeDotSegmentsRelative(path9) {
-      if (path9 === "" || path9[0] === "/") {
-        return removeDotSegments(path9);
+    function removeDotSegmentsRelative(path10) {
+      if (path10 === "" || path10[0] === "/") {
+        return removeDotSegments(path10);
       }
-      const segments = path9.split("/");
+      const segments = path10.split("/");
       const last = segments.length - 1;
       const output = [];
       let trailingDirectory = false;
@@ -3711,8 +3711,8 @@ var require_schemes = __commonJS({
       }
       if (wsComponent.resourceName) {
         const queryIndex = wsComponent.resourceName.indexOf("?");
-        const path9 = queryIndex === -1 ? wsComponent.resourceName : wsComponent.resourceName.slice(0, queryIndex);
-        wsComponent.path = path9 && path9 !== "/" ? path9 : void 0;
+        const path10 = queryIndex === -1 ? wsComponent.resourceName : wsComponent.resourceName.slice(0, queryIndex);
+        wsComponent.path = path10 && path10 !== "/" ? path10 : void 0;
         wsComponent.query = queryIndex === -1 ? void 0 : wsComponent.resourceName.slice(queryIndex + 1);
         wsComponent.resourceName = void 0;
       }
@@ -7249,12 +7249,12 @@ var require_dist = __commonJS({
         throw new Error(`Unknown format "${name}"`);
       return f;
     };
-    function addFormats(ajv, list, fs6, exportName) {
+    function addFormats(ajv, list, fs7, exportName) {
       var _a;
       var _b;
       (_a = (_b = ajv.opts.code).formats) !== null && _a !== void 0 ? _a : _b.formats = (0, codegen_1._)`require("ajv-formats/dist/formats").${exportName}`;
       for (const f of list)
-        ajv.addFormat(f, fs6[f]);
+        ajv.addFormat(f, fs7[f]);
     }
     module.exports = exports = formatsPlugin;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -7525,8 +7525,8 @@ var require_req = __commonJS({
       if (req.originalUrl) {
         _req.url = req.originalUrl;
       } else {
-        const path9 = req.path;
-        _req.url = typeof path9 === "string" ? path9 : req.url ? req.url.path || req.url : void 0;
+        const path10 = req.path;
+        _req.url = typeof path10 === "string" ? path10 : req.url ? req.url.path || req.url : void 0;
       }
       if (req.query) {
         _req.query = req.query;
@@ -7691,14 +7691,14 @@ var require_redact = __commonJS({
       }
       return obj;
     }
-    function parsePath(path9) {
+    function parsePath(path10) {
       const parts = [];
       let current = "";
       let inBrackets = false;
       let inQuotes = false;
       let quoteChar = "";
-      for (let i = 0; i < path9.length; i++) {
-        const char = path9[i];
+      for (let i = 0; i < path10.length; i++) {
+        const char = path10[i];
         if (!inBrackets && char === ".") {
           if (current) {
             parts.push(current);
@@ -7829,10 +7829,10 @@ var require_redact = __commonJS({
       return current;
     }
     function redactPaths(obj, paths, censor, remove = false) {
-      for (const path9 of paths) {
-        const parts = parsePath(path9);
+      for (const path10 of paths) {
+        const parts = parsePath(path10);
         if (parts.includes("*")) {
-          redactWildcardPath(obj, parts, censor, path9, remove);
+          redactWildcardPath(obj, parts, censor, path10, remove);
         } else {
           if (remove) {
             removeKey(obj, parts);
@@ -7917,8 +7917,8 @@ var require_redact = __commonJS({
           }
         } else {
           if (afterWildcard.includes("*")) {
-            const wrappedCensor = typeof censor === "function" ? (value, path9) => {
-              const fullPath = [...pathArray.slice(0, pathLength), ...path9];
+            const wrappedCensor = typeof censor === "function" ? (value, path10) => {
+              const fullPath = [...pathArray.slice(0, pathLength), ...path10];
               return censor(value, fullPath);
             } : censor;
             redactWildcardPath(current, afterWildcard, wrappedCensor, originalPath, remove);
@@ -7953,8 +7953,8 @@ var require_redact = __commonJS({
         return null;
       }
       const pathStructure = /* @__PURE__ */ new Map();
-      for (const path9 of pathsToClone) {
-        const parts = parsePath(path9);
+      for (const path10 of pathsToClone) {
+        const parts = parsePath(path10);
         let current = pathStructure;
         for (let i = 0; i < parts.length; i++) {
           const part = parts[i];
@@ -8006,24 +8006,24 @@ var require_redact = __commonJS({
       }
       return cloneSelectively(obj, pathStructure);
     }
-    function validatePath(path9) {
-      if (typeof path9 !== "string") {
+    function validatePath(path10) {
+      if (typeof path10 !== "string") {
         throw new Error("Paths must be (non-empty) strings");
       }
-      if (path9 === "") {
+      if (path10 === "") {
         throw new Error("Invalid redaction path ()");
       }
-      if (path9.includes("..")) {
-        throw new Error(`Invalid redaction path (${path9})`);
+      if (path10.includes("..")) {
+        throw new Error(`Invalid redaction path (${path10})`);
       }
-      if (path9.includes(",")) {
-        throw new Error(`Invalid redaction path (${path9})`);
+      if (path10.includes(",")) {
+        throw new Error(`Invalid redaction path (${path10})`);
       }
       let bracketCount = 0;
       let inQuotes = false;
       let quoteChar = "";
-      for (let i = 0; i < path9.length; i++) {
-        const char = path9[i];
+      for (let i = 0; i < path10.length; i++) {
+        const char = path10[i];
         if ((char === '"' || char === "'") && bracketCount > 0) {
           if (!inQuotes) {
             inQuotes = true;
@@ -8037,20 +8037,20 @@ var require_redact = __commonJS({
         } else if (char === "]" && !inQuotes) {
           bracketCount--;
           if (bracketCount < 0) {
-            throw new Error(`Invalid redaction path (${path9})`);
+            throw new Error(`Invalid redaction path (${path10})`);
           }
         }
       }
       if (bracketCount !== 0) {
-        throw new Error(`Invalid redaction path (${path9})`);
+        throw new Error(`Invalid redaction path (${path10})`);
       }
     }
     function validatePaths(paths) {
       if (!Array.isArray(paths)) {
         throw new TypeError("paths must be an array");
       }
-      for (const path9 of paths) {
-        validatePath(path9);
+      for (const path10 of paths) {
+        validatePath(path10);
       }
     }
     function slowRedact(options = {}) {
@@ -8218,8 +8218,8 @@ var require_redaction = __commonJS({
         if (shape[k] === null) {
           o[k] = (value) => topCensor(value, [k]);
         } else {
-          const wrappedCensor = typeof censor === "function" ? (value, path9) => {
-            return censor(value, [k, ...path9]);
+          const wrappedCensor = typeof censor === "function" ? (value, path10) => {
+            return censor(value, [k, ...path10]);
           } : censor;
           o[k] = Redact({
             paths: shape[k],
@@ -8437,10 +8437,10 @@ var require_atomic_sleep = __commonJS({
 var require_sonic_boom = __commonJS({
   "node_modules/sonic-boom/index.js"(exports, module) {
     "use strict";
-    var fs6 = __require("fs");
+    var fs7 = __require("fs");
     var EventEmitter = __require("events");
     var inherits = __require("util").inherits;
-    var path9 = __require("path");
+    var path10 = __require("path");
     var sleep = require_atomic_sleep();
     var assert2 = __require("assert");
     var BUSY_WRITE_TIMEOUT = 100;
@@ -8494,20 +8494,20 @@ var require_sonic_boom = __commonJS({
       const mode = sonic.mode;
       if (sonic.sync) {
         try {
-          if (sonic.mkdir) fs6.mkdirSync(path9.dirname(file), { recursive: true });
-          const fd = fs6.openSync(file, flags, mode);
+          if (sonic.mkdir) fs7.mkdirSync(path10.dirname(file), { recursive: true });
+          const fd = fs7.openSync(file, flags, mode);
           fileOpened(null, fd);
         } catch (err) {
           fileOpened(err);
           throw err;
         }
       } else if (sonic.mkdir) {
-        fs6.mkdir(path9.dirname(file), { recursive: true }, (err) => {
+        fs7.mkdir(path10.dirname(file), { recursive: true }, (err) => {
           if (err) return fileOpened(err);
-          fs6.open(file, flags, mode, fileOpened);
+          fs7.open(file, flags, mode, fileOpened);
         });
       } else {
-        fs6.open(file, flags, mode, fileOpened);
+        fs7.open(file, flags, mode, fileOpened);
       }
     }
     function SonicBoom(opts) {
@@ -8548,8 +8548,8 @@ var require_sonic_boom = __commonJS({
         this.flush = flushBuffer;
         this.flushSync = flushBufferSync;
         this._actualWrite = actualWriteBuffer;
-        fsWriteSync = () => fs6.writeSync(this.fd, this._writingBuf);
-        fsWrite = () => fs6.write(this.fd, this._writingBuf, this.release);
+        fsWriteSync = () => fs7.writeSync(this.fd, this._writingBuf);
+        fsWrite = () => fs7.write(this.fd, this._writingBuf, this.release);
       } else if (contentMode === void 0 || contentMode === kContentModeUtf8) {
         this._writingBuf = "";
         this.write = write;
@@ -8558,15 +8558,15 @@ var require_sonic_boom = __commonJS({
         this._actualWrite = actualWrite;
         fsWriteSync = () => {
           if (Buffer.isBuffer(this._writingBuf)) {
-            return fs6.writeSync(this.fd, this._writingBuf);
+            return fs7.writeSync(this.fd, this._writingBuf);
           }
-          return fs6.writeSync(this.fd, this._writingBuf, "utf8");
+          return fs7.writeSync(this.fd, this._writingBuf, "utf8");
         };
         fsWrite = () => {
           if (Buffer.isBuffer(this._writingBuf)) {
-            return fs6.write(this.fd, this._writingBuf, this.release);
+            return fs7.write(this.fd, this._writingBuf, this.release);
           }
-          return fs6.write(this.fd, this._writingBuf, "utf8", this.release);
+          return fs7.write(this.fd, this._writingBuf, "utf8", this.release);
         };
       } else {
         throw new Error(`SonicBoom supports "${kContentModeUtf8}" and "${kContentModeBuffer}", but passed ${contentMode}`);
@@ -8623,7 +8623,7 @@ var require_sonic_boom = __commonJS({
           }
         }
         if (this._fsync) {
-          fs6.fsyncSync(this.fd);
+          fs7.fsyncSync(this.fd);
         }
         const len = this._len;
         if (this._reopening) {
@@ -8737,7 +8737,7 @@ var require_sonic_boom = __commonJS({
       const onDrain = () => {
         if (!this._fsync) {
           try {
-            fs6.fsync(this.fd, (err) => {
+            fs7.fsync(this.fd, (err) => {
               this._flushPending = false;
               cb(err);
             });
@@ -8839,7 +8839,7 @@ var require_sonic_boom = __commonJS({
       const fd = this.fd;
       this.once("ready", () => {
         if (fd !== this.fd) {
-          fs6.close(fd, (err) => {
+          fs7.close(fd, (err) => {
             if (err) {
               return this.emit("error", err);
             }
@@ -8888,7 +8888,7 @@ var require_sonic_boom = __commonJS({
           buf = this._bufs[0];
         }
         try {
-          const n = Buffer.isBuffer(buf) ? fs6.writeSync(this.fd, buf) : fs6.writeSync(this.fd, buf, "utf8");
+          const n = Buffer.isBuffer(buf) ? fs7.writeSync(this.fd, buf) : fs7.writeSync(this.fd, buf, "utf8");
           const releasedBufObj = releaseWritingBuf(buf, this._len, n);
           buf = releasedBufObj.writingBuf;
           this._len = releasedBufObj.len;
@@ -8904,7 +8904,7 @@ var require_sonic_boom = __commonJS({
         }
       }
       try {
-        fs6.fsyncSync(this.fd);
+        fs7.fsyncSync(this.fd);
       } catch {
       }
     }
@@ -8925,7 +8925,7 @@ var require_sonic_boom = __commonJS({
           buf = mergeBuf(this._bufs[0], this._lens[0]);
         }
         try {
-          const n = fs6.writeSync(this.fd, buf);
+          const n = fs7.writeSync(this.fd, buf);
           buf = buf.subarray(n);
           this._len = Math.max(this._len - n, 0);
           if (buf.length <= 0) {
@@ -8953,13 +8953,13 @@ var require_sonic_boom = __commonJS({
       this._writingBuf = this._writingBuf.length ? this._writingBuf : this._bufs.shift() || "";
       if (this.sync) {
         try {
-          const written = Buffer.isBuffer(this._writingBuf) ? fs6.writeSync(this.fd, this._writingBuf) : fs6.writeSync(this.fd, this._writingBuf, "utf8");
+          const written = Buffer.isBuffer(this._writingBuf) ? fs7.writeSync(this.fd, this._writingBuf) : fs7.writeSync(this.fd, this._writingBuf, "utf8");
           release(null, written);
         } catch (err) {
           release(err);
         }
       } else {
-        fs6.write(this.fd, this._writingBuf, release);
+        fs7.write(this.fd, this._writingBuf, release);
       }
     }
     function actualWriteBuffer() {
@@ -8968,7 +8968,7 @@ var require_sonic_boom = __commonJS({
       this._writingBuf = this._writingBuf.length ? this._writingBuf : mergeBuf(this._bufs.shift(), this._lens.shift());
       if (this.sync) {
         try {
-          const written = fs6.writeSync(this.fd, this._writingBuf);
+          const written = fs7.writeSync(this.fd, this._writingBuf);
           release(null, written);
         } catch (err) {
           release(err);
@@ -8977,7 +8977,7 @@ var require_sonic_boom = __commonJS({
         if (kCopyBuffer) {
           this._writingBuf = Buffer.from(this._writingBuf);
         }
-        fs6.write(this.fd, this._writingBuf, release);
+        fs7.write(this.fd, this._writingBuf, release);
       }
     }
     function actualClose(sonic) {
@@ -8993,12 +8993,12 @@ var require_sonic_boom = __commonJS({
       sonic._lens = [];
       assert2(typeof sonic.fd === "number", `sonic.fd must be a number, got ${typeof sonic.fd}`);
       try {
-        fs6.fsync(sonic.fd, closeWrapped);
+        fs7.fsync(sonic.fd, closeWrapped);
       } catch {
       }
       function closeWrapped() {
         if (sonic.fd !== 1 && sonic.fd !== 2) {
-          fs6.close(sonic.fd, done);
+          fs7.close(sonic.fd, done);
         } else {
           done();
         }
@@ -9896,15 +9896,15 @@ var require_transport = __commonJS({
       if (!unquoted) {
         return false;
       }
-      let path9 = unquoted;
-      if (path9.startsWith("file://")) {
+      let path10 = unquoted;
+      if (path10.startsWith("file://")) {
         try {
-          path9 = fileURLToPath2(path9);
+          path10 = fileURLToPath2(path10);
         } catch {
           return false;
         }
       }
-      return isAbsolute(path9) && !existsSync(path9);
+      return isAbsolute(path10) && !existsSync(path10);
     }
     function stripQuotes(value) {
       const first = value[0];
@@ -44517,15 +44517,15 @@ var require_tools2 = __commonJS({
        * @param {String} path - Mailbox path to encode
        * @returns {String} Encoded mailbox path
        */
-      encodePath(connection, path9) {
-        path9 = (path9 || "").toString();
-        if (!connection.enabled.has("UTF8=ACCEPT") && !tools.isRev2Active(connection) && /[&\x00-\x08\x0b-\x0c\x0e-\x1f\u0080-\uffff]/.test(path9)) {
+      encodePath(connection, path10) {
+        path10 = (path10 || "").toString();
+        if (!connection.enabled.has("UTF8=ACCEPT") && !tools.isRev2Active(connection) && /[&\x00-\x08\x0b-\x0c\x0e-\x1f\u0080-\uffff]/.test(path10)) {
           try {
-            path9 = iconv.encode(path9, "utf-7-imap").toString();
+            path10 = iconv.encode(path10, "utf-7-imap").toString();
           } catch {
           }
         }
-        return path9;
+        return path10;
       },
       /**
        * Decodes a mailbox path from modified UTF-7 if the server does not support UTF8=ACCEPT.
@@ -44534,15 +44534,15 @@ var require_tools2 = __commonJS({
        * @param {String} path - Mailbox path to decode
        * @returns {String} Decoded mailbox path
        */
-      decodePath(connection, path9) {
-        path9 = (path9 || "").toString();
-        if (!connection.enabled.has("UTF8=ACCEPT") && !tools.isRev2Active(connection) && /[&]/.test(path9)) {
+      decodePath(connection, path10) {
+        path10 = (path10 || "").toString();
+        if (!connection.enabled.has("UTF8=ACCEPT") && !tools.isRev2Active(connection) && /[&]/.test(path10)) {
           try {
-            path9 = iconv.decode(Buffer.from(path9), "utf-7-imap").toString();
+            path10 = iconv.decode(Buffer.from(path10), "utf-7-imap").toString();
           } catch {
           }
         }
-        return path9;
+        return path10;
       },
       /**
        * Normalizes a mailbox path by joining array segments with the namespace delimiter,
@@ -44553,17 +44553,17 @@ var require_tools2 = __commonJS({
        * @param {Boolean} [skipNamespace] - If true, skips prepending the namespace prefix
        * @returns {String} Normalized mailbox path
        */
-      normalizePath(connection, path9, skipNamespace) {
-        if (Array.isArray(path9)) {
-          path9 = path9.join(connection.namespace && connection.namespace.delimiter || "");
+      normalizePath(connection, path10, skipNamespace) {
+        if (Array.isArray(path10)) {
+          path10 = path10.join(connection.namespace && connection.namespace.delimiter || "");
         }
-        if (path9.toUpperCase() === "INBOX") {
+        if (path10.toUpperCase() === "INBOX") {
           return "INBOX";
         }
-        if (!skipNamespace && connection.namespace && connection.namespace.prefix && !path9.startsWith(connection.namespace.prefix)) {
-          path9 = connection.namespace.prefix + path9;
+        if (!skipNamespace && connection.namespace && connection.namespace.prefix && !path10.startsWith(connection.namespace.prefix)) {
+          path10 = connection.namespace.prefix + path10;
         }
-        return path9;
+        return path10;
       },
       /**
        * Compares two mailbox paths for equality after normalization.
@@ -44894,14 +44894,14 @@ var require_tools2 = __commonJS({
           }
         }
         if (map.emailId || map.uid) {
-          let path9 = mailbox.path;
-          if (/[\u0080-\uffff]/.test(path9)) {
+          let path10 = mailbox.path;
+          if (/[\u0080-\uffff]/.test(path10)) {
             try {
-              path9 = iconv.encode(path9, "utf-7-imap").toString();
+              path10 = iconv.encode(path10, "utf-7-imap").toString();
             } catch {
             }
           }
-          map.id = map.emailId || createHash("md5").update([path9, mailbox.uidValidity?.toString() || "", map.uid.toString()].join(":")).digest("hex");
+          map.id = map.emailId || createHash("md5").update([path10, mailbox.uidValidity?.toString() || "", map.uid.toString()].join(":")).digest("hex");
         }
         if (map.flags) {
           let flagColor = tools.getFlagColor(map.flags);
@@ -45085,16 +45085,16 @@ var require_tools2 = __commonJS({
        * @returns {Object} Parsed body structure tree with part numbers, types, parameters, and child nodes
        */
       parseBodystructure(entry) {
-        let walk = (node, path9) => {
-          path9 = path9 || [];
+        let walk = (node, path10) => {
+          path10 = path10 || [];
           let curNode = {}, i = 0, part = 0;
-          if (path9.length) {
-            curNode.part = path9.join(".");
+          if (path10.length) {
+            curNode.part = path10.join(".");
           }
           if (Array.isArray(node[0])) {
             curNode.childNodes = [];
             while (Array.isArray(node[i])) {
-              curNode.childNodes.push(walk(node[i], path9.concat(++part)));
+              curNode.childNodes.push(walk(node[i], path10.concat(++part)));
               i++;
             }
             curNode.type = "multipart/" + ((node[i++] || {}).value || "").toString().toLowerCase();
@@ -45137,7 +45137,7 @@ var require_tools2 = __commonJS({
                   // the encapsulated message shares the part number with its wrapper.
                   // Distinction is via suffixes: path.MIME = wrapper headers,
                   // path.HEADER = encapsulated message headers.
-                  walk(node[i], path9)
+                  walk(node[i], path10)
                 ];
               }
               i++;
@@ -47099,14 +47099,14 @@ var require_select = __commonJS({
       // update into a silent no-op for the rest of the session.
       permanentflags: { key: "permanentFlags", parse: (value) => Array.isArray(value) && new Set(value) }
     });
-    module.exports = async (connection, path9, options) => {
+    module.exports = async (connection, path10, options) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
       options = options || {};
-      path9 = normalizePath(connection, path9);
-      if (!connection.folders.has(path9)) {
-        let folders = await connection.run("LIST", "", path9);
+      path10 = normalizePath(connection, path10);
+      if (!connection.folders.has(path10)) {
+        let folders = await connection.run("LIST", "", path10);
         if (!folders) {
           throw new Error("Failed to fetch folders");
         }
@@ -47114,10 +47114,10 @@ var require_select = __commonJS({
           connection.folders.set(folder.path, folder);
         });
       }
-      let folderListData = connection.folders.has(path9) ? connection.folders.get(path9) : false;
+      let folderListData = connection.folders.has(path10) ? connection.folders.get(path10) : false;
       let response;
       try {
-        let map = { path: path9 };
+        let map = { path: path10 };
         if (folderListData) {
           ["delimiter", "specialUse", "subscribed", "listed"].forEach((key) => {
             if (folderListData[key]) {
@@ -47136,7 +47136,7 @@ var require_select = __commonJS({
           ]);
           map.qresync = true;
         }
-        let encodedPath = encodePath(connection, path9);
+        let encodedPath = encodePath(connection, path10);
         let selectCommand = {
           command: !options.readOnly ? "SELECT" : "EXAMINE",
           /* c8 ignore next */
@@ -47196,12 +47196,12 @@ var require_select = __commonJS({
             // since the client's last known state. Only received when QRESYNC was requested.
             // A dummy mailbox object is passed because the mailbox isn't officially open yet.
             VANISHED: async (untagged) => {
-              await connection.untaggedVanished(untagged, { path: path9, uidNext: false, uidValidity: false });
+              await connection.untaggedVanished(untagged, { path: path10, uidNext: false, uidValidity: false });
             },
             // Untagged FETCH during SELECT/EXAMINE: only occurs with QRESYNC, delivering
             // updated flags for messages that changed since the client's last modseq.
             FETCH: async (untagged) => {
-              await connection.untaggedFetch(untagged, { path: path9, uidNext: false, uidValidity: false });
+              await connection.untaggedFetch(untagged, { path: path10, uidNext: false, uidValidity: false });
             }
           }
         });
@@ -47215,13 +47215,13 @@ var require_select = __commonJS({
         }
         let currentMailbox = connection.mailbox;
         connection.mailbox = false;
-        if (currentMailbox && currentMailbox.path !== path9) {
+        if (currentMailbox && currentMailbox.path !== path10) {
           connection.emit("mailboxClose", currentMailbox);
         }
         connection.mailbox = map;
         connection.currentSelectCommand = selectCommand;
         connection.state = connection.states.SELECTED;
-        if (!currentMailbox || currentMailbox.path !== path9) {
+        if (!currentMailbox || currentMailbox.path !== path10) {
           connection.emit("mailboxOpen", connection.mailbox);
         }
         response.next();
@@ -47436,17 +47436,17 @@ var require_create = __commonJS({
   "node_modules/imapflow/lib/commands/create.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, getStatusCode, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path9) => {
+    module.exports = async (connection, path10) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path9 = normalizePath(connection, path9);
+      path10 = normalizePath(connection, path10);
       let response;
       try {
         let map = {
-          path: path9
+          path: path10
         };
-        response = await connection.exec("CREATE", [{ type: "ATOM", value: encodePath(connection, path9) }]);
+        response = await connection.exec("CREATE", [{ type: "ATOM", value: encodePath(connection, path10) }]);
         let section = response.response.attributes && response.response.attributes[0] && response.response.attributes[0].section && response.response.attributes[0].section.length ? response.response.attributes[0].section : false;
         if (section) {
           let key;
@@ -47472,13 +47472,13 @@ var require_create = __commonJS({
         }
         map.created = true;
         response.next();
-        await connection.run("SUBSCRIBE", path9);
+        await connection.run("SUBSCRIBE", path10);
         return map;
       } catch (err) {
         let errorCode = getStatusCode(err.response);
         if (errorCode === "ALREADYEXISTS") {
           return {
-            path: path9,
+            path: path10,
             created: false
           };
         }
@@ -47495,20 +47495,20 @@ var require_delete = __commonJS({
   "node_modules/imapflow/lib/commands/delete.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path9) => {
+    module.exports = async (connection, path10) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path9 = normalizePath(connection, path9);
-      if (connection.state === connection.states.SELECTED && connection.mailbox.path === path9) {
+      path10 = normalizePath(connection, path10);
+      if (connection.state === connection.states.SELECTED && connection.mailbox.path === path10) {
         await connection.run("CLOSE");
       }
       let response;
       try {
         let map = {
-          path: path9
+          path: path10
         };
-        response = await connection.exec("DELETE", [{ type: "ATOM", value: encodePath(connection, path9) }]);
+        response = await connection.exec("DELETE", [{ type: "ATOM", value: encodePath(connection, path10) }]);
         response.next();
         return map;
       } catch (err) {
@@ -47525,23 +47525,23 @@ var require_rename = __commonJS({
   "node_modules/imapflow/lib/commands/rename.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path9, newPath) => {
+    module.exports = async (connection, path10, newPath) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path9 = normalizePath(connection, path9);
+      path10 = normalizePath(connection, path10);
       newPath = normalizePath(connection, newPath);
-      if (connection.state === connection.states.SELECTED && connection.mailbox.path === path9) {
+      if (connection.state === connection.states.SELECTED && connection.mailbox.path === path10) {
         await connection.run("CLOSE");
       }
       let response;
       try {
         let map = {
-          path: path9,
+          path: path10,
           newPath
         };
         response = await connection.exec("RENAME", [
-          { type: "ATOM", value: encodePath(connection, path9) },
+          { type: "ATOM", value: encodePath(connection, path10) },
           { type: "ATOM", value: encodePath(connection, newPath) }
         ]);
         response.next();
@@ -47588,14 +47588,14 @@ var require_subscribe = __commonJS({
   "node_modules/imapflow/lib/commands/subscribe.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path9) => {
+    module.exports = async (connection, path10) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path9 = normalizePath(connection, path9);
+      path10 = normalizePath(connection, path10);
       let response;
       try {
-        response = await connection.exec("SUBSCRIBE", [{ type: "ATOM", value: encodePath(connection, path9) }]);
+        response = await connection.exec("SUBSCRIBE", [{ type: "ATOM", value: encodePath(connection, path10) }]);
         response.next();
         return true;
       } catch (err) {
@@ -47612,14 +47612,14 @@ var require_unsubscribe = __commonJS({
   "node_modules/imapflow/lib/commands/unsubscribe.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError } = require_tools2();
-    module.exports = async (connection, path9) => {
+    module.exports = async (connection, path10) => {
       if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state)) {
         return;
       }
-      path9 = normalizePath(connection, path9);
+      path10 = normalizePath(connection, path10);
       let response;
       try {
-        response = await connection.exec("UNSUBSCRIBE", [{ type: "ATOM", value: encodePath(connection, path9) }]);
+        response = await connection.exec("UNSUBSCRIBE", [{ type: "ATOM", value: encodePath(connection, path10) }]);
         response.next();
         return true;
       } catch (err) {
@@ -48433,11 +48433,11 @@ var require_status = __commonJS({
     var { encodePath, normalizePath, buildStatusQueryAttributes, isRev2Active } = require_tools2();
     var { parseStatusList } = require_status_fields();
     var MAILBOX_UPDATERS = {
-      messages: (value, connection, path9) => {
+      messages: (value, connection, path10) => {
         let prevCount = connection.mailbox.exists;
         if (prevCount !== value) {
           connection.mailbox.exists = value;
-          connection.emit("exists", { path: path9, count: value, prevCount });
+          connection.emit("exists", { path: path10, count: value, prevCount });
         }
       },
       uidNext: (value, connection) => {
@@ -48447,28 +48447,28 @@ var require_status = __commonJS({
         connection.mailbox.highestModseq = value;
       }
     };
-    module.exports = async (connection, path9, query) => {
-      if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state) || !path9) {
+    module.exports = async (connection, path10, query) => {
+      if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state) || !path10) {
         return false;
       }
-      path9 = normalizePath(connection, path9);
-      let encodedPath = encodePath(connection, path9);
+      path10 = normalizePath(connection, path10);
+      let encodedPath = encodePath(connection, path10);
       let attributes2 = [{ type: encodedPath.indexOf("&") >= 0 ? "STRING" : "ATOM", value: encodedPath }];
       let queryAttributes = buildStatusQueryAttributes(connection, query);
       let syntheticRecent = query && query.recent && isRev2Active(connection);
       if (!queryAttributes.length) {
-        return syntheticRecent ? { path: path9, recent: 0 } : false;
+        return syntheticRecent ? { path: path10, recent: 0 } : false;
       }
       attributes2.push(queryAttributes);
       let response;
       try {
-        let map = { path: path9 };
+        let map = { path: path10 };
         response = await connection.exec("STATUS", attributes2, {
           untagged: {
             // STATUS response: * STATUS <mailbox> (<key> <value> <key> <value> ...)
             // Parsed as alternating key-value pairs (i % 2 pattern).
             STATUS: async (untagged) => {
-              let updateCurrent = connection.state === connection.states.SELECTED && path9 === connection.mailbox.path;
+              let updateCurrent = connection.state === connection.states.SELECTED && path10 === connection.mailbox.path;
               let list = untagged.attributes && Array.isArray(untagged.attributes[1]) ? untagged.attributes[1] : false;
               if (!list) {
                 return;
@@ -48476,7 +48476,7 @@ var require_status = __commonJS({
               parseStatusList(list, (key, value) => {
                 map[key] = value;
                 if (updateCurrent && MAILBOX_UPDATERS[key]) {
-                  MAILBOX_UPDATERS[key](value, connection, path9);
+                  MAILBOX_UPDATERS[key](value, connection, path10);
                 }
               });
             }
@@ -48489,9 +48489,9 @@ var require_status = __commonJS({
         return map;
       } catch (err) {
         if (err.responseStatus === "NO") {
-          let folders = await connection.run("LIST", "", path9, { listOnly: true });
+          let folders = await connection.run("LIST", "", path10, { listOnly: true });
           if (folders && !folders.length) {
-            let error2 = new Error(`Mailbox doesn't exist: ${path9}`);
+            let error2 = new Error(`Mailbox doesn't exist: ${path10}`);
             error2.code = "NotFound";
             error2.response = err;
             throw error2;
@@ -48638,15 +48638,15 @@ var require_quota = __commonJS({
   "node_modules/imapflow/lib/commands/quota.js"(exports, module) {
     "use strict";
     var { encodePath, normalizePath, enhanceCommandError, parseUintValue, isUnsafeKey } = require_tools2();
-    module.exports = async (connection, path9) => {
-      if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state) || !path9) {
+    module.exports = async (connection, path10) => {
+      if (![connection.states.AUTHENTICATED, connection.states.SELECTED].includes(connection.state) || !path10) {
         return;
       }
       if (!connection.capabilities.has("QUOTA")) {
         return false;
       }
-      path9 = normalizePath(connection, path9);
-      let map = { path: path9 };
+      path10 = normalizePath(connection, path10);
+      let map = { path: path10 };
       let processQuotaResponse = (untagged) => {
         let attributes2 = untagged.attributes && untagged.attributes[1];
         if (!attributes2 || !attributes2.length) {
@@ -48686,7 +48686,7 @@ var require_quota = __commonJS({
       let quotaFound = false;
       let response;
       try {
-        response = await connection.exec("GETQUOTAROOT", [{ type: "ATOM", value: encodePath(connection, path9) }], {
+        response = await connection.exec("GETQUOTAROOT", [{ type: "ATOM", value: encodePath(connection, path10) }], {
           untagged: {
             // QUOTAROOT response tells us which quota root applies to this mailbox.
             // A mailbox may have zero or one quota root.
@@ -48839,15 +48839,15 @@ var require_idle = __commonJS({
       }
     }
     async function pollOnce(connection, session) {
-      let path9 = connection.mailbox && connection.mailbox.path;
+      let path10 = connection.mailbox && connection.mailbox.path;
       switch (connection.missingIdleCommand) {
         case "SELECT":
           connection.log.debug({ msg: `Running SELECT to detect changes in folder`, cid: connection.id });
-          await connection.runInternal("SELECT", path9, { readOnly: session.selectCommand.command === "EXAMINE" });
+          await connection.runInternal("SELECT", path10, { readOnly: session.selectCommand.command === "EXAMINE" });
           break;
         case "STATUS": {
           connection.log.debug({ msg: `Running STATUS to detect changes in folder`, cid: connection.id });
-          let status = await connection.runInternal("STATUS", path9, {
+          let status = await connection.runInternal("STATUS", path10, {
             messages: true,
             uidNext: true,
             uidValidity: true,
@@ -49159,7 +49159,7 @@ var require_imap_flow = __commonJS({
     "use strict";
     var tls = __require("tls");
     var net2 = __require("net");
-    var crypto3 = __require("crypto");
+    var crypto4 = __require("crypto");
     var { EventEmitter } = __require("events");
     var logger = require_logger();
     var libmime = require_libmime();
@@ -49537,7 +49537,7 @@ var require_imap_flow = __commonJS({
         this.emit("error", err);
       }
       getRandomId() {
-        let rid = BigInt("0x" + crypto3.randomBytes(13).toString("hex")).toString(36);
+        let rid = BigInt("0x" + crypto4.randomBytes(13).toString("hex")).toString(36);
         if (rid.length < 20) {
           rid = "0".repeat(20 - rid.length) + rid;
         }
@@ -50617,12 +50617,12 @@ var require_imap_flow = __commonJS({
           this.emit("flags", updateEvent);
         }
       }
-      async ensureSelectedMailbox(path9) {
-        if (!path9) {
+      async ensureSelectedMailbox(path10) {
+        if (!path10) {
           return false;
         }
-        if (!this.mailbox || !comparePaths(this, this.mailbox.path, path9)) {
-          return await this.mailboxOpen(path9);
+        if (!this.mailbox || !comparePaths(this, this.mailbox.path, path10)) {
+          return await this.mailboxOpen(path10);
         }
         return true;
       }
@@ -51050,9 +51050,9 @@ var require_imap_flow = __commonJS({
        * let quota = await client.getQuota();
        * console.log(quota.storage.used, quota.storage.limit)
        */
-      async getQuota(path9) {
-        path9 = path9 || "INBOX";
-        return await this.run("QUOTA", path9);
+      async getQuota(path10) {
+        path10 = path10 || "INBOX";
+        return await this.run("QUOTA", path10);
       }
       /**
        * @typedef {Object} ListResponse
@@ -51162,8 +51162,8 @@ var require_imap_flow = __commonJS({
        * console.log(info.path);
        * // "INBOX.parent.child" // assumes "INBOX." as namespace prefix and "." as delimiter
        */
-      async mailboxCreate(path9) {
-        return await this.run("CREATE", path9);
+      async mailboxCreate(path10) {
+        return await this.run("CREATE", path10);
       }
       /**
        * @typedef {Object} MailboxRenameResponse
@@ -51184,8 +51184,8 @@ var require_imap_flow = __commonJS({
        * console.log(info.newPath);
        * // "INBOX.Important stuff ❗️" // assumes "INBOX." as namespace prefix
        */
-      async mailboxRename(path9, newPath) {
-        return await this.run("RENAME", path9, newPath);
+      async mailboxRename(path10, newPath) {
+        return await this.run("RENAME", path10, newPath);
       }
       /**
        * @typedef {Object} MailboxDeleteResponse
@@ -51204,8 +51204,8 @@ var require_imap_flow = __commonJS({
        * console.log(info.path);
        * // "INBOX.Important stuff ❗️" // assumes "INBOX." as namespace prefix
        */
-      async mailboxDelete(path9) {
-        return await this.run("DELETE", path9);
+      async mailboxDelete(path10) {
+        return await this.run("DELETE", path10);
       }
       /**
        * Subscribes to a mailbox
@@ -51216,8 +51216,8 @@ var require_imap_flow = __commonJS({
        * @example
        * await client.mailboxSubscribe('Important stuff ❗️');
        */
-      async mailboxSubscribe(path9) {
-        return await this.run("SUBSCRIBE", path9);
+      async mailboxSubscribe(path10) {
+        return await this.run("SUBSCRIBE", path10);
       }
       /**
        * Unsubscribes from a mailbox
@@ -51228,8 +51228,8 @@ var require_imap_flow = __commonJS({
        * @example
        * await client.mailboxUnsubscribe('Important stuff ❗️');
        */
-      async mailboxUnsubscribe(path9) {
-        return await this.run("UNSUBSCRIBE", path9);
+      async mailboxUnsubscribe(path10) {
+        return await this.run("UNSUBSCRIBE", path10);
       }
       /**
        * Opens a mailbox to access messages. You can perform message operations only against an opened mailbox.
@@ -51247,8 +51247,8 @@ var require_imap_flow = __commonJS({
        * console.log(mailbox.exists);
        * // 125
        */
-      async mailboxOpen(path9, options) {
-        return await this.run("SELECT", path9, options);
+      async mailboxOpen(path10, options) {
+        return await this.run("SELECT", path10, options);
       }
       /**
        * Closes a previously opened mailbox
@@ -51295,8 +51295,8 @@ var require_imap_flow = __commonJS({
        * console.log(status.unseen);
        * // 123
        */
-      async status(path9, query) {
-        return await this.run("STATUS", path9, query);
+      async status(path10, query) {
+        return await this.run("STATUS", path10, query);
       }
       /**
        * Starts listening for new or deleted messages from the currently opened mailbox. Only required if {@link ImapFlow#disableAutoIdle} is set to `true`
@@ -51550,8 +51550,8 @@ var require_imap_flow = __commonJS({
        * @example
        * await client.append('INBOX', rawMessageBuffer, ['\\Seen'], new Date(2000, 1, 1));
        */
-      async append(path9, content, flags, idate) {
-        return await this.run("APPEND", path9, content, flags, idate) || false;
+      async append(path10, content, flags, idate) {
+        return await this.run("APPEND", path10, content, flags, idate) || false;
       }
       /**
        * @typedef {Object} CopyResponseObject
@@ -52405,7 +52405,7 @@ var require_imap_flow = __commonJS({
               await new Promise((resolve2) => setImmediate(resolve2));
             }
             const lock = this.locks.shift();
-            const { resolve, reject, path: path9, options, lockId } = lock;
+            const { resolve, reject, path: path10, options, lockId } = lock;
             if (lock.acquireTimer) {
               clearTimeout(lock.acquireTimer);
               lock.acquireTimer = null;
@@ -52421,7 +52421,7 @@ var require_imap_flow = __commonJS({
                 this.log.warn({
                   msg: "Mailbox lock held for a long time",
                   lockId: lock.lockId,
-                  path: path9,
+                  path: path10,
                   heldFor: Date.now() - lock.heldAt,
                   /* c8 ignore next */
                   // the held-lock-warning diagnostic with a description set is a timing-dependent log detail
@@ -52458,20 +52458,20 @@ var require_imap_flow = __commonJS({
               }
             };
             if (!this.usable || !this.socket || this.socket.destroyed) {
-              this.log.trace({ msg: "Failed to acquire mailbox lock", path: path9, lockId, idling: this.idling });
-              reject(this.createNoConnectionError(false, { rejectedFrom: "mailboxLock", path: path9 }));
+              this.log.trace({ msg: "Failed to acquire mailbox lock", path: path10, lockId, idling: this.idling });
+              reject(this.createNoConnectionError(false, { rejectedFrom: "mailboxLock", path: path10 }));
               continue;
             }
             const grantLock = () => {
               this.currentLock = lock;
               armHeldTimer();
               this.autoidle();
-              resolve({ path: path9, release });
+              resolve({ path: path10, release });
             };
-            if (this.mailbox && this.mailbox.path === path9 && !!this.mailbox.readOnly === !!options.readOnly) {
+            if (this.mailbox && this.mailbox.path === path10 && !!this.mailbox.readOnly === !!options.readOnly) {
               this.log.trace({
                 msg: "Mailbox lock acquired [existing]",
-                path: path9,
+                path: path10,
                 lockId,
                 idling: this.idling,
                 ...options.description && { description: options.description }
@@ -52480,10 +52480,10 @@ var require_imap_flow = __commonJS({
               break;
             }
             try {
-              await this.mailboxOpen(path9, options);
+              await this.mailboxOpen(path10, options);
               this.log.trace({
                 msg: "Mailbox lock acquired [selected]",
-                path: path9,
+                path: path10,
                 lockId,
                 idling: this.idling,
                 ...options.description && { description: options.description }
@@ -52493,17 +52493,17 @@ var require_imap_flow = __commonJS({
             } catch (err) {
               if (err.responseStatus === "NO") {
                 try {
-                  let folders = await this.run("LIST", "", path9, { listOnly: true });
+                  let folders = await this.run("LIST", "", path10, { listOnly: true });
                   if (!folders || !folders.length) {
                     err.mailboxMissing = true;
                   }
                 } catch (E) {
-                  this.log.trace({ msg: "Failed to verify failed mailbox", path: path9, err: E });
+                  this.log.trace({ msg: "Failed to verify failed mailbox", path: path10, err: E });
                 }
               }
               this.log.trace({
                 msg: "Failed to acquire mailbox lock",
-                path: path9,
+                path: path10,
                 lockId,
                 idling: this.idling,
                 ...options.description && { description: options.description },
@@ -52542,13 +52542,13 @@ var require_imap_flow = __commonJS({
        *   lock.release();
        * }
        */
-      getMailboxLock(path9, options) {
+      getMailboxLock(path10, options) {
         options = options || {};
-        path9 = normalizePath(this, path9);
+        path10 = normalizePath(this, path10);
         let lockId = ++this.lockCounter;
         this.log.trace({
           msg: "Requesting lock",
-          path: path9,
+          path: path10,
           lockId,
           ...options.description && { description: options.description },
           activeLock: this.currentLock ? {
@@ -52557,7 +52557,7 @@ var require_imap_flow = __commonJS({
           } : null
         });
         let lockPromise = guardedPromise((resolve, reject) => {
-          let lockEntry = { resolve, reject, path: path9, options, lockId };
+          let lockEntry = { resolve, reject, path: path10, options, lockId };
           this.locks.push(lockEntry);
           if (Number(options.acquireTimeout) > 0) {
             lockEntry.acquireTimer = setTimeout(() => {
@@ -52650,7 +52650,7 @@ var require_imap_flow = __commonJS({
 });
 
 // plugins/prospect/src/server.mjs
-import path8 from "node:path";
+import path9 from "node:path";
 
 // node_modules/zod/v3/external.js
 var external_exports = {};
@@ -53130,8 +53130,8 @@ function getErrorMap() {
 
 // node_modules/zod/v3/helpers/parseUtil.js
 var makeIssue = (params) => {
-  const { data, path: path9, errorMaps, issueData } = params;
-  const fullPath = [...path9, ...issueData.path || []];
+  const { data, path: path10, errorMaps, issueData } = params;
+  const fullPath = [...path10, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -53247,11 +53247,11 @@ var errorUtil;
 
 // node_modules/zod/v3/types.js
 var ParseInputLazyPath = class {
-  constructor(parent, value, path9, key) {
+  constructor(parent, value, path10, key) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
-    this._path = path9;
+    this._path = path10;
     this._key = key;
   }
   get path() {
@@ -56888,10 +56888,10 @@ function assignProp(target, prop, value) {
     configurable: true
   });
 }
-function getElementAtPath(obj, path9) {
-  if (!path9)
+function getElementAtPath(obj, path10) {
+  if (!path10)
     return obj;
-  return path9.reduce((acc, key) => acc?.[key], obj);
+  return path10.reduce((acc, key) => acc?.[key], obj);
 }
 function promiseAllObject(promisesObj) {
   const keys = Object.keys(promisesObj);
@@ -57211,11 +57211,11 @@ function aborted(x, startIndex = 0) {
   }
   return false;
 }
-function prefixIssues(path9, issues) {
+function prefixIssues(path10, issues) {
   return issues.map((iss) => {
     var _a;
     (_a = iss).path ?? (_a.path = []);
-    iss.path.unshift(path9);
+    iss.path.unshift(path10);
     return iss;
   });
 }
@@ -60626,11 +60626,11 @@ function normalizeObjectSchema(schema) {
   }
   return void 0;
 }
-function getDotPath(path9) {
-  if (path9.length === 0) {
+function getDotPath(path10) {
+  if (path10.length === 0) {
     return "object root";
   }
-  return path9.reduce((acc, seg, index) => {
+  return path10.reduce((acc, seg, index) => {
     if (index === 0) {
       return String(seg);
     }
@@ -71499,8 +71499,8 @@ async function safeFetch(input, { method = "GET", timeoutMs = 15e3, maxBytes = 3
 }
 
 // plugins/prospect/src/lib/config.mjs
-import fs2 from "node:fs";
-import path3 from "node:path";
+import fs3 from "node:fs";
+import path4 from "node:path";
 
 // plugins/prospect/src/lib/paths.mjs
 import path2 from "node:path";
@@ -71566,6 +71566,169 @@ var CODE_RE = /^[A-Z0-9]{6,12}$/;
 function prototypeDir(w, code) {
   if (!CODE_RE.test(String(code || ""))) throw new UserError(`"${code}" is not a valid client code.`);
   return path2.join(w.prototypes, code);
+}
+
+// plugins/prospect/src/lib/design-library.mjs
+import crypto2 from "node:crypto";
+import fs2 from "node:fs";
+import path3 from "node:path";
+var VIDEO = /\.(mp4|webm|mov|m4v|ogv)$/i;
+var IMAGE = /\.(png|jpe?g|webp|gif|avif)$/i;
+var MAX_BYTES = 15e8;
+function libraryPaths(w) {
+  const root = path3.join(w.root, "design-library");
+  return { root, inbox: path3.join(root, "inbox"), frames: path3.join(root, "frames"), index: path3.join(root, "library.json") };
+}
+function ensureDesignLibrary(w) {
+  const p = libraryPaths(w);
+  ensureDir(p.inbox);
+  ensureDir(p.frames);
+  if (!exists(p.index)) writeJSON(p.index, { entries: [] });
+  const readme = path3.join(p.root, "README.md");
+  if (!exists(readme)) {
+    fs2.writeFileSync(readme, `# Design library
+
+Drop website design **videos** (screen recordings of sites you love: MP4/WebM/MOV) or **screenshots** into
+\`inbox/\`. Before every prototype, Claude checks this folder, studies anything new once, and picks the designs,
+animations and transitions that suit the business best \u2014 by design fit, not by industry.
+
+- Best results: 20 seconds \u2013 3 minutes per video, recorded at desktop size, scrolling slowly through the whole page.
+- Name files so you recognise them, e.g. \`dark-luxury-scroll.mp4\`.
+- iPhone .mov (HEVC) may not play in Chrome \u2014 export as MP4 (H.264) if a video shows as "unsupported".
+- Files are never uploaded anywhere. Frames are saved in \`frames/\`, the analysis in \`library.json\`.
+- Inspiration only: prototypes never copy another site's text, images, logos or code.
+
+Commands: \`/prospect:library\` (status), \`/prospect:library scan\` (study new files now), \`/prospect:library remove <id>\`.
+`);
+  }
+  return p;
+}
+function loadIndex(w) {
+  return readJSON(libraryPaths(w).index, { entries: [] });
+}
+function saveIndex(w, idx) {
+  writeJSON(libraryPaths(w).index, idx);
+}
+function fingerprint(file) {
+  const st = fs2.statSync(file);
+  const h = crypto2.createHash("sha1").update(`${st.size}:${Math.round(st.mtimeMs)}`);
+  const fd = fs2.openSync(file, "r");
+  try {
+    const n = Math.min(65536, st.size);
+    const buf = Buffer.alloc(n);
+    fs2.readSync(fd, buf, 0, n, 0);
+    h.update(buf);
+    if (st.size > n) {
+      fs2.readSync(fd, buf, 0, n, Math.max(0, st.size - n));
+      h.update(buf);
+    }
+  } finally {
+    fs2.closeSync(fd);
+  }
+  return h.digest("hex").slice(0, 16);
+}
+function walkInbox(dir, base = dir, out = []) {
+  if (!exists(dir)) return out;
+  for (const name of fs2.readdirSync(dir)) {
+    if (name.startsWith(".")) continue;
+    const full = path3.join(dir, name);
+    const st = fs2.statSync(full);
+    if (st.isDirectory()) walkInbox(full, base, out);
+    else if (VIDEO.test(name) || IMAGE.test(name)) out.push({ full, rel: path3.relative(base, full).replace(/\\/g, "/"), size: st.size });
+  }
+  return out;
+}
+function syncInbox(w) {
+  const p = ensureDesignLibrary(w);
+  const idx = loadIndex(w);
+  const files = walkInbox(p.inbox);
+  const seen = /* @__PURE__ */ new Set();
+  for (const f of files) {
+    const fp = fingerprint(f.full);
+    seen.add(f.rel);
+    if (idx.entries.some((x) => x.removed && x.fingerprint === fp)) continue;
+    let e = idx.entries.find((x) => x.file === f.rel && !x.removed);
+    if (e && e.fingerprint === fp) {
+      if (e.status === "missing") e.status = e.analysis ? "analysed" : "new";
+      continue;
+    }
+    if (!e) {
+      let id = slugify(path3.basename(f.rel).replace(/\.[^.]+$/, "")) || "design";
+      let n = 2;
+      while (idx.entries.some((x) => x.id === id)) id = `${slugify(path3.basename(f.rel).replace(/\.[^.]+$/, ""))}-${n++}`;
+      e = { id, file: f.rel, added_at: now() };
+      idx.entries.push(e);
+    }
+    Object.assign(e, { kind: VIDEO.test(f.rel) ? "video" : "image", fingerprint: fp, size_mb: Math.round(f.size / 1048576 * 10) / 10, status: "new", sheets: [], analysis: e.analysis ? { ...e.analysis, outdated: true } : null, error: null });
+    if (e.kind === "image") {
+      e.sheets = [path3.relative(w.root, f.full).replace(/\\/g, "/")];
+      e.status = "frames_ready";
+    }
+    if (f.size > MAX_BYTES) Object.assign(e, { status: "unsupported", error: "File is larger than 1.5 GB \u2014 trim or compress it." });
+  }
+  for (const e of idx.entries) if (!seen.has(e.file) && !e.removed) e.status = "missing";
+  saveIndex(w, idx);
+  return idx;
+}
+function libraryStatus(w) {
+  const idx = loadIndex(w);
+  const live = idx.entries.filter((e) => !e.removed);
+  const needsAnalysis = live.filter((e) => e.status === "frames_ready").map((e) => ({ id: e.id, file: e.file, kind: e.kind, duration_s: e.duration_s || null, sheets: e.sheets.map((s) => path3.join(w.root, s)), previous_analysis: e.analysis ? "outdated \u2014 file changed" : null }));
+  return {
+    inbox: libraryPaths(w).inbox,
+    total: live.length,
+    analysed: live.filter((e) => e.status === "analysed").length,
+    needs_frames: live.filter((e) => e.status === "new").map((e) => e.id),
+    needs_analysis: needsAnalysis,
+    unsupported: live.filter((e) => e.status === "unsupported").map((e) => ({ id: e.id, file: e.file, error: e.error })),
+    missing: live.filter((e) => e.status === "missing").map((e) => e.id)
+  };
+}
+function listLibrary(w, { full = false } = {}) {
+  return loadIndex(w).entries.filter((e) => !e.removed && e.analysis).map((e) => {
+    const a = e.analysis;
+    const base = { id: e.id, file: e.file, kind: e.kind, favourite: Boolean(e.favourite), title: a.title, summary: a.summary, style_keywords: a.style_keywords, mood: a.mood, suits: a.suits, avoid_for: a.avoid_for, template_mapping: a.template_mapping, status: e.status, used_count: e.used_count || 0, detail_frame: e.sheets.length ? path3.join(w.root, e.sheets.find((s) => /detail\.jpg$/.test(s)) || e.sheets[0]) : null };
+    return full ? { ...base, analysis: a, sheets: e.sheets.map((s) => path3.join(w.root, s)) } : base;
+  });
+}
+function getLibraryEntry(w, id) {
+  const e = loadIndex(w).entries.find((x) => x.id === id && !x.removed);
+  if (!e) throw new UserError(`No design-library entry "${id}".`, "Run /prospect:library to see the ids.");
+  return { ...e, sheets: e.sheets.map((s) => path3.join(w.root, s)) };
+}
+function saveAnalysis(w, id, analysis) {
+  const idx = loadIndex(w);
+  const e = idx.entries.find((x) => x.id === id && !x.removed);
+  if (!e) throw new UserError(`No design-library entry "${id}".`);
+  if (!["frames_ready", "analysed"].includes(e.status)) throw new UserError(`"${id}" is not ready for analysis (status ${e.status}).`, "Run the library scan first.");
+  e.analysis = { ...analysis, analysed_at: now() };
+  e.status = "analysed";
+  saveIndex(w, idx);
+  return { saved: id, title: analysis.title };
+}
+function updateEntry(w, id, { favourite, remove, deleteFiles } = {}) {
+  const idx = loadIndex(w);
+  const e = idx.entries.find((x) => x.id === id && !x.removed);
+  if (!e) throw new UserError(`No design-library entry "${id}".`);
+  if (favourite !== void 0) e.favourite = Boolean(favourite);
+  if (remove) {
+    e.removed = true;
+    e.removed_at = now();
+    removeDir(path3.join(libraryPaths(w).frames, e.id));
+    if (deleteFiles) fs2.rmSync(path3.join(libraryPaths(w).inbox, e.file), { force: true });
+  }
+  saveIndex(w, idx);
+  return { id, favourite: e.favourite || false, removed: Boolean(e.removed), file_deleted: Boolean(remove && deleteFiles) };
+}
+function markUsed(w, ids = []) {
+  if (!ids.length) return;
+  const idx = loadIndex(w);
+  for (const e of idx.entries) if (ids.includes(e.id)) e.used_count = (e.used_count || 0) + 1;
+  saveIndex(w, idx);
+}
+function libraryExists(w, ids = []) {
+  const known = new Set(loadIndex(w).entries.filter((e) => !e.removed).map((e) => e.id));
+  return ids.filter((i) => !known.has(i));
 }
 
 // plugins/prospect/src/lib/config.mjs
@@ -71653,7 +71816,7 @@ META_IG_USER_ID=
 # PROTOTYPE_PASSWORD_AB7K29X2=choose-a-password
 `;
 function initWorkspace(root, { agency } = {}) {
-  root = path3.resolve(root);
+  root = path4.resolve(root);
   const w = workspacePaths(root);
   const created = !exists(w.config);
   if (created) {
@@ -71663,16 +71826,17 @@ function initWorkspace(root, { agency } = {}) {
   }
   for (const d of [w.internal, w.locks, w.references, w.leads, w.prototypes]) ensureDir(d);
   if (!exists(w.secrets)) writeText(w.secrets, SECRET_TEMPLATE);
-  const gi = path3.join(root, ".gitignore");
+  const gi = path4.join(root, ".gitignore");
   if (!exists(gi)) writeText(gi, ".prospect/secrets.env\n.prospect/builder/node_modules/\n.prospect/locks/\nsite/\n");
   if (!exists(w.referencesIndex)) writeJSON(w.referencesIndex, { references: [] });
   if (!exists(w.suppression)) writeJSON(w.suppression, { entries: [] });
-  return { workspace: root, created, config_file: path3.join(root, CONFIG_FILE), secrets_file: w.secrets };
+  ensureDesignLibrary(w);
+  return { workspace: root, created, config_file: path4.join(root, CONFIG_FILE), secrets_file: w.secrets };
 }
 function readSecrets(w) {
   if (!exists(w.secrets)) return {};
   const out = {};
-  for (const line of fs2.readFileSync(w.secrets, "utf8").split(/\r?\n/)) {
+  for (const line of fs3.readFileSync(w.secrets, "utf8").split(/\r?\n/)) {
     const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
     if (!m) continue;
     let v = m[2];
@@ -72012,8 +72176,8 @@ async function extractContacts(url, { maxPages = 4 } = {}) {
 }
 
 // plugins/prospect/src/lib/content-check.mjs
-import fs3 from "node:fs";
-import path4 from "node:path";
+import fs4 from "node:fs";
+import path5 from "node:path";
 var SECTION_TYPES = {
   hero: { required: ["heading"], skeleton: { variant: "split", eyebrow: "", heading: "[[Main headline]]", subheading: "[[One-sentence value proposition]]", primary_cta: { label: "[[Primary action]]", href: "#contact" }, secondary_cta: { label: "", href: "#about" }, image: null, image_alt: "", icon: "sparkles", visual_label: "", badges: [] } },
   about: { required: ["heading", "body"], skeleton: { eyebrow: "About", heading: "[[About heading]]", body: ["[[Short story of the business, from verified research]]"], highlights: [], image: null, image_alt: "", icon: "heart", visual_label: "" } },
@@ -72029,14 +72193,35 @@ var SECTION_TYPES = {
   faq: { required: ["items"], skeleton: { eyebrow: "FAQ", heading: "Frequently asked questions", items: [{ q: "[[Question]]", a: "[[Answer \u2014 only from verified information]]" }] } },
   cta: { required: ["heading"], skeleton: { heading: "[[Call-to-action heading]]", text: "", cta: { label: "[[Action]]", href: "#contact" } } },
   contact: { required: [], skeleton: { eyebrow: "Contact", heading: "[[Contact heading]]", intro: "", info: { phone: "[[Add phone number]]", email: "", whatsapp: "", address: "[[Add address]]", hours: [] }, map_query: "", show_form: true, form: { submit_label: "Send enquiry" }, social: [] } },
+  marquee: { required: ["items"], skeleton: { items: ["[[Short phrase]]", "[[Short phrase]]", "[[Short phrase]]", "[[Short phrase]]"], icon: "sparkles", style: "solid", speed: "normal" } },
   custom: { required: ["component"], skeleton: { component: "MySection" } }
 };
+var VARIANTS = { hero: ["split", "centered", "fullbleed", "editorial"], services: ["cards", "list"], gallery: ["grid", "scroll"], process: ["cards", "stack"] };
+function loadMotion() {
+  return readJSON(path5.join(TEMPLATES, "builder", "src", "lib", "motion.json"));
+}
+function motionProblems(m) {
+  const errors = [];
+  const warnings = [];
+  if (m === void 0 || m === null) return { errors, warnings: ['No "motion" settings \u2014 the default "elegant" preset is used. Choose the preset that fits this business.'] };
+  if (typeof m !== "object" || Array.isArray(m)) return { errors: ['"motion" must be an object like {"preset": "cinematic"}.'], warnings };
+  const { presets, options } = loadMotion();
+  if (!m.preset) warnings.push('motion.preset is not set \u2014 "elegant" is used.');
+  else if (!presets[m.preset]) errors.push(`Unknown motion preset "${m.preset}". Options: ${Object.keys(presets).join(", ")}.`);
+  for (const [k, v] of Object.entries(m)) {
+    if (k === "preset" || k === "notes") continue;
+    const allowed = options[k];
+    if (!allowed) warnings.push(`motion.${k} is not a supported setting (ignored). Supported: ${Object.keys(options).join(", ")}.`);
+    else if (allowed === "boolean" ? typeof v !== "boolean" : !allowed.includes(v)) errors.push(`motion.${k} must be ${allowed === "boolean" ? "true or false" : "one of: " + allowed.join(", ")}.`);
+  }
+  return { errors, warnings };
+}
 function loadThemes() {
-  return readJSON(path4.join(TEMPLATES, "builder", "src", "lib", "themes.json"));
+  return readJSON(path5.join(TEMPLATES, "builder", "src", "lib", "themes.json"));
 }
 function listLayouts() {
-  const dir = path4.join(TEMPLATES, "layouts");
-  return fs3.readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => readJSON(path4.join(dir, f)));
+  const dir = path5.join(TEMPLATES, "layouts");
+  return fs4.readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => readJSON(path5.join(dir, f)));
 }
 function getLayout(name) {
   const l = listLayouts().find((x) => x.name === name);
@@ -72045,7 +72230,7 @@ function getLayout(name) {
 }
 var SECTION_IDS = { hero: "home", about: "about", services: "services", menu: "menu", gallery: "gallery", features: "why-us", process: "process", testimonials: "reviews", stats: "highlights", pricing: "pricing", team: "team", faq: "faq", cta: "get-started", contact: "contact" };
 var NAV_LABELS = { about: "About", services: "Services", menu: "Menu", gallery: "Gallery", features: "Why us", process: "How it works", pricing: "Pricing", team: "Team", faq: "FAQ", contact: "Contact" };
-function skeletonContent({ layout, theme, business_name, agency, sections: chosen }) {
+function skeletonContent({ layout, theme, business_name, agency, sections: chosen, motion }) {
   const l = getLayout(layout);
   const types = chosen?.length ? chosen.map((t) => typeof t === "string" ? { type: t } : t) : l.sections.filter((s) => !s.optional);
   const sections = types.map((s) => {
@@ -72061,6 +72246,7 @@ function skeletonContent({ layout, theme, business_name, agency, sections: chose
     meta: { title: `[[${business_name || "Business"} \u2014 short benefit]]`, description: "[[150-character description from verified research]]", lang: "en" },
     business: { name: business_name || "[[Business name]]", tagline: "", logo: null },
     theme: { preset: theme || l.default_theme },
+    motion: motion || { preset: l.default_motion || "elegant" },
     preview: { agency_name: agency?.name || "Our studio", agency_url: /^https:\/\//.test(agency?.website || "") ? agency.website : "" },
     nav: { links, cta: { label: l.nav_cta, href: "#contact" } },
     sections,
@@ -72091,6 +72277,9 @@ function validateContent(content, lead, { customDir } = {}) {
   }
   if (!content.business?.name || /\[\[/.test(content.business.name)) errors.push("business.name must be the real business name.");
   if (content.theme?.preset && !themes[content.theme.preset]) errors.push(`Unknown theme preset "${content.theme.preset}". Options: ${Object.keys(themes).join(", ")}.`);
+  const mp = motionProblems(content.motion);
+  errors.push(...mp.errors);
+  warnings.push(...mp.warnings);
   for (const [k, v] of Object.entries(content.theme?.colors || {})) {
     if (!/^#[0-9a-f]{6}$/i.test(v)) errors.push(`theme.colors.${k} must be a 6-digit hex colour like #1a2b3c.`);
   }
@@ -72113,6 +72302,14 @@ function validateContent(content, lead, { customDir } = {}) {
       const v = s[r];
       if (v === void 0 || v === null || v === "" || Array.isArray(v) && !v.length) errors.push(`${where}: "${r}" is required.`);
     }
+    if (s.variant !== void 0 && VARIANTS[s.type] && !VARIANTS[s.type].includes(s.variant)) errors.push(`${where}: variant must be one of: ${VARIANTS[s.type].join(", ")}.`);
+    if (s.type === "marquee") {
+      const items = Array.isArray(s.items) ? s.items : [];
+      if (items.some((t) => typeof t !== "string")) errors.push(`${where}: items must be short text strings.`);
+      else if (items.some((t) => strip(t).length > 40)) warnings.push(`${where}: keep marquee phrases short (\u2264 40 characters).`);
+      if (items.length && items.length < 3) warnings.push(`${where}: use at least 3 phrases so the band loops smoothly.`);
+    }
+    if (s.type === "gallery" && s.variant === "scroll" && (s.images || []).length < 4) warnings.push(`${where}: the "scroll" gallery needs 4+ images to look good (falls back to grid below 3).`);
     if (s.type === "testimonials") {
       for (const [j, t] of (s.items || []).entries()) {
         if (!/^https?:\/\//.test(t.source_url || "")) errors.push(`${where}.items[${j}]: testimonials must be real reviews with a public source_url. Never write fake reviews \u2014 remove the section instead.`);
@@ -72136,7 +72333,7 @@ function validateContent(content, lead, { customDir } = {}) {
     if (s.type === "gallery" && !(s.images || []).length) warnings.push(`${where}: gallery has no images and will be hidden. Remove it or add images.`);
     if (s.type === "custom") {
       if (!/^[A-Z][A-Za-z0-9]*$/.test(s.component || "")) errors.push(`${where}: component must be a PascalCase name.`);
-      else if (customDir && !fs3.existsSync(path4.join(customDir, `${s.component}.tsx`))) errors.push(`${where}: custom/${s.component}.tsx does not exist.`);
+      else if (customDir && !fs4.existsSync(path5.join(customDir, `${s.component}.tsx`))) errors.push(`${where}: custom/${s.component}.tsx does not exist.`);
     }
     for (const key of ["image"]) {
       if (s[key] && !/^https:\/\//.test(s[key]) && !/^assets\//.test(s[key])) errors.push(`${where}: image must be "assets/<file>" or an https URL.`);
@@ -72190,12 +72387,12 @@ function validateContent(content, lead, { customDir } = {}) {
 }
 
 // plugins/prospect/src/lib/codes.mjs
-import crypto2 from "node:crypto";
+import crypto3 from "node:crypto";
 var ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 var LENGTH = 8;
 function generateCode() {
   let s = "";
-  for (let i = 0; i < LENGTH; i++) s += ALPHABET[crypto2.randomInt(ALPHABET.length)];
+  for (let i = 0; i < LENGTH; i++) s += ALPHABET[crypto3.randomInt(ALPHABET.length)];
   return s;
 }
 function allocateCode(w, leadId2) {
@@ -72211,8 +72408,8 @@ function allocateCode(w, leadId2) {
 }
 
 // plugins/prospect/src/lib/leads.mjs
-import fs4 from "node:fs";
-import path5 from "node:path";
+import fs5 from "node:fs";
+import path6 from "node:path";
 var STAGES = [
   "research",
   // Engine 1: Instagram & business understanding
@@ -72307,15 +72504,15 @@ function emptyStages() {
   for (const st of STAGES) s[st] = { status: "NOT_STARTED", attempts: 0, updated_at: null, error: null, note: null };
   return s;
 }
-var leadFile = (w, id) => path5.join(leadDir(w, id), "lead.json");
-var activityFile = (w, id) => path5.join(leadDir(w, id), "activity.jsonl");
+var leadFile = (w, id) => path6.join(leadDir(w, id), "lead.json");
+var activityFile = (w, id) => path6.join(leadDir(w, id), "activity.jsonl");
 function logActivity(w, leadId2, event_type, description, metadata) {
   appendLine(activityFile(w, leadId2), { at: now(), event_type, description, ...metadata ? { metadata } : {} });
 }
 function readActivity(w, leadId2, limit = 50) {
   const f = activityFile(w, leadId2);
   if (!exists(f)) return [];
-  const lines = fs4.readFileSync(f, "utf8").trim().split(/\r?\n/).filter(Boolean);
+  const lines = fs5.readFileSync(f, "utf8").trim().split(/\r?\n/).filter(Boolean);
   return lines.slice(-limit).map((l) => {
     try {
       return JSON.parse(l);
@@ -72337,12 +72534,12 @@ function saveLead(w, lead) {
 }
 function listLeadIds(w) {
   if (!exists(w.leads)) return [];
-  return fs4.readdirSync(w.leads).filter((d) => exists(path5.join(w.leads, d, "lead.json")));
+  return fs5.readdirSync(w.leads).filter((d) => exists(path6.join(w.leads, d, "lead.json")));
 }
 function allLeads(w) {
   return listLeadIds(w).map((id) => {
     try {
-      return readJSON(path5.join(w.leads, id, "lead.json"));
+      return readJSON(path6.join(w.leads, id, "lead.json"));
     } catch {
       return null;
     }
@@ -72378,7 +72575,7 @@ function createLead(w, { instagram_url, notes, industry, location, facts }) {
   }
   let id = ig.id;
   let n = 2;
-  while (exists(path5.join(w.leads, id))) id = `${ig.id}-${n++}`;
+  while (exists(path6.join(w.leads, id))) id = `${ig.id}-${n++}`;
   const lead = {
     schema: 1,
     id,
@@ -72546,12 +72743,12 @@ function decideLead(w, id, decision, note) {
 var REPORTS = ["research.md", "audit.md", "competitors.md", "scoring.md", "design-plan.md", "contacts.md", "email.md"];
 function saveReport(w, id, name, markdown) {
   if (!REPORTS.includes(name)) throw new UserError(`Unknown report "${name}".`);
-  const file = path5.join(leadDir(w, id), name);
+  const file = path6.join(leadDir(w, id), name);
   writeText(file, String(markdown || "").trim() + "\n");
   return file;
 }
 function reportPath(w, id, name) {
-  return path5.join(leadDir(w, id), name);
+  return path6.join(leadDir(w, id), name);
 }
 function computeScore(factors) {
   const out = {};
@@ -72623,9 +72820,9 @@ function compactLead(lead) {
 }
 
 // plugins/prospect/src/lib/prototype.mjs
-import path6 from "node:path";
+import path7 from "node:path";
 function versionDir(w, code, v) {
-  return path6.join(prototypeDir(w, code), `v${v}`);
+  return path7.join(prototypeDir(w, code), `v${v}`);
 }
 function currentVersion(lead) {
   const p = lead.prototype;
@@ -72642,23 +72839,24 @@ function createPrototype(w, leadId2, { sections } = {}) {
   const code = lead.prototype.code;
   const v = Math.max(0, ...Object.keys(lead.prototype.versions).map(Number)) + 1;
   const dir = versionDir(w, code, v);
-  ensureDir(path6.join(dir, "assets"));
-  ensureDir(path6.join(dir, "custom"));
+  ensureDir(path7.join(dir, "assets"));
+  ensureDir(path7.join(dir, "custom"));
   const content = skeletonContent({
     layout: lead.design.layout,
     theme: lead.design.theme,
     business_name: lead.business_name,
     agency: cfg.agency,
-    sections: sections || lead.design.sections
+    sections: sections || lead.design.sections,
+    motion: lead.design.motion || null
   });
   if (lead.design.theme_colors) content.theme.colors = lead.design.theme_colors;
-  writeJSON(path6.join(dir, "content.json"), content);
+  writeJSON(path7.join(dir, "content.json"), content);
   lead.prototype.versions[v] = { created_at: now(), from: null, note: "Initial version from design plan", build: null, qa: null };
   lead.prototype.current_version = v;
   saveLead(w, lead);
   setStage(w, lead, "prototype", "RUNNING");
   logActivity(w, lead.id, "prototype_created", `Prototype ${code} v${v} created`);
-  return { code, version: v, folder: dir, content_file: path6.join(dir, "content.json"), assets_folder: path6.join(dir, "assets"), custom_folder: path6.join(dir, "custom") };
+  return { code, version: v, folder: dir, content_file: path7.join(dir, "content.json"), assets_folder: path7.join(dir, "assets"), custom_folder: path7.join(dir, "custom") };
 }
 function newVersion(w, leadId2, { from, note } = {}) {
   const lead = getLead(w, leadId2);
@@ -72671,7 +72869,7 @@ function newVersion(w, leadId2, { from, note } = {}) {
   lead.prototype.current_version = v;
   saveLead(w, lead);
   logActivity(w, lead.id, "prototype_version", `New version v${v} from v${src}${note ? `: ${note}` : ""}`);
-  return { code, version: v, folder: versionDir(w, code, v), content_file: path6.join(versionDir(w, code, v), "content.json") };
+  return { code, version: v, folder: versionDir(w, code, v), content_file: path7.join(versionDir(w, code, v), "content.json") };
 }
 function restoreVersion(w, leadId2, version2) {
   const lead = getLead(w, leadId2);
@@ -72685,8 +72883,8 @@ function checkContent(w, leadId2) {
   const lead = getLead(w, leadId2);
   const { code, v } = currentVersion(lead);
   const dir = versionDir(w, code, v);
-  const content = readJSON(path6.join(dir, "content.json"));
-  return { version: v, ...validateContent(content, lead, { customDir: path6.join(dir, "custom") }) };
+  const content = readJSON(path7.join(dir, "content.json"));
+  return { version: v, ...validateContent(content, lead, { customDir: path7.join(dir, "custom") }) };
 }
 
 // plugins/prospect/src/lib/deploy.mjs
@@ -72854,10 +73052,10 @@ async function instagramLookup(w, username) {
 }
 
 // plugins/prospect/src/lib/references.mjs
-import fs5 from "node:fs";
-import path7 from "node:path";
+import fs6 from "node:fs";
+import path8 from "node:path";
 var REFERENCE_CATEGORIES = ["restaurants", "healthcare", "real-estate", "ecommerce", "corporate", "education", "interior-design", "hospitality", "manufacturing", "beauty", "fitness", "events", "other"];
-var IMAGE = /\.(png|jpe?g|webp|gif|avif)$/i;
+var IMAGE2 = /\.(png|jpe?g|webp|gif|avif)$/i;
 function listReferences(w, { category, tag, favourite } = {}) {
   const idx = readJSON(w.referencesIndex, { references: [] });
   return idx.references.filter((r) => !r.removed && (!category || r.category === category) && (!tag || r.tags.includes(tag)) && (!favourite || r.favourite));
@@ -72870,16 +73068,16 @@ function addReference(w, { name, category, url, description, tags, style, image_
   let id = slugify(name);
   let n = 2;
   while (idx.references.some((r) => r.id === id)) id = `${slugify(name)}-${n++}`;
-  const dir = path7.join(w.references, category, id);
+  const dir = path8.join(w.references, category, id);
   ensureDir(dir);
   const images = [];
   for (const p of image_paths || []) {
-    const abs = path7.resolve(p);
-    if (!exists(abs) || !IMAGE.test(abs)) throw new UserError(`Screenshot not found or not an image: ${p}`);
-    if (fs5.statSync(abs).size > 15e6) throw new UserError(`Screenshot is too large (over 15 MB): ${p}`);
-    const dest = path7.join(dir, path7.basename(abs));
-    fs5.copyFileSync(abs, dest);
-    images.push(path7.relative(w.root, dest).replace(/\\/g, "/"));
+    const abs = path8.resolve(p);
+    if (!exists(abs) || !IMAGE2.test(abs)) throw new UserError(`Screenshot not found or not an image: ${p}`);
+    if (fs6.statSync(abs).size > 15e6) throw new UserError(`Screenshot is too large (over 15 MB): ${p}`);
+    const dest = path8.join(dir, path8.basename(abs));
+    fs6.copyFileSync(abs, dest);
+    images.push(path8.relative(w.root, dest).replace(/\\/g, "/"));
   }
   const ref = {
     id,
@@ -72891,12 +73089,12 @@ function addReference(w, { name, category, url, description, tags, style, image_
     tags: (tags || []).map((t) => String(t).toLowerCase()),
     favourite: Boolean(favourite),
     images,
-    folder: path7.relative(w.root, dir).replace(/\\/g, "/"),
+    folder: path8.relative(w.root, dir).replace(/\\/g, "/"),
     created_at: now()
   };
   idx.references.push(ref);
   writeJSON(w.referencesIndex, idx);
-  writeJSON(path7.join(dir, "reference.json"), ref);
+  writeJSON(path8.join(dir, "reference.json"), ref);
   return ref;
 }
 function updateReference(w, id, patch) {
@@ -72914,7 +73112,7 @@ function removeReference(w, id, { deleteFiles = false } = {}) {
   r.removed = true;
   r.removed_at = now();
   writeJSON(w.referencesIndex, idx);
-  if (deleteFiles) removeDir(path7.join(w.root, r.folder));
+  if (deleteFiles) removeDir(path8.join(w.root, r.folder));
   return { removed: id, files_deleted: deleteFiles };
 }
 function scanReferences(w) {
@@ -72922,15 +73120,15 @@ function scanReferences(w) {
   const known = new Set(idx.references.map((r) => r.folder));
   const added = [];
   for (const cat of REFERENCE_CATEGORIES) {
-    const cdir = path7.join(w.references, cat);
+    const cdir = path8.join(w.references, cat);
     if (!exists(cdir)) continue;
-    for (const name of fs5.readdirSync(cdir)) {
-      const dir = path7.join(cdir, name);
-      if (!fs5.statSync(dir).isDirectory()) continue;
-      const rel = path7.relative(w.root, dir).replace(/\\/g, "/");
+    for (const name of fs6.readdirSync(cdir)) {
+      const dir = path8.join(cdir, name);
+      if (!fs6.statSync(dir).isDirectory()) continue;
+      const rel = path8.relative(w.root, dir).replace(/\\/g, "/");
       if (known.has(rel)) continue;
-      const meta = exists(path7.join(dir, "reference.json")) ? readJSON(path7.join(dir, "reference.json")) : {};
-      const notes = exists(path7.join(dir, "notes.md")) ? fs5.readFileSync(path7.join(dir, "notes.md"), "utf8").slice(0, 2e3) : "";
+      const meta = exists(path8.join(dir, "reference.json")) ? readJSON(path8.join(dir, "reference.json")) : {};
+      const notes = exists(path8.join(dir, "notes.md")) ? fs6.readFileSync(path8.join(dir, "notes.md"), "utf8").slice(0, 2e3) : "";
       const ref = {
         id: slugify(meta.name || name),
         name: meta.name || name,
@@ -72940,7 +73138,7 @@ function scanReferences(w) {
         style: meta.style || {},
         tags: meta.tags || [],
         favourite: Boolean(meta.favourite),
-        images: fs5.readdirSync(dir).filter((f) => IMAGE.test(f)).map((f) => `${rel}/${f}`),
+        images: fs6.readdirSync(dir).filter((f) => IMAGE2.test(f)).map((f) => `${rel}/${f}`),
         folder: rel,
         created_at: now()
       };
@@ -72952,10 +73150,10 @@ function scanReferences(w) {
   return { added, total: idx.references.filter((r) => !r.removed).length };
 }
 function ensureReferenceFolders(w) {
-  for (const c of REFERENCE_CATEGORIES) ensureDir(path7.join(w.references, c));
-  const readme = path7.join(w.references, "README.md");
+  for (const c of REFERENCE_CATEGORIES) ensureDir(path8.join(w.references, c));
+  const readme = path8.join(w.references, "README.md");
   if (!exists(readme)) {
-    fs5.writeFileSync(readme, `# Design references
+    fs6.writeFileSync(readme, `# Design references
 
 Put website designs you like here, one folder per reference, inside the right category:
 
@@ -72991,7 +73189,8 @@ tool("workspace_info", "Locations of the plugin, CLI and workspace, plus configu
   if (!root) return { ...base, initialized: false, next: "Run /prospect:setup to create a workspace in this folder." };
   const w = requireWorkspace();
   const cfg = loadConfig(w);
-  return { ...base, initialized: true, config: cfg, problems: configProblems(cfg), secrets_set: secretStatus(w), builder_installed: exists(path8.join(w.builder, "node_modules", "vite")) };
+  ensureDesignLibrary(w);
+  return { ...base, initialized: true, design_library_inbox: path9.join(w.root, "design-library", "inbox"), config: cfg, problems: configProblems(cfg), secrets_set: secretStatus(w), builder_installed: exists(path9.join(w.builder, "node_modules", "vite")) };
 });
 tool("init_workspace", "Create a Prospect Engine workspace in the given folder (default: current folder). Safe to run again.", {
   folder: external_exports.string().optional().describe("Absolute folder path; defaults to the current folder"),
@@ -73000,6 +73199,7 @@ tool("init_workspace", "Create a Prospect Engine workspace in the given folder (
   const r = initWorkspace(folder || process.cwd(), { agency });
   process.env.PROSPECT_WORKSPACE = r.workspace;
   ensureReferenceFolders(requireWorkspace());
+  ensureDesignLibrary(requireWorkspace());
   return r;
 });
 tool("update_settings", "Update non-secret settings (agency profile, hosting, email method, mode, limits, prototype expiry). Secrets go in .prospect/secrets.env, never here.", {
@@ -73018,7 +73218,7 @@ tool("create_lead", "Engine 1 start: register a business from its Instagram prof
   facts: external_exports.record(external_exports.any()).optional().describe('Facts the user states directly (treated as verified, e.g. {"phone":"\u2026"})')
 }, async (a) => {
   const lead = createLead(requireWorkspace(), a);
-  return { created: true, ...compactLead(lead), folder: path8.join(requireWorkspace().leads, lead.id) };
+  return { created: true, ...compactLead(lead), folder: path9.join(requireWorkspace().leads, lead.id) };
 });
 tool("list_leads", "List leads with filters. Returns compact rows.", {
   status: external_exports.string().optional(),
@@ -73056,7 +73256,7 @@ tool("get_lead", 'Full details of one lead: stages, outputs, next step. Use "sec
     approved: l.approved,
     rejected: l.rejected,
     next_stage: ns ? { stage: ns, label: STAGE_LABELS[ns], status: l.stages[ns].status, error: l.stages[ns].error, attempts: l.stages[ns].attempts } : null,
-    folder: path8.join(w.leads, lead_id)
+    folder: path9.join(w.leads, lead_id)
   };
   const want = sections || ["stages", "score", "website", "design", "prototype", "deployment", "contacts", "email", "draft"];
   for (const s of want) {
@@ -73243,13 +73443,23 @@ tool("save_score", "Save the transparent opportunity score. Each factor needs sc
   setStage(w, l, "scoring", "COMPLETED");
   return { total: score.total, priority: score.priority, note: score.priority === "Reject" ? "Below 40: recommend rejecting or manual review. Ask the user before continuing." : "Scores are prioritisation indicators, not predictions." };
 });
-tool("design_catalog", "Available industry layouts, theme presets, section types and the user's design references.", {
+tool("design_catalog", "Available industry layouts, theme presets, motion presets, section types/variants, the analysed design-library videos and the user's design references.", {
   category: external_exports.enum(REFERENCE_CATEGORIES).optional()
 }, async ({ category }) => {
   const w = requireWorkspace();
   const themes = loadThemes();
+  const motion = loadMotion();
+  const lib = libraryStatus(w);
   return {
-    layouts: listLayouts().map((l) => ({ name: l.name, label: l.label, default_theme: l.default_theme, sections: l.sections.map((s) => s.type + (s.optional ? "?" : "")).join(" \u2192 ") })),
+    design_library: {
+      analysed: listLibrary(w),
+      waiting_for_analysis: lib.needs_analysis.length + lib.needs_frames.length,
+      note: lib.needs_analysis.length + lib.needs_frames.length ? "New files in design-library/inbox are not analysed yet \u2014 run the library scan + analysis first (see the design-library skill)." : void 0
+    },
+    motion_presets: Object.fromEntries(Object.entries(motion.presets).map(([k, v]) => [k, v.label])),
+    motion_options: motion.options,
+    section_variants: VARIANTS,
+    layouts: listLayouts().map((l) => ({ name: l.name, label: l.label, default_theme: l.default_theme, default_motion: l.default_motion, sections: l.sections.map((s) => s.type + (s.optional ? "?" : "")).join(" \u2192 ") })),
     themes: Object.fromEntries(Object.entries(themes.themes).map(([k, v]) => [k, `${v.label} (${v.fonts.heading} / ${v.fonts.body}${v.dark ? ", dark" : ""})`])),
     fonts: Object.keys(themes.fonts),
     section_types: Object.keys(SECTION_TYPES),
@@ -73283,6 +73493,8 @@ tool("save_design", "Save the design selection (Engine 3): layout, theme, refere
   theme_colors: external_exports.record(external_exports.string()).optional().describe('Optional brand colour overrides, e.g. {"primary":"#aa3355"} (hex). Keep contrast readable.'),
   sections: external_exports.array(external_exports.union([external_exports.string(), external_exports.object({ type: external_exports.string(), variant: external_exports.string().optional(), id: external_exports.string().optional() })])).optional().describe("Section order; defaults to the layout"),
   reference_ids: external_exports.array(external_exports.string()).optional(),
+  library_ids: external_exports.array(external_exports.string()).optional().describe("Design-library entries (analysed videos/screenshots) this design draws its look and motion from"),
+  motion: external_exports.record(external_exports.any()).optional().describe('Motion settings for the prototype, e.g. {"preset":"cinematic","hero_effect":"parallax"} \u2014 see design_catalog motion_presets/motion_options'),
   reason: external_exports.string(),
   plan_markdown: md
 }, async (a) => {
@@ -73293,12 +73505,67 @@ tool("save_design", "Save the design selection (Engine 3): layout, theme, refere
   if (!themes[a.theme]) throw new Error(`Unknown theme "${a.theme}". Options: ${Object.keys(themes).join(", ")}`);
   if (!listLayouts().some((x) => x.name === a.layout)) throw new Error(`Unknown layout "${a.layout}".`);
   for (const [k, v] of Object.entries(a.theme_colors || {})) if (!/^#[0-9a-f]{6}$/i.test(v)) throw new Error(`Colour ${k} must be a 6-digit hex value.`);
-  l.design = { layout: a.layout, theme: a.theme, theme_colors: a.theme_colors || null, sections: a.sections || null, reference_ids: a.reference_ids || [], reason: a.reason, saved_at: (/* @__PURE__ */ new Date()).toISOString() };
+  const layout = listLayouts().find((x) => x.name === a.layout);
+  const motion = a.motion || { preset: layout.default_motion || "elegant" };
+  const mp = motionProblems(motion);
+  if (mp.errors.length) throw new Error(mp.errors.join(" "));
+  const unknownLib = libraryExists(w, a.library_ids || []);
+  if (unknownLib.length) throw new Error(`Unknown design-library ids: ${unknownLib.join(", ")}`);
+  for (const sec of a.sections || []) {
+    if (typeof sec === "object" && sec.variant && VARIANTS[sec.type] && !VARIANTS[sec.type].includes(sec.variant)) throw new Error(`${sec.type} variant must be one of: ${VARIANTS[sec.type].join(", ")}`);
+  }
+  l.design = { layout: a.layout, theme: a.theme, theme_colors: a.theme_colors || null, sections: a.sections || null, motion, library_ids: a.library_ids || [], reference_ids: a.reference_ids || [], reason: a.reason, saved_at: (/* @__PURE__ */ new Date()).toISOString() };
+  markUsed(w, a.library_ids || []);
   saveLead(w, l);
   saveReport(w, a.lead_id, "design-plan.md", a.plan_markdown);
   setStage(w, l, "design", "COMPLETED");
   logActivity(w, a.lead_id, "design", `Design: ${a.layout} / ${a.theme}`);
-  return { saved: true, layout: a.layout, theme: a.theme };
+  return { saved: true, layout: a.layout, theme: a.theme, motion, library_ids: a.library_ids || [] };
+});
+tool("design_library", "The user's design library (videos/screenshots dropped in design-library/inbox). status: what is new / needs analysis (with contact-sheet image paths to look at). list: analysed entries. get: one entry with its full analysis and sheets. favourite / remove manage entries. Frame extraction for new videos is a CLI job: library-scan.", {
+  action: external_exports.enum(["status", "list", "get", "favourite", "unfavourite", "remove"]),
+  id: external_exports.string().optional(),
+  delete_file: external_exports.boolean().optional().describe("With remove: also delete the video from the inbox")
+}, async ({ action, id, delete_file }) => {
+  const w = requireWorkspace();
+  if (action === "status") {
+    syncInbox(w);
+    const st = libraryStatus(w);
+    return { ...st, next: st.needs_frames.length ? "Run the CLI: library-scan (extracts frames from new videos), then analyse." : st.needs_analysis.length ? "Look at each entry's sheets with Read and save_design_analysis." : "Library is up to date." };
+  }
+  if (action === "list") return listLibrary(w);
+  if (!id) throw new Error("id is required");
+  if (action === "get") return getLibraryEntry(w, id);
+  if (action === "favourite" || action === "unfavourite") return updateEntry(w, id, { favourite: action === "favourite" });
+  return updateEntry(w, id, { remove: true, deleteFiles: delete_file });
+});
+var motionKeys = external_exports.enum(["page_load", "scroll", "hover", "transitions", "navigation", "signature_moments"]);
+tool("save_design_analysis", "Save what you observed in a design-library video/screenshot (after looking at its contact sheets). Written once per file and reused for every prototype.", {
+  id: external_exports.string(),
+  title: external_exports.string().describe('Short memorable name, e.g. "Dark editorial with masked headline reveals"'),
+  summary: external_exports.string().describe("2\u20134 sentences: overall look, feel and what makes it engaging"),
+  style_keywords: external_exports.array(external_exports.string()).describe("e.g. dark, editorial, oversized serif, generous whitespace, glassmorphism"),
+  mood: external_exports.array(external_exports.string()).describe("e.g. premium, calm, energetic, playful, trustworthy"),
+  layout_patterns: external_exports.array(external_exports.string()).describe("e.g. full-bleed video hero, split hero, bento grid, sticky stacking cards, horizontal scroll gallery"),
+  motion: external_exports.record(motionKeys, external_exports.union([external_exports.string(), external_exports.array(external_exports.string())])).describe("What moves and how: page_load, scroll, hover, transitions, navigation, signature_moments"),
+  palette_notes: external_exports.string().optional(),
+  typography_notes: external_exports.string().optional(),
+  suits: external_exports.array(external_exports.string()).describe('Business personalities/content this design suits (NOT an industry list): e.g. "photo-rich brands", "premium/luxury positioning", "few words, strong visuals", "service businesses needing trust"'),
+  avoid_for: external_exports.array(external_exports.string()).optional().describe('Where it would be wrong, e.g. "text-heavy services", "budget positioning"'),
+  template_mapping: external_exports.object({
+    motion: external_exports.record(external_exports.any()).describe('Closest motion settings, e.g. {"preset":"cinematic","hero_effect":"parallax","reveal":"clip-up"}'),
+    hero_variant: external_exports.enum(["split", "centered", "fullbleed", "editorial"]).optional(),
+    section_variants: external_exports.record(external_exports.string()).optional().describe('e.g. {"gallery":"scroll","process":"stack","services":"list"}'),
+    use_marquee: external_exports.boolean().optional(),
+    theme_hint: external_exports.string().optional().describe("Closest theme preset or colour direction"),
+    not_supported: external_exports.array(external_exports.string()).optional().describe("Effects in the video the template cannot do (a custom section could)")
+  })
+}, async (a) => {
+  const w = requireWorkspace();
+  const mp = motionProblems(a.template_mapping.motion);
+  if (mp.errors.length) throw new Error(`template_mapping.motion: ${mp.errors.join(" ")}`);
+  const { id, ...analysis } = a;
+  return saveAnalysis(w, id, analysis);
 });
 tool("create_prototype", "Create a new prototype version from the saved design: allocates the client code and writes a content.json skeleton with [[placeholders]] for you to fill.", {
   lead_id: leadId

@@ -6,7 +6,7 @@ import { loadConfig } from './config.mjs';
 import { skeletonContent, validateContent } from './content-check.mjs';
 import { getLead, logActivity, requireApproved, requireStageDone, saveLead, setStage } from './leads.mjs';
 import { prototypeDir, TEMPLATES } from './paths.mjs';
-import { copyDir, dirSize, ensureDir, exists, hashDir, lastLines, now, readJSON, removeDir, run, UserError, withLock, writeJSON } from './util.mjs';
+import { copyDir, dirSize, ensureDir, exists, hashDir, lastLines, now, readJSON, removeDir, run, runNpm, UserError, withLock, writeJSON } from './util.mjs';
 
 export function versionDir(w, code, v) {
   return path.join(prototypeDir(w, code), `v${v}`);
@@ -40,6 +40,7 @@ export function createPrototype(w, leadId, { sections } = {}) {
     business_name: lead.business_name,
     agency: cfg.agency,
     sections: sections || lead.design.sections,
+    motion: lead.design.motion || null,
   });
   if (lead.design.theme_colors) content.theme.colors = lead.design.theme_colors;
   writeJSON(path.join(dir, 'content.json'), content);
@@ -86,6 +87,12 @@ export function checkContent(w, leadId) {
 // ---------- builder environment ----------
 
 const BUILDER_FILES = ['package.json', 'vite.config.js', 'index.html', 'tsconfig.json', 'src'];
+
+/** Every runtime dependency of the template is present in the builder's node_modules. */
+export function builderDepsPresent(w) {
+  const pkg = readJSON(path.join(TEMPLATES, 'builder', 'package.json'));
+  return Object.keys({ ...pkg.dependencies, ...pkg.devDependencies }).every((d) => exists(path.join(w.builder, 'node_modules', ...d.split('/'), 'package.json')));
+}
 
 export function builderInstalled(w) {
   return exists(path.join(w.builder, 'node_modules', 'vite', 'bin', 'vite.js'));
@@ -145,8 +152,11 @@ export async function buildPrototype(w, leadId) {
       return { ok: false, step: 'content_check', version: v, errors: check.errors, warnings: check.warnings, placeholders: check.placeholders.length };
     }
     if (!builderInstalled(w)) throw new UserError('The website builder is not installed yet.', 'Run /prospect:setup (step "Install components").');
-    const depsChanged = syncBuilder(w);
-    if (depsChanged) throw new UserError('The plugin was updated and the builder needs new components.', 'Run /prospect:setup and choose "Install components" again.');
+    // A plugin update can add template packages: install them automatically (only the missing ones download).
+    if (syncBuilder(w) || !builderDepsPresent(w)) {
+      const res = await runNpm(['install', '--no-audit', '--no-fund', '--loglevel=error', '--no-update-notifier'], { cwd: w.builder, timeoutMs: 10 * 60_000 });
+      if (res.code !== 0 || !builderDepsPresent(w)) throw new UserError('The plugin was updated and the builder could not download its new components.', 'Check your internet connection, then run /prospect:setup and choose "Install components".');
+    }
 
     // Place this prototype's source into the builder.
     const siteDir = path.join(w.builder, 'src', 'site');

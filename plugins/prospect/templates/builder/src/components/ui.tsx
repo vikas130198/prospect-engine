@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { motion, SplitText } from './motion';
+import { rv } from '../lib/motion';
 import {
   ArrowRight, Award, BadgeCheck, Baby, Bike, BookOpen, Briefcase, Building2, CalendarCheck, Camera, Car, Check, ChefHat,
   Clock, Coffee, Cpu, Dumbbell, Factory, Flower2, Gem, Gift, Globe, GraduationCap, Hammer, HandHeart, Heart, HeartPulse,
@@ -65,33 +67,48 @@ export function Btn({ href, label, variant = 'primary', className = '', icon = f
   if (!hasText(label)) return null;
   const h = safeHref(href);
   const styles = {
-    primary: 'bg-primary text-primary-contrast hover:brightness-110 shadow-sm',
+    primary: 'btn-shine bg-primary text-primary-contrast hover:brightness-110 shadow-sm hover:shadow-lg',
     outline: 'border border-current/30 text-text hover:bg-text/5',
-    ghost: 'text-primary hover:underline underline-offset-4',
+    ghost: 'text-primary underline-offset-4 hover:underline',
   }[variant];
   return (
     <a
       href={h}
       {...(isExternal(h) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-brand px-6 py-3 text-[15px] font-semibold transition ${styles} ${className}`}
+      {...(variant !== 'ghost' ? { 'data-magnetic': '' } : {})}
+      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-brand px-6 py-3 text-[15px] font-semibold ${styles} ${className}`}
     >
       <T>{label}</T>
-      {icon && <ArrowRight className="h-4 w-4" aria-hidden="true" />}
+      {icon && <ArrowRight className="btn-arrow h-4 w-4" aria-hidden="true" />}
     </a>
   );
+}
+
+/** Small uppercase label above headings, with a drawn rule. */
+export function Eyebrow({ text, center = false, className = '' }: { text?: string; center?: boolean; className?: string }) {
+  if (!hasText(text)) return null;
+  return <p {...rv(0)} className={`eyebrow-line ${center ? 'center-eyebrow' : ''} mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-primary ${className}`}><T>{text}</T></p>;
+}
+
+/** Section heading (h2) that reveals word by word when the motion preset allows it. */
+export function Heading({ text, as = 'h2', className = 'text-3xl font-semibold md:text-5xl' }: { text?: string; as?: any; className?: string }) {
+  if (!hasText(text)) return null;
+  const Tag = as;
+  if (motion.heading_reveal) return <SplitText as={as} text={text} mode="words" className={className} />;
+  return <Tag {...rv(0)} className={className}><T>{text}</T></Tag>;
 }
 
 type ShellProps = { id?: string; eyebrow?: string; heading?: string; intro?: string; tone?: 'default' | 'surface' | 'accent'; children: ReactNode; center?: boolean };
 export function Section({ id, eyebrow, heading, intro, tone = 'default', children, center = false }: ShellProps) {
   const bg = tone === 'surface' ? 'bg-surface' : tone === 'accent' ? 'bg-accent' : '';
   return (
-    <section id={id} className={`py-16 md:py-24 ${bg}`}>
+    <section id={id} className={`relative py-20 md:py-32 ${bg}`}>
       <div className="container-x">
         {(hasText(heading) || hasText(eyebrow) || hasText(intro)) && (
-          <header className={`mb-10 md:mb-14 ${center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}`}>
-            {hasText(eyebrow) && <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary"><T>{eyebrow}</T></p>}
-            {hasText(heading) && <h2 className="text-3xl font-semibold md:text-4xl"><T>{heading}</T></h2>}
-            {hasText(intro) && <p className="mt-4 text-lg text-muted"><T>{intro}</T></p>}
+          <header className={`mb-12 md:mb-16 ${center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}`}>
+            <Eyebrow text={eyebrow} center={center} />
+            <Heading text={heading} />
+            {hasText(intro) && <p {...rv(2)} className="mt-5 text-lg text-muted"><T>{intro}</T></p>}
           </header>
         )}
         {children}
@@ -105,14 +122,29 @@ export function Img({ src, alt, className = '' }: { src: string | null; alt?: st
   return <img src={src} alt={alt || ''} loading="lazy" decoding="async" className={className} />;
 }
 
+/** Image in a frame that wipes in from a mask and settles from a slow zoom (image_reveal), or fades in. */
+export function RevealImage({ src, alt, className = '', frameClass = '', i = 0, priority = false, parallax = false }: { src: string | null; alt?: string; className?: string; frameClass?: string; i?: number; priority?: boolean; parallax?: boolean }) {
+  if (!src) return null;
+  const reveal = motion.image_reveal ? { 'data-reveal': 'image', style: { '--i': i } as any } : rv(i);
+  return (
+    <div {...reveal} className={`card-media relative overflow-hidden rounded-brand ${frameClass}`}>
+      <img src={src} alt={alt || ''} {...(priority ? { fetchPriority: 'high' as const } : { loading: 'lazy' as const })} decoding="async" className={`h-full w-full object-cover ${className}`} {...(parallax ? { 'data-parallax': '0.12' } : {})} />
+    </div>
+  );
+}
+
 /** Decorative stand-in when the business has no usable photos yet. */
 export function VisualPanel({ icon, label, className = '' }: { icon?: string; label?: string; className?: string }) {
   return (
     <div className={`relative overflow-hidden rounded-brand border border-border bg-surface ${className}`} role="img" aria-label={label || 'Decorative illustration'}>
       <div className="absolute inset-0 hero-glow" />
       <div className="absolute inset-0 pattern-dots opacity-60" />
+      <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+        <span className="orbit h-56 w-56" />
+        <span className="orbit h-80 w-80" style={{ animationDuration: '70s', animationDirection: 'reverse' }} />
+      </div>
       <div className="relative flex h-full min-h-56 flex-col items-center justify-center gap-4 p-8 text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-contrast shadow-lg">
+        <div className="float-y flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-contrast shadow-lg">
           <Icon name={icon} className="h-9 w-9" />
         </div>
         {label && <p className="max-w-xs font-heading text-xl"><T>{label}</T></p>}

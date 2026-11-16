@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { hasText, Icon, isPlaceholder, Section, SocialIcon, T } from '../ui';
+import { rv } from '../../lib/motion';
 
 const DEFAULT_FIELDS = [
   { name: 'name', label: 'Your name', type: 'text', required: true, autocomplete: 'name' },
@@ -46,7 +47,7 @@ function DemoForm({ form }: { form: any }) {
 
   if (sent) {
     return (
-      <div className="rounded-brand border border-primary/40 bg-accent p-8 text-center" role="status" data-demo-success>
+      <div className="mobile-menu-panel rounded-brand border border-primary/40 bg-accent p-8 text-center" role="status" data-demo-success>
         <CheckCircle2 className="mx-auto h-12 w-12 text-primary" aria-hidden="true" />
         <p className="mt-4 text-xl font-semibold">Thanks — this is how your enquiry confirmation would look.</p>
         <p className="mt-2 text-muted">Preview only: this demo form does not send your details anywhere.</p>
@@ -67,7 +68,7 @@ function DemoForm({ form }: { form: any }) {
           'aria-invalid': err ? true : undefined,
           'aria-describedby': err ? `${id}-err` : undefined,
           autoComplete: f.autocomplete,
-          className: `w-full rounded-brand border bg-bg px-4 py-3 text-base outline-none transition focus:border-primary ${err ? 'border-red-500' : 'border-border'}`,
+          className: `w-full rounded-brand border bg-bg px-4 py-3 text-base outline-none transition duration-300 focus:border-primary focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_18%,transparent)] ${err ? 'border-red-500' : 'border-border'}`,
         };
         return (
           <div key={f.name}>
@@ -86,7 +87,7 @@ function DemoForm({ form }: { form: any }) {
           </div>
         );
       })}
-      <button type="submit" className="min-h-12 w-full rounded-brand bg-primary px-6 py-3 font-semibold text-primary-contrast transition hover:brightness-110">
+      <button type="submit" className="btn-shine min-h-12 w-full rounded-brand bg-primary px-6 py-3 font-semibold text-primary-contrast transition hover:brightness-110">
         {form?.submit_label || 'Send enquiry'}
       </button>
       <p className="text-center text-xs text-muted">Demo form — nothing is sent from this preview.</p>
@@ -110,8 +111,8 @@ export function Contact({ s }: { s: any }) {
       <div className="grid gap-10 lg:grid-cols-5 lg:gap-14">
         <div className="space-y-6 lg:col-span-2">
           {rows.map((r, i) => (
-            <div key={i} className="flex gap-4">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-brand bg-bg text-primary shadow-sm"><Icon name={r.icon} className="h-5 w-5" /></span>
+            <div key={i} {...rv(i)} className="group flex gap-4">
+              <span className="flex h-12 w-12 shrink-0 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110 items-center justify-center rounded-brand bg-bg text-primary shadow-sm"><Icon name={r.icon} className="h-5 w-5" /></span>
               <div>
                 <p className="text-sm font-semibold uppercase tracking-wider text-muted">{r.label}</p>
                 {r.href ? (
@@ -123,7 +124,7 @@ export function Contact({ s }: { s: any }) {
             </div>
           ))}
           {hours.length > 0 && (
-            <div className="flex gap-4">
+            <div {...rv(rows.length)} className="flex gap-4">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-brand bg-bg text-primary shadow-sm"><Icon name="clock" className="h-5 w-5" /></span>
               <div className="flex-1">
                 <p className="text-sm font-semibold uppercase tracking-wider text-muted">Opening hours</p>
@@ -152,7 +153,7 @@ export function Contact({ s }: { s: any }) {
             />
           )}
         </div>
-        <div className="lg:col-span-3">{s.show_form === false ? null : <DemoForm form={s.form} />}</div>
+        <div {...rv(1)} className="lg:col-span-3">{s.show_form === false ? null : <DemoForm form={s.form} />}</div>
       </div>
     </Section>
   );

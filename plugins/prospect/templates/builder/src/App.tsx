@@ -1,8 +1,10 @@
-import { Component, type ReactNode } from 'react';
+import { Component, useEffect, type ReactNode } from 'react';
 import { CLIENT_CODE, content, customComponent } from './lib/content';
+import { startMotion } from './lib/motion';
 import { Footer, Navbar, PreviewBanner } from './components/Layout';
+import { Cursor, Intro, motion, ScrollProgress } from './components/motion';
 import { Hero } from './components/sections/Hero';
-import { About, Cta, Faq, Features, Gallery, Menu, Pricing, Process, Services, Stats, Team, Testimonials } from './components/sections/Blocks';
+import { About, Cta, Faq, Features, Gallery, Marquee, Menu, Pricing, Process, Services, Stats, Team, Testimonials } from './components/sections/Blocks';
 import { Contact } from './components/sections/Contact';
 
 const SECTIONS: Record<string, any> = {
@@ -19,6 +21,7 @@ const SECTIONS: Record<string, any> = {
   team: Team,
   faq: Faq,
   cta: Cta,
+  marquee: Marquee,
   contact: Contact,
 };
 
@@ -39,9 +42,12 @@ class SectionBoundary extends Component<{ name: string; children: ReactNode }, {
 export default function App() {
   const c = content;
   const sections: any[] = Array.isArray(c.sections) ? c.sections : [];
+  useEffect(() => startMotion(motion), []);
   return (
-    <div id="top" data-prospect-code={CLIENT_CODE} className="min-h-screen">
+    <div id="top" data-prospect-code={CLIENT_CODE} data-motion-preset={motion.preset} className="min-h-screen">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-bg focus:px-4 focus:py-2">Skip to content</a>
+      <Intro name={c.business?.logo_text || c.business?.name} />
+      <ScrollProgress />
       <PreviewBanner c={c} />
       <Navbar c={c} />
       <main id="main">
@@ -56,6 +62,7 @@ export default function App() {
         })}
       </main>
       <Footer c={c} />
+      <Cursor />
     </div>
   );
 }

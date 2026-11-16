@@ -23,7 +23,11 @@ It never sends emails or messages — you review and send everything yourself.
 | `/prospect:open <id>` | One lead's details, reports and status updates |
 | `/prospect:regenerate <id> <change>` | Change or regenerate a prototype |
 | `/prospect:prototypes` | Disable, protect, extend, delete prototypes |
-| `/prospect:references` | Your design reference library |
+| `/prospect:library` | Your design library — drop design videos/screenshots in `design-library/inbox` |
+| `/prospect:references` | Your design reference library (websites + notes) |
 | `/prospect:dashboard` | Visual dashboard in the browser |
+
+**Design:** every prototype gets engaging, timeless animations (motion presets) and is matched against the videos in
+`design-library/inbox` by design fit.
 
 **Usage tip:** On Claude Pro use Lite mode; a full prospect uses a good share of a 5-hour window. Check `/usage`.

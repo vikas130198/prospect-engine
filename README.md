@@ -48,7 +48,12 @@ Everyday commands:
 /prospect:prototypes extend harbour-lane-bakery 30    keep a prototype live longer
 /prospect:resume harbour-lane-bakery                  continue after a usage limit or error
 /prospect:dashboard                                   visual overview in your browser
+/prospect:library                                     your design library (videos in design-library/inbox)
 ```
+
+**Your taste, animated:** drop screen recordings of websites you love into `design-library/inbox/` in your workspace.
+Every prototype is matched against them by design fit and built with engaging, timeless animations (word-by-word
+headline reveals, parallax, smooth scrolling, scroll-driven galleries and more).
 
 More examples, including a full walkthrough and the complete command list: [plugin README](plugins/prospect/README.md#how-to-use).
 

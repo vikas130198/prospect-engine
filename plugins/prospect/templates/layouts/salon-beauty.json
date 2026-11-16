@@ -2,6 +2,7 @@
   "name": "salon-beauty",
   "label": "Salons, spas, makeup artists, nail studios, bridal",
   "default_theme": "blush-studio",
+  "default_motion": "elegant",
   "nav_cta": "Book an appointment",
   "sections": [
     {

@@ -10,7 +10,8 @@ import { createProject, hostStatus, loginCommand, setCustomDomain } from './lib/
 import { getLead, compactLead } from './lib/leads.mjs';
 import { CLI_PATH, PLUGIN_ROOT, findWorkspace, requireWorkspace, workspacePaths } from './lib/paths.mjs';
 import { buildPrototype } from './lib/prototype.mjs';
-import { runQA } from './lib/qa.mjs';
+import { findChrome, loadPlaywright, runQA } from './lib/qa.mjs';
+import { scanLibrary } from './lib/design-library.mjs';
 import { doctor, installComponents } from './lib/setup.mjs';
 import { formatError, openInBrowser, UserError } from './lib/util.mjs';
 
@@ -47,6 +48,7 @@ const HELP = `Prospect Engine CLI
   deployments <lead>            deployment history
   draft-imap <lead> [--force]   save the prepared email to your IMAP Drafts folder
   imap-test                     test the mailbox connection
+  library-scan [--force]        read new videos in design-library/inbox into frame sheets
   dashboard [--no-open]         generate and open the HTML dashboard
   status <lead>                 compact lead summary
 `;
@@ -67,6 +69,8 @@ async function main() {
   switch (cmd) {
     case 'install':
       return out(await installComponents(w, { host: flagValue('--host'), lighthouse: !flags.has('--no-lighthouse'), log: progress }));
+    case 'library-scan':
+      return out(await scanLibrary(w, { force: flags.has('--force'), log: progress, findChrome, loadPlaywright }));
     case 'doctor':
       return out(await doctor(w, { quick: flags.has('--quick') }));
     case 'host-status':

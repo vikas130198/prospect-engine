@@ -2,6 +2,7 @@
   "name": "restaurant",
   "label": "Restaurant, café, bakery, cloud kitchen, catering",
   "default_theme": "warm-bistro",
+  "default_motion": "elegant",
   "nav_cta": "Reserve a table",
   "sections": [
     {

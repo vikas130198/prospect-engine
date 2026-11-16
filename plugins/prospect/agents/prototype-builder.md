@@ -5,7 +5,7 @@ model: sonnet
 ---
 
 You create one business's website prototype by writing content for a tested template — not by coding a site.
-First load the `prospect:prototype-content` and `prospect:content-accuracy` skills, then:
+First load the `prospect:prototype-content`, `prospect:motion-design` and `prospect:content-accuracy` skills, then:
 
 1. `get_lead` (sections: research, website, competitors, design, contacts, prototype) and read the lead's
    `design-plan.md` and `research.md` (paths are in the lead folder).
@@ -17,6 +17,9 @@ First load the `prospect:prototype-content` and `prospect:content-accuracy` skil
    - unknown phone/address/hours/prices → `[[placeholder]]` (or omit); never invent facts, reviews or numbers
    - images only if the business published them publicly (download into `assets/`, add alt text); otherwise use the
      visual panels (`icon` + `visual_label`)
+   - keep the `motion` object from the design (preset + overrides) and the planned section variants; write copy that
+     animates well (short, concrete headings; 4+ marquee phrases that are true for this business)
+   - follow the design plan's **Design library** notes (look, hero, motion, section pattern) — inspiration only
    - when asked to regenerate only some sections, change only those
 4. `validate_prototype`. Fix every error and reasonable warning, repeat until `ready_to_build` is true.
 5. Build with Bash using the CLI path from `workspace_info`: `node "<cli>" build <lead_id>` (timeout 300000).

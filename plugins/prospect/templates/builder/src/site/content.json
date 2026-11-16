@@ -5,17 +5,41 @@
     "description": "A sample prototype used to test the Prospect Engine builder. Replace with business-specific content generated from verified research.",
     "lang": "en"
   },
-  "business": { "name": "Sample Café", "tagline": "Fresh coffee and home-style bakes", "logo": null },
-  "theme": { "preset": "warm-bistro" },
-  "preview": { "agency_name": "Your Agency", "agency_url": "https://example.com" },
+  "business": {
+    "name": "Sample Café",
+    "tagline": "Fresh coffee and home-style bakes",
+    "logo": null
+  },
+  "theme": {
+    "preset": "warm-bistro"
+  },
+  "preview": {
+    "agency_name": "Your Agency",
+    "agency_url": "https://example.com"
+  },
   "nav": {
     "links": [
-      { "label": "About", "href": "#about" },
-      { "label": "Menu", "href": "#menu" },
-      { "label": "Why us", "href": "#why-us" },
-      { "label": "Visit", "href": "#contact" }
+      {
+        "label": "About",
+        "href": "#about"
+      },
+      {
+        "label": "Menu",
+        "href": "#menu"
+      },
+      {
+        "label": "Why us",
+        "href": "#why-us"
+      },
+      {
+        "label": "Visit",
+        "href": "#contact"
+      }
     ],
-    "cta": { "label": "Plan a visit", "href": "#contact" }
+    "cta": {
+      "label": "Plan a visit",
+      "href": "#contact"
+    }
   },
   "sections": [
     {
@@ -25,24 +49,56 @@
       "eyebrow": "Neighbourhood café",
       "heading": "Slow mornings, great coffee and bakes made fresh every day",
       "subheading": "A cosy corner for coffee lovers — order ahead, sit in, or pick up a box of today's bakes.",
-      "primary_cta": { "label": "See the menu", "href": "#menu" },
-      "secondary_cta": { "label": "Find us", "href": "#contact" },
+      "primary_cta": {
+        "label": "See the menu",
+        "href": "#menu"
+      },
+      "secondary_cta": {
+        "label": "Find us",
+        "href": "#contact"
+      },
       "icon": "coffee",
       "visual_label": "Freshly brewed, every morning",
-      "badges": ["Freshly baked daily", "Dine-in & takeaway"]
+      "badges": [
+        "Freshly baked daily",
+        "Dine-in & takeaway"
+      ]
     },
     {
       "type": "about",
       "id": "about",
       "eyebrow": "Our story",
       "heading": "Made with care, served with a smile",
-      "body": ["Sample Café is a placeholder business used to test the website builder.", "[[Add the café's real story once confirmed with the owner]]"],
+      "body": [
+        "Sample Café is a placeholder business used to test the website builder.",
+        "[[Add the café's real story once confirmed with the owner]]"
+      ],
       "highlights": [
-        { "icon": "coffee", "title": "Specialty coffee", "text": "Espresso, pour-overs and seasonal drinks." },
-        { "icon": "leaf", "title": "Simple ingredients", "text": "Bakes made in small batches." }
+        {
+          "icon": "coffee",
+          "title": "Specialty coffee",
+          "text": "Espresso, pour-overs and seasonal drinks."
+        },
+        {
+          "icon": "leaf",
+          "title": "Simple ingredients",
+          "text": "Bakes made in small batches."
+        }
       ],
       "icon": "chef-hat",
       "visual_label": "Baked in small batches"
+    },
+    {
+      "type": "marquee",
+      "id": "ribbon",
+      "items": [
+        "Specialty coffee",
+        "Fresh bakes",
+        "Dine-in",
+        "Takeaway"
+      ],
+      "icon": "coffee",
+      "style": "outline"
     },
     {
       "type": "menu",
@@ -53,15 +109,27 @@
         {
           "name": "Coffee",
           "items": [
-            { "name": "Flat white", "description": "Double shot with silky milk." },
-            { "name": "Cold brew", "description": "Steeped for 18 hours." }
+            {
+              "name": "Flat white",
+              "description": "Double shot with silky milk."
+            },
+            {
+              "name": "Cold brew",
+              "description": "Steeped for 18 hours."
+            }
           ]
         },
         {
           "name": "Bakes",
           "items": [
-            { "name": "Cinnamon roll", "description": "Soft, sticky and warm." },
-            { "name": "Banana bread", "description": "Moist loaf, toasted to order." }
+            {
+              "name": "Cinnamon roll",
+              "description": "Soft, sticky and warm."
+            },
+            {
+              "name": "Banana bread",
+              "description": "Moist loaf, toasted to order."
+            }
           ]
         }
       ],
@@ -73,9 +141,21 @@
       "eyebrow": "Why visit",
       "heading": "Little things that make a difference",
       "items": [
-        { "icon": "clock", "title": "Quick takeaway", "text": "Order at the counter and go." },
-        { "icon": "users", "title": "Space to meet", "text": "Comfortable seating for friends." },
-        { "icon": "heart", "title": "Made fresh", "text": "Bakes prepared every morning." }
+        {
+          "icon": "clock",
+          "title": "Quick takeaway",
+          "text": "Order at the counter and go."
+        },
+        {
+          "icon": "users",
+          "title": "Space to meet",
+          "text": "Comfortable seating for friends."
+        },
+        {
+          "icon": "heart",
+          "title": "Made fresh",
+          "text": "Bakes prepared every morning."
+        }
       ]
     },
     {
@@ -83,8 +163,14 @@
       "id": "faq",
       "heading": "Good to know",
       "items": [
-        { "q": "Do you take orders for events?", "a": "[[Confirm with the café whether they take event orders]]" },
-        { "q": "Is there seating?", "a": "Yes — dine-in seating is available." }
+        {
+          "q": "Do you take orders for events?",
+          "a": "[[Confirm with the café whether they take event orders]]"
+        },
+        {
+          "q": "Is there seating?",
+          "a": "Yes — dine-in seating is available."
+        }
       ]
     },
     {
@@ -92,7 +178,10 @@
       "id": "visit",
       "heading": "Come say hello",
       "text": "Your next favourite coffee is waiting.",
-      "cta": { "label": "Get directions", "href": "#contact" }
+      "cta": {
+        "label": "Get directions",
+        "href": "#contact"
+      }
     },
     {
       "type": "contact",
@@ -103,10 +192,21 @@
       "info": {
         "phone": "[[Add phone number]]",
         "address": "[[Add address]]",
-        "hours": [{ "days": "Mon – Sun", "time": "[[Add opening hours]]" }]
+        "hours": [
+          {
+            "days": "Mon – Sun",
+            "time": "[[Add opening hours]]"
+          }
+        ]
       },
       "show_form": true
     }
   ],
-  "footer": { "text": "Fresh coffee and home-style bakes.", "social": [] }
+  "footer": {
+    "text": "Fresh coffee and home-style bakes.",
+    "social": []
+  },
+  "motion": {
+    "preset": "elegant"
+  }
 }

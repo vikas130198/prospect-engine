@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Menu as MenuIcon, X } from 'lucide-react';
 import { asset } from '../lib/content';
 import { Btn, hasText, isExternal, safeHref, SocialIcon, T } from './ui';
+import { rv } from '../lib/motion';
 
 /** Honest disclosure: this is a concept preview, not the business's official website. */
 export function PreviewBanner({ c }: { c: any }) {
@@ -31,6 +32,18 @@ export function PreviewBanner({ c }: { c: any }) {
 export function Navbar({ c }: { c: any }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState('');
+  // Highlight the link of the section currently on screen.
+  useEffect(() => {
+    const ids = (c.nav?.links || []).map((l: any) => String(l.href || '')).filter((h: string) => /^#[a-z]/.test(h)).map((h: string) => h.slice(1));
+    const els = ids.map((id: string) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    if (!els.length || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [c]);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -41,7 +54,7 @@ export function Navbar({ c }: { c: any }) {
   const logo = asset(c.business?.logo);
   const name = c.business?.logo_text || c.business?.name;
   return (
-    <header className={`sticky top-0 z-40 border-b transition ${scrolled ? 'border-border bg-bg/90 shadow-sm backdrop-blur' : 'border-transparent bg-bg'}`}>
+    <header data-nav className={`sticky top-0 z-40 border-b ${scrolled ? 'border-border bg-bg/90 shadow-sm backdrop-blur' : 'border-transparent bg-bg'}`}>
       <nav className="container-x flex h-16 items-center justify-between gap-4 md:h-20" aria-label="Main">
         <a href="#top" className="flex min-h-11 min-w-0 items-center gap-3" onClick={() => setOpen(false)}>
           {logo ? <img src={logo} alt={`${c.business?.name} logo`} className="h-9 w-auto max-w-40 object-contain md:h-11" /> : null}
@@ -49,7 +62,7 @@ export function Navbar({ c }: { c: any }) {
         </a>
         <div className="hidden items-center gap-8 lg:flex">
           {links.map((l, i) => (
-            <a key={i} href={safeHref(l.href, '#top')} className="text-[15px] font-medium text-muted transition hover:text-text"><T>{l.label}</T></a>
+            <a key={i} href={safeHref(l.href, '#top')} aria-current={active && l.href === `#${active}` ? 'true' : undefined} className="nav-link text-[15px] font-medium text-muted transition-colors hover:text-text aria-[current=true]:text-text"><T>{l.label}</T></a>
           ))}
           {c.nav?.cta && <Btn href={c.nav.cta.href} label={c.nav.cta.label} className="!min-h-10 !px-5 !py-2" />}
         </div>
@@ -65,10 +78,10 @@ export function Navbar({ c }: { c: any }) {
         </button>
       </nav>
       {open && (
-        <div id="mobile-menu" className="border-t border-border bg-bg lg:hidden">
+        <div id="mobile-menu" className="mobile-menu-panel border-t border-border bg-bg lg:hidden">
           <div className="container-x flex flex-col gap-1 py-4">
             {links.map((l, i) => (
-              <a key={i} href={safeHref(l.href, '#top')} onClick={() => setOpen(false)} className="rounded-brand px-3 py-3 text-base font-medium hover:bg-surface"><T>{l.label}</T></a>
+              <a key={i} href={safeHref(l.href, '#top')} onClick={() => setOpen(false)} style={{ '--i': i } as any} className="rounded-brand px-3 py-3 font-heading text-2xl font-medium hover:bg-surface"><T>{l.label}</T></a>
             ))}
             {c.nav?.cta && (
               <div className="pt-2" onClick={() => setOpen(false)}>
@@ -87,6 +100,7 @@ export function Footer({ c }: { c: any }) {
   const social: any[] = (f.social || []).filter((s: any) => /^https:\/\//.test(s.url || ''));
   const links: any[] = (c.nav?.links || []).filter((l: any) => hasText(l.label));
   const year = new Date().getFullYear();
+  const plainName = String(c.business?.logo_text || c.business?.name || '').replace(/[[(.*?)]]/g, '$1');
   return (
     <footer className="border-t border-border bg-surface">
       <div className="container-x grid gap-10 py-12 md:grid-cols-3">
@@ -109,13 +123,16 @@ export function Footer({ c }: { c: any }) {
             <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted">Follow</p>
             <div className="flex flex-wrap gap-3">
               {social.map((s, i) => (
-                <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.platform} className="flex h-11 w-11 items-center justify-center rounded-full border border-border hover:border-primary hover:text-primary">
+                <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.platform} data-magnetic="" className="flex h-11 w-11 items-center justify-center rounded-full border border-border hover:border-primary hover:text-primary">
                   <SocialIcon platform={s.platform} />
                 </a>
               ))}
             </div>
           </div>
         )}
+      </div>
+      <div className="container-x overflow-hidden pb-6" aria-hidden="true">
+        <p {...rv(0)} data-word={plainName} className="wordmark font-heading font-semibold" />
       </div>
       <div className="border-t border-border">
         <div className="container-x flex flex-col gap-2 py-5 text-sm text-muted md:flex-row md:items-center md:justify-between">

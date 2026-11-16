@@ -3,7 +3,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseInstagram, computeScore, mergeContacts } from '../plugins/prospect/src/lib/leads.mjs';
 import { generateCode } from '../plugins/prospect/src/lib/codes.mjs';
-import { validateContent, skeletonContent } from '../plugins/prospect/src/lib/content-check.mjs';
+import { validateContent, skeletonContent, motionProblems } from '../plugins/prospect/src/lib/content-check.mjs';
+import { syncInbox, libraryStatus, saveAnalysis, updateEntry, listLibrary } from '../plugins/prospect/src/lib/design-library.mjs';
+import { workspacePaths } from '../plugins/prospect/src/lib/paths.mjs';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { checkEmail } from '../plugins/prospect/src/lib/email.mjs';
 import { assertPublicHost, normalizeUrl } from '../plugins/prospect/src/lib/net.mjs';
 
@@ -149,4 +154,52 @@ test('contact extraction finds real contacts and ignores code samples and look-a
   assert.ok(has('social', 'instagram.com/testcafe'));
   assert.ok(!found.some((c) => /twistedmatrix/.test(c.value)), 'look-alike domain is not social');
   assert.ok(!found.some((c) => c.type === 'phone' && /1000|2019/.test(c.value)), 'code samples and years are not phones');
+});
+
+test('motion settings are validated against the template presets', () => {
+  assert.deepEqual(motionProblems({ preset: 'cinematic', hero_effect: 'parallax' }).errors, []);
+  assert.match(motionProblems({ preset: 'disco' }).errors[0], /Unknown motion preset/);
+  assert.match(motionProblems({ preset: 'elegant', cursor: 'yes' }).errors[0], /true or false/);
+  assert.match(motionProblems({ preset: 'elegant', reveal: 'explode' }).errors[0], /one of/);
+  assert.ok(motionProblems(undefined).warnings.length);
+  const sk = skeletonContent({ layout: 'fine-dining', business_name: 'X' });
+  assert.equal(sk.motion.preset, 'cinematic');
+  const sk2 = skeletonContent({ layout: 'restaurant', business_name: 'X', sections: ['hero', 'marquee', 'contact'], motion: { preset: 'bold' } });
+  assert.equal(sk2.motion.preset, 'bold');
+  assert.ok(sk2.sections.some((x) => x.type === 'marquee'));
+});
+
+test('section variants and marquee are validated', () => {
+  const c = skeletonContent({ layout: 'restaurant', business_name: 'Cafe', sections: ['hero', { type: 'gallery', variant: 'carousel' }, 'marquee', 'contact'] });
+  c.sections[2].items = ['Coffee', 42];
+  const r = validateContent(c, { contacts: [], facts: {} });
+  assert.ok(r.errors.some((e) => /variant must be one of/.test(e)));
+  assert.ok(r.errors.some((e) => /items must be short text/.test(e)));
+});
+
+test('design library indexes inbox files once and tracks analysis', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'pe-lib-'));
+  const w = workspacePaths(root);
+  fs.mkdirSync(path.join(root, 'design-library', 'inbox'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'design-library', 'inbox', 'Dark Hero.mp4'), 'fake');
+  fs.writeFileSync(path.join(root, 'design-library', 'inbox', 'shot.png'), 'fake');
+  fs.writeFileSync(path.join(root, 'design-library', 'inbox', 'notes.txt'), 'ignored');
+  const idx = syncInbox(w);
+  assert.equal(idx.entries.length, 2);
+  let st = libraryStatus(w);
+  assert.deepEqual(st.needs_frames, ['dark-hero']);
+  assert.equal(st.needs_analysis[0].id, 'shot');
+  syncInbox(w);
+  assert.equal(libraryStatus(w).total, 2, 'no duplicates on rescan');
+  const mapping = { motion: { preset: 'tech' } };
+  saveAnalysis(w, 'shot', { title: 'Grid tech', summary: 's', style_keywords: [], mood: ['modern'], layout_patterns: [], motion: {}, suits: ['modern B2B'], template_mapping: mapping });
+  assert.equal(listLibrary(w)[0].title, 'Grid tech');
+  assert.throws(() => saveAnalysis(w, 'dark-hero', { title: 'x' }), /not ready/);
+  updateEntry(w, 'shot', { remove: true });
+  syncInbox(w);
+  assert.equal(libraryStatus(w).total, 1, 'removed file stays removed');
+  fs.rmSync(path.join(root, 'design-library', 'inbox', 'Dark Hero.mp4'));
+  syncInbox(w);
+  assert.deepEqual(libraryStatus(w).missing, ['dark-hero']);
+  fs.rmSync(root, { recursive: true, force: true });
 });

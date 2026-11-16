@@ -35,6 +35,7 @@ Before changing a version that was already built/deployed, call `new_prototype_v
   },
   "business": { "name": "Exact business name", "tagline": "…", "logo": "assets/logo.png" or null, "logo_text": "optional short name", "show_name_with_logo": false },
   "theme": { "preset": "warm-bistro", "colors": { "primary": "#9a3412" }, "fonts": { "heading": "Fraunces", "body": "DM Sans" }, "radius": "1rem" },
+  "motion": { "preset": "cinematic", "hero_effect": "parallax" },
   "nav": { "links": [{ "label": "Menu", "href": "#menu" }], "cta": { "label": "Pre-order", "href": "#contact" } },
   "sections": [ … ],
   "footer": { "text": "One-line description", "social": [{ "platform": "instagram", "url": "https://www.instagram.com/…/" }] }
@@ -46,6 +47,8 @@ Before changing a version that was already built/deployed, call `new_prototype_v
   `surface`, `text`, `muted`, `primary`, `primary-contrast`, `accent`, `border`. Keep text/background contrast ≥ 4.5:1
   (primary + primary-contrast are used for buttons). When unsure, keep the preset.
 - `theme.fonts` must be names from `design_catalog().fonts`.
+- `motion`: keep what the design selected (see the `prospect:motion-design` skill). Never remove it — every prototype
+  is animated. Reveals, hover effects, counters and the cursor are applied automatically by the template.
 - Social `platform`: instagram, facebook, whatsapp, linkedin, youtube (others show a globe).
 
 ## Links
@@ -64,19 +67,20 @@ Optional `eyebrow` (small label above headings) on most sections.
 
 | type | Fields |
 |---|---|
-| `hero` (first, exactly one — holds the H1) | `variant`: `split` (text + image/visual) · `centered` · `fullbleed` (photo background; needs a strong photo, else gradient); `heading`, `subheading`, `primary_cta {label, href}`, `secondary_cta`, `image`, `image_alt`, `icon` + `visual_label` (shown when no image), `badges[]` (short verified facts like "Dine-in & takeaway") |
+| `hero` (first, exactly one — holds the H1) | `variant`: `split` (text + image/visual) · `centered` · `fullbleed` (photo background; needs a strong photo, else gradient) · `editorial` (oversized headline, wide image below); `heading`, `subheading`, `primary_cta {label, href}`, `secondary_cta`, `image`, `image_alt`, `icon` + `visual_label` (shown when no image), `badges[]` (short verified facts like "Dine-in & takeaway") |
 | `about` | `heading`, `body` (string or array of paragraphs), `highlights[] {icon, title, text}`, `image`, `image_alt`, `image_side` (`left`/`right`), `icon`, `visual_label`, `cta` |
-| `services` | `heading`, `intro`, `variant` (`cards`/`list`), `items[] {icon, title, text, price?, price_source?, image?, image_alt?}`, `price_source`, `cta` |
+| `services` | `heading`, `intro`, `variant` (`cards` / `list` = large numbered rows), `items[] {icon, title, text, price?, price_source?, image?, image_alt?}`, `price_source`, `cta` |
 | `menu` | `heading`, `intro`, `categories[] {name, items[] {name, description, price?, price_source?}}`, `price_source`, `note` |
-| `gallery` | `heading`, `images[] {src, alt}` — hidden when empty; first image is large |
+| `gallery` | `heading`, `variant` (`grid` bento / `scroll` = horizontal strip driven by scrolling, needs 4+ images), `images[] {src, alt}` — hidden when empty; images open in a lightbox |
 | `features` | `heading`, `intro`, `items[] {icon, title, text}` (3 or 4 items look best) |
-| `process` | `heading`, `steps[] {title, text}` (3–4 steps) |
+| `process` | `heading`, `variant` (`cards` / `stack` = sticky cards stacking while scrolling), `steps[] {title, text}` (3–5 steps) |
 | `testimonials` | `heading`, `items[] {quote, author, platform, source_url}` — real public reviews only, quoted exactly |
 | `stats` | `items[] {value, label, source}` — verified numbers only |
 | `pricing` | `heading`, `plans[] {name, price, period, features[], cta, featured, source}` |
 | `team` | `heading`, `members[] {name, role, image?, source}` |
 | `faq` | `heading`, `items[] {q, a}` — answers only from verified info or general, safe guidance |
-| `cta` | `heading`, `text`, `cta {label, href}` (bold coloured band) |
+| `cta` | `heading`, `text`, `cta {label, href}` (bold band with a slowly moving gradient) |
+| `marquee` | `items[]` (4+ short true phrases: offerings, places, values), `icon`, `style` (`solid`/`outline`), `speed` (`slow`/`normal`/`fast`), `tone` — endless scrolling band; place between two sections |
 | `contact` | `heading`, `intro`, `info {phone, whatsapp, email, address, hours[] {days, time}}`, `map_query` (verified address or "Business name, City"), `show_form`, `form {fields[] {name,label,type,required,options?}, submit_label}`, `social[]` |
 | `custom` | `component`: PascalCase name of `custom/<Name>.tsx` (see below) |
 
@@ -107,6 +111,9 @@ export default function CakeSizes({ s }: { s: any }) {
 Then add `{ "type": "custom", "id": "sizes", "component": "CakeSizes", "heading": "…" }`. Use theme classes only:
 `bg-bg bg-surface bg-accent bg-primary text-text text-muted text-primary text-primary-contrast border-border
 rounded-brand font-heading container-x`. No external packages, no network calls, no tracking scripts.
+To animate a custom section use the template's helpers: `import { rv } from '../../lib/motion'` and spread `{...rv(i)}`
+on elements to reveal them on scroll (i = stagger index); `data-tilt=""` on cards; `<Heading text=… />` and `<Eyebrow
+text=… />` from `components/ui`. Content must stay visible without animation (reduced motion).
 
 ## Theme presets
 midnight-gold (luxury dining, dark) · warm-bistro (cafés/bakeries) · fresh-clinic (healthcare) · modern-slate

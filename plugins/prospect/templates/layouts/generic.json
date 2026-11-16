@@ -2,6 +2,7 @@
   "name": "generic",
   "label": "Any other local business",
   "default_theme": "modern-slate",
+  "default_motion": "elegant",
   "nav_cta": "Get in touch",
   "sections": [
     {

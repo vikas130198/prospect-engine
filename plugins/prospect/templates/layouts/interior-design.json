@@ -2,6 +2,7 @@
   "name": "interior-design",
   "label": "Interior designers, architects, furniture, decor",
   "default_theme": "earth-living",
+  "default_motion": "cinematic",
   "nav_cta": "Book a consultation",
   "sections": [
     {

@@ -2,6 +2,7 @@
   "name": "real-estate",
   "label": "Real estate agents, builders, property developers",
   "default_theme": "earth-living",
+  "default_motion": "cinematic",
   "nav_cta": "Schedule a visit",
   "sections": [
     {

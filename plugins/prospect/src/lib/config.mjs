@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { CONFIG_FILE, workspacePaths } from './paths.mjs';
 import { deepMerge, ensureDir, exists, readJSON, UserError, writeJSON, writeText } from './util.mjs';
+import { ensureDesignLibrary } from './design-library.mjs';
 
 export const DEFAULT_CONFIG = {
   schema: 1,
@@ -99,6 +100,7 @@ export function initWorkspace(root, { agency } = {}) {
   if (!exists(gi)) writeText(gi, '.prospect/secrets.env\n.prospect/builder/node_modules/\n.prospect/locks/\nsite/\n');
   if (!exists(w.referencesIndex)) writeJSON(w.referencesIndex, { references: [] });
   if (!exists(w.suppression)) writeJSON(w.suppression, { entries: [] });
+  ensureDesignLibrary(w);
   return { workspace: root, created, config_file: path.join(root, CONFIG_FILE), secrets_file: w.secrets };
 }
 

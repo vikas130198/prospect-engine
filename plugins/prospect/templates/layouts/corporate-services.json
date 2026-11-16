@@ -2,6 +2,7 @@
   "name": "corporate-services",
   "label": "Consultants, agencies, IT, legal, accounting, B2B",
   "default_theme": "modern-slate",
+  "default_motion": "tech",
   "nav_cta": "Get a quote",
   "sections": [
     {

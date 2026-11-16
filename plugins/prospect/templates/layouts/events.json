@@ -2,6 +2,7 @@
   "name": "events",
   "label": "Event planners, wedding services, photographers, decorators, DJs",
   "default_theme": "event-celebration",
+  "default_motion": "bold",
   "nav_cta": "Check availability",
   "sections": [
     {

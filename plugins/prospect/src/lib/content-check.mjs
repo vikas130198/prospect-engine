@@ -19,8 +19,33 @@ export const SECTION_TYPES = {
   faq: { required: ['items'], skeleton: { eyebrow: 'FAQ', heading: 'Frequently asked questions', items: [{ q: '[[Question]]', a: '[[Answer — only from verified information]]' }] } },
   cta: { required: ['heading'], skeleton: { heading: '[[Call-to-action heading]]', text: '', cta: { label: '[[Action]]', href: '#contact' } } },
   contact: { required: [], skeleton: { eyebrow: 'Contact', heading: '[[Contact heading]]', intro: '', info: { phone: '[[Add phone number]]', email: '', whatsapp: '', address: '[[Add address]]', hours: [] }, map_query: '', show_form: true, form: { submit_label: 'Send enquiry' }, social: [] } },
+  marquee: { required: ['items'], skeleton: { items: ['[[Short phrase]]', '[[Short phrase]]', '[[Short phrase]]', '[[Short phrase]]'], icon: 'sparkles', style: 'solid', speed: 'normal' } },
   custom: { required: ['component'], skeleton: { component: 'MySection' } },
 };
+
+export const VARIANTS = { hero: ['split', 'centered', 'fullbleed', 'editorial'], services: ['cards', 'list'], gallery: ['grid', 'scroll'], process: ['cards', 'stack'] };
+
+export function loadMotion() {
+  return readJSON(path.join(TEMPLATES, 'builder', 'src', 'lib', 'motion.json'));
+}
+
+/** Check a motion object against the presets/options the template supports. */
+export function motionProblems(m) {
+  const errors = [];
+  const warnings = [];
+  if (m === undefined || m === null) return { errors, warnings: ['No "motion" settings — the default "elegant" preset is used. Choose the preset that fits this business.'] };
+  if (typeof m !== 'object' || Array.isArray(m)) return { errors: ['"motion" must be an object like {"preset": "cinematic"}.'], warnings };
+  const { presets, options } = loadMotion();
+  if (!m.preset) warnings.push('motion.preset is not set — "elegant" is used.');
+  else if (!presets[m.preset]) errors.push(`Unknown motion preset "${m.preset}". Options: ${Object.keys(presets).join(', ')}.`);
+  for (const [k, v] of Object.entries(m)) {
+    if (k === 'preset' || k === 'notes') continue;
+    const allowed = options[k];
+    if (!allowed) warnings.push(`motion.${k} is not a supported setting (ignored). Supported: ${Object.keys(options).join(', ')}.`);
+    else if (allowed === 'boolean' ? typeof v !== 'boolean' : !allowed.includes(v)) errors.push(`motion.${k} must be ${allowed === 'boolean' ? 'true or false' : 'one of: ' + allowed.join(', ')}.`);
+  }
+  return { errors, warnings };
+}
 
 export function loadThemes() {
   return readJSON(path.join(TEMPLATES, 'builder', 'src', 'lib', 'themes.json'));
@@ -41,7 +66,7 @@ const SECTION_IDS = { hero: 'home', about: 'about', services: 'services', menu: 
 const NAV_LABELS = { about: 'About', services: 'Services', menu: 'Menu', gallery: 'Gallery', features: 'Why us', process: 'How it works', pricing: 'Pricing', team: 'Team', faq: 'FAQ', contact: 'Contact' };
 
 /** Build a starting content.json from a layout. Placeholders [[...]] mark everything still to be written. */
-export function skeletonContent({ layout, theme, business_name, agency, sections: chosen }) {
+export function skeletonContent({ layout, theme, business_name, agency, sections: chosen, motion }) {
   const l = getLayout(layout);
   const types = chosen?.length ? chosen.map((t) => (typeof t === 'string' ? { type: t } : t)) : l.sections.filter((s) => !s.optional);
   const sections = types.map((s) => {
@@ -57,6 +82,7 @@ export function skeletonContent({ layout, theme, business_name, agency, sections
     meta: { title: `[[${business_name || 'Business'} — short benefit]]`, description: '[[150-character description from verified research]]', lang: 'en' },
     business: { name: business_name || '[[Business name]]', tagline: '', logo: null },
     theme: { preset: theme || l.default_theme },
+    motion: motion || { preset: l.default_motion || 'elegant' },
     preview: { agency_name: agency?.name || 'Our studio', agency_url: /^https:\/\//.test(agency?.website || '') ? agency.website : '' },
     nav: { links, cta: { label: l.nav_cta, href: '#contact' } },
     sections,
@@ -98,6 +124,9 @@ export function validateContent(content, lead, { customDir } = {}) {
   }
   if (!content.business?.name || /\[\[/.test(content.business.name)) errors.push('business.name must be the real business name.');
   if (content.theme?.preset && !themes[content.theme.preset]) errors.push(`Unknown theme preset "${content.theme.preset}". Options: ${Object.keys(themes).join(', ')}.`);
+  const mp = motionProblems(content.motion);
+  errors.push(...mp.errors);
+  warnings.push(...mp.warnings);
   for (const [k, v] of Object.entries(content.theme?.colors || {})) {
     if (!/^#[0-9a-f]{6}$/i.test(v)) errors.push(`theme.colors.${k} must be a 6-digit hex colour like #1a2b3c.`);
   }
@@ -121,6 +150,14 @@ export function validateContent(content, lead, { customDir } = {}) {
       const v = s[r];
       if (v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length)) errors.push(`${where}: "${r}" is required.`);
     }
+    if (s.variant !== undefined && VARIANTS[s.type] && !VARIANTS[s.type].includes(s.variant)) errors.push(`${where}: variant must be one of: ${VARIANTS[s.type].join(', ')}.`);
+    if (s.type === 'marquee') {
+      const items = Array.isArray(s.items) ? s.items : [];
+      if (items.some((t) => typeof t !== 'string')) errors.push(`${where}: items must be short text strings.`);
+      else if (items.some((t) => strip(t).length > 40)) warnings.push(`${where}: keep marquee phrases short (≤ 40 characters).`);
+      if (items.length && items.length < 3) warnings.push(`${where}: use at least 3 phrases so the band loops smoothly.`);
+    }
+    if (s.type === 'gallery' && s.variant === 'scroll' && (s.images || []).length < 4) warnings.push(`${where}: the "scroll" gallery needs 4+ images to look good (falls back to grid below 3).`);
     if (s.type === 'testimonials') {
       for (const [j, t] of (s.items || []).entries()) {
         if (!/^https?:\/\//.test(t.source_url || '')) errors.push(`${where}.items[${j}]: testimonials must be real reviews with a public source_url. Never write fake reviews — remove the section instead.`);

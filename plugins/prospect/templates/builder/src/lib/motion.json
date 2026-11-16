@@ -1,0 +1,57 @@
+{
+  "options": {
+    "intro": ["curtain", "fade", "none"],
+    "reveal": ["fade-up", "blur-in", "clip-up", "scale-in", "slide", "fade"],
+    "hero_text": ["words", "chars", "fade"],
+    "hero_effect": ["parallax", "ken-burns", "aurora", "spotlight", "none"],
+    "nav": ["hide-on-scroll", "sticky"],
+    "smooth_scroll": "boolean",
+    "cursor": "boolean",
+    "magnetic": "boolean",
+    "tilt": "boolean",
+    "scroll_progress": "boolean",
+    "image_reveal": "boolean",
+    "heading_reveal": "boolean",
+    "counters": "boolean",
+    "grain": "boolean",
+    "speed": ["slow", "normal", "fast"]
+  },
+  "presets": {
+    "cinematic": {
+      "label": "Cinematic — curtain intro, masked line reveals, parallax imagery, custom cursor. Premium, visual, storytelling brands.",
+      "intro": "curtain", "reveal": "clip-up", "hero_text": "words", "hero_effect": "parallax", "nav": "hide-on-scroll",
+      "smooth_scroll": true, "cursor": true, "magnetic": true, "tilt": false, "scroll_progress": true,
+      "image_reveal": true, "heading_reveal": true, "counters": true, "grain": true, "speed": "slow"
+    },
+    "elegant": {
+      "label": "Elegant — soft fades, word-by-word headline, slow Ken Burns imagery, smooth scrolling. Calm, refined, timeless (default).",
+      "intro": "fade", "reveal": "fade-up", "hero_text": "words", "hero_effect": "ken-burns", "nav": "hide-on-scroll",
+      "smooth_scroll": true, "cursor": false, "magnetic": true, "tilt": false, "scroll_progress": true,
+      "image_reveal": true, "heading_reveal": true, "counters": true, "grain": false, "speed": "normal"
+    },
+    "bold": {
+      "label": "Bold — scale-in reveals, animated aurora gradients, tilting cards, magnetic buttons, cursor. Energetic, youthful, fitness, events.",
+      "intro": "curtain", "reveal": "scale-in", "hero_text": "chars", "hero_effect": "aurora", "nav": "hide-on-scroll",
+      "smooth_scroll": true, "cursor": true, "magnetic": true, "tilt": true, "scroll_progress": true,
+      "image_reveal": true, "heading_reveal": true, "counters": true, "grain": false, "speed": "fast"
+    },
+    "playful": {
+      "label": "Playful — springy slide reveals, aurora colour, tilting cards. Kids, cafés, pets, creative studios.",
+      "intro": "fade", "reveal": "slide", "hero_text": "words", "hero_effect": "aurora", "nav": "sticky",
+      "smooth_scroll": true, "cursor": false, "magnetic": true, "tilt": true, "scroll_progress": false,
+      "image_reveal": true, "heading_reveal": true, "counters": true, "grain": false, "speed": "normal"
+    },
+    "tech": {
+      "label": "Tech — blur-in reveals, letter-by-letter headline, pointer spotlight, cursor. SaaS, agencies, modern B2B, clinics with a modern edge.",
+      "intro": "none", "reveal": "blur-in", "hero_text": "chars", "hero_effect": "spotlight", "nav": "hide-on-scroll",
+      "smooth_scroll": true, "cursor": true, "magnetic": true, "tilt": true, "scroll_progress": true,
+      "image_reveal": true, "heading_reveal": true, "counters": true, "grain": false, "speed": "fast"
+    },
+    "minimal": {
+      "label": "Minimal — quiet fades and smooth scrolling only. Law, finance, medical, where restraint signals trust.",
+      "intro": "none", "reveal": "fade", "hero_text": "fade", "hero_effect": "none", "nav": "sticky",
+      "smooth_scroll": true, "cursor": false, "magnetic": false, "tilt": false, "scroll_progress": false,
+      "image_reveal": false, "heading_reveal": false, "counters": true, "grain": false, "speed": "normal"
+    }
+  }
+}

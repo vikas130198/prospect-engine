@@ -2,6 +2,7 @@
   "name": "organic",
   "label": "Organic food, farms, eco products, ayurveda, natural wellness",
   "default_theme": "green-organic",
+  "default_motion": "elegant",
   "nav_cta": "Order now",
   "sections": [
     {

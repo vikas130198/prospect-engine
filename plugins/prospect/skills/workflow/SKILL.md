@@ -30,7 +30,10 @@ call `decide_lead` (approve, quoting their words) and continue; otherwise ask an
 Lite 3 / Full 5). Show status, score and priority. If priority is **Reject** or status is **E (No Clear
 Opportunity)** ⏸ stop and ask whether to continue anyway, reject, or archive.
 
-**design** → Task subagent `design-selector`. Show layout, theme and the section plan in 3–5 lines and continue
+**design** → first bring the design library up to date (skill `prospect:design-library` step 1: `design_library`
+status → CLI `library-scan` if new videos → Task `design-librarian` for entries needing analysis). Then Task subagent
+`design-selector`. Show layout, theme, motion preset, the design-library entry used and the section plan in 3–5 lines
+and continue
 (the user can override later with `/prospect:regenerate <id> design …`).
 
 **prototype** → Task subagent `prototype-builder`. It builds but does not test.

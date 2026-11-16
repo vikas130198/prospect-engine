@@ -71,7 +71,7 @@ export function findChrome() {
   return chromeCandidates().find(exists) || null;
 }
 
-function loadPlaywright(w) {
+export function loadPlaywright(w) {
   try {
     const req = createRequire(path.join(w.builder, 'package.json'));
     return req('playwright-core');
@@ -271,6 +271,64 @@ async function testViewport(browser, url, vp, shotDir, origin) {
   return { viewport: vp.name, critical, warnings, passed, probe: p, screenshot: shot };
 }
 
+/**
+ * Animations ON (the other viewports run with reduced motion): scroll the whole page like a visitor and make sure
+ * every animated element ends up visible, nothing overflows sideways and no script errors occur.
+ */
+async function testMotion(browser, url, vp, shotDir) {
+  const name = `motion-${vp.name}`;
+  const critical = [];
+  const warnings = [];
+  const passed = [];
+  const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.mobile, hasTouch: vp.mobile, deviceScaleFactor: 1, reducedMotion: 'no-preference' });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(String(e.message || e).slice(0, 300)));
+  page.on('console', (m) => {
+    if (m.type() === 'error' && !/fonts\.(googleapis|gstatic)|favicon|maps\.google|google\.com\/maps|status of 404/i.test(m.text())) errors.push(m.text().slice(0, 300));
+  });
+  try {
+    await page.goto(url, { waitUntil: 'load', timeout: 45000 });
+    await page.waitForTimeout(2600); // opening curtain + hero entrance
+    ensureDir(shotDir);
+    await page.screenshot({ path: path.join(shotDir, `${name}-hero.jpg`), type: 'jpeg', quality: 70 });
+    const info = await page.evaluate(() => ({ motion: document.documentElement.classList.contains('motion'), preset: document.querySelector('[data-motion-preset]')?.getAttribute('data-motion-preset') || null, curtain: Boolean(document.querySelector('.intro-curtain')) }));
+    if (info.curtain) critical.push('The opening curtain is still covering the page after 2.6 seconds.');
+    if (!info.motion) warnings.push('Animations did not switch on (motion class missing).');
+    else passed.push(`Animations run (${info.preset || 'default'} preset)`);
+    const step = Math.round(vp.height * 0.55);
+    let y = 0;
+    for (let i = 0; i < 80; i++) {
+      const h = await page.evaluate(() => document.documentElement.scrollHeight);
+      if (y >= h) break;
+      y += step;
+      await page.mouse.wheel(0, step).catch(() => {});
+      await page.evaluate((to) => window.scrollTo(0, to), y);
+      await page.waitForTimeout(160);
+    }
+    await page.waitForTimeout(1600);
+    const r = await page.evaluate(() => {
+      const label = (e) => `${e.tagName.toLowerCase()}${e.id ? '#' + e.id : ''} "${(e.textContent || e.getAttribute('aria-label') || '').trim().slice(0, 40)}"`;
+      const stuck = [...document.querySelectorAll('[data-reveal]')].filter((e) => {
+        const r = e.getBoundingClientRect();
+        return r.width > 0 && r.height > 0 && (!e.classList.contains('is-in') || Number(getComputedStyle(e).opacity) < 0.5);
+      });
+      return { stuck: stuck.slice(0, 6).map(label), stuckCount: stuck.length, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth };
+    });
+    if (r.stuckCount) critical.push(`${r.stuckCount} animated elements never became visible after scrolling: ${r.stuck.join('; ')}`);
+    else passed.push('All scroll animations reveal their content');
+    if (r.sw > r.cw + 1) critical.push(`With animations on, the page scrolls sideways (${r.sw}px wide on a ${r.cw}px screen).`);
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight * 0.4));
+    await page.waitForTimeout(1400);
+    await page.screenshot({ path: path.join(shotDir, `${name}-scrolled.jpg`), type: 'jpeg', quality: 70 });
+  } catch (e) {
+    warnings.push(`Animation test could not finish: ${e.message.split('\n')[0]}`);
+  }
+  if (errors.length) critical.push(`JavaScript errors with animations on: ${[...new Set(errors)].slice(0, 3).join(' | ')}`);
+  await ctx.close();
+  return { viewport: name, critical, warnings, passed, screenshot: path.join(shotDir, `${name}-hero.jpg`) };
+}
+
 function seoChecks(p) {
   const critical = [];
   const warnings = [];
@@ -361,6 +419,7 @@ export async function runQA(w, leadId, { skipLighthouse = false } = {}) {
   const results = [];
   try {
     for (const vp of VIEWPORTS) results.push(await testViewport(browser, url, vp, path.join(reportDir, 'screenshots'), origin));
+    for (const vp of VIEWPORTS.filter((x) => ['mobile-390', 'desktop-1440'].includes(x.name))) results.push(await testMotion(browser, url, vp, path.join(reportDir, 'screenshots')));
   } finally {
     await browser.close().catch(() => {});
   }
@@ -403,7 +462,7 @@ export async function runQA(w, leadId, { skipLighthouse = false } = {}) {
     build_hash: meta.build.hash,
     tested_at: now(),
     browser: chrome ? path.basename(chrome) : 'bundled chromium',
-    viewports: VIEWPORTS.map((x) => `${x.width}px`),
+    viewports: [...VIEWPORTS.map((x) => `${x.width}px`), 'animations on: 390px + 1440px'],
     attempt,
     status,
     critical,
